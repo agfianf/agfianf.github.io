@@ -1,0 +1,87 @@
+:root {
+    --color-green-dark: #1B9533; /* Warna hijau gelap */
+    --color-green-light: #55D027; /* Warna hijau muda */
+}
+
+/* Warna link umum */
+a {
+    color: var(--color-green-dark); /* Warna hijau gelap */
+}
+
+a:hover {
+    color: var(--color-green-light); /* Warna hijau muda saat hover */
+}
+
+/* Warna link di konten MkDocs */
+.md-typeset a {
+    color: var(--color-green-dark); /* Warna hijau gelap */
+}
+
+.md-typeset a:hover {
+    color: var(--color-green-light); /* Warna hijau muda saat hover */
+}
+
+
+/* Warna link di TOC */
+.md-nav__link {
+    color: var(--color-green-dark); /* Warna hijau gelap */
+}
+
+.md-nav__link:hover {
+    color: var(--color-green-light); /* Warna hijau muda saat hover */
+}
+
+/* Warna link di sidebar */
+.md-nav__item .md-nav__link {
+    color: var(--color-green-dark); /* Warna hijau gelap */
+    
+}
+
+.md-nav__item .md-nav__link:hover {
+    color: var(--color-green-light) !important; /* Warna hijau muda saat hover */
+}
+
+/* Warna tag */
+.md-tags {
+    color: var(--color-green-dark); /* Warna hijau gelap */
+    background-color: rgba(27, 149, 51, 0.0); /* Background transparan */
+    border-color: var(--color-green-dark); /* Border warna hijau */
+}
+
+.md-tags .md-tag:hover {
+    color: var(--color-green-dark) !important; /* Warna hijau gelap */
+    background-color: rgba(27, 149, 51, 0.2) !important; /* Background transparan */
+    border-color: var(--color-green-light) !important; /* Border warna hijau muda saat hover */
+}
+
+/* Timeline Blog catergory details Post */
+.md-meta__item a.md-meta__link {
+    color: var(--color-green-dark); /* Warna hijau gelap untuk link */
+    text-decoration: none; /* Menghilangkan garis bawah pada link */
+}
+
+.md-meta__item a.md-meta__link:hover {
+    color: var(--color-green-light); /* Warna hijau muda saat hover */
+    text-decoration: underline; /* (Opsional) Tambahkan garis bawah saat hover */
+}
+
+
+/* sidebar catergory hover in */
+.md-ellipsis a {
+    color: var(--color-green-dark); /* Warna hijau gelap untuk link */
+    text-decoration: none; /* Menghilangkan garis bawah pada link */
+}
+
+.md-ellipsis a:hover {
+    color: var(--color-green-light) !important; /* Warna hijau muda saat hover */
+    text-decoration: underline; /* (Opsional) Tambahkan garis bawah saat hover */
+}
+
+/* Warna link di footer */
+.md-footer__link {
+    color: var(--color-green-dark); /* Warna hijau gelap */
+}
+
+.md-footer__link:hover {
+    color: var(--color-green-light); /* Warna hijau muda saat hover */
+}
