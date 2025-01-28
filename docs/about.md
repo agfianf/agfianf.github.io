@@ -1,5 +1,8 @@
 # About Me
 
+!!! info "Just an Example Page"
+    This is just an example page. Don't take it too seriously!
+
 ## Introduction
 Hi there! I'm a passionate programmer and AI engineer from Indonesia with expertise in building efficient, high-performance systems. My focus is on backend `development`, `data science`, and `computer vision`.
 
@@ -9,6 +12,12 @@ Hi there! I'm a passionate programmer and AI engineer from Indonesia with expert
 - **Database Management**: MongoDB, PostgreSQL
 - **AI & Data Science**: Computer Vision, TinyML, ONNX, TensorflowJS
 - **Cloud & Deployment**: Azure, Streamlit, IntelOpenVino
+
+
+```python title="hello.py"
+def main():
+    print("Hello, World!")
+```
 
 ## Philosophy
 I strive for code that is:
@@ -31,8 +40,3 @@ Feel free to reach out to collaborate or discuss exciting projects!
 
 ---
 *"Coding is not just about writing code; it's about solving problems with clarity and precision."*
-
-```python title="hello.py"
-def main():
-    print("Hello, World!")
-```

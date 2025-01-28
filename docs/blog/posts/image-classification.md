@@ -1,6 +1,6 @@
 ---
 draft: false 
-date: 2025-01-31 
+date: 2025-01-28 
 categories:
     - computer-vision
     - deep-learning
@@ -9,6 +9,9 @@ tags:
 ---
 
 # Computer Vision: Image Classification (End-to-End)
+
+!!! info "Just an Example Post"
+    This is just an example post. Don't take it too seriously!
 
 This documentation provides a complete guide for building an **image classification system** using modern computer vision techniques, from data preparation to deployment.
 

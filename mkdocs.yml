@@ -1,7 +1,8 @@
-site_name: agfian's blog
+site_name: agfian's space
 theme:
   name: 'material'
   logo: 'assets/logo.png'
+  favicon: 'assets/logo.png'
   font:
     text: 'Plus Jakarta Sans'
     code: 'Fira Code'
@@ -38,14 +39,17 @@ theme:
     - content.code.annotate
 
 markdown_extensions:
-  - pymdownx.highlight:
-      anchor_linenums: true
-      line_spans: __span
-      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
   - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -57,8 +61,7 @@ plugins:
   - search
   - tags:
       tags_file: tags.md 
-  - blog:
-      enabled: true
+  - blog
 
 nav:
   - Home: index.md

@@ -16,6 +16,8 @@ authors:
 
 # Hello world! :flag_sd:
 
+!!! info "Just an Example Post"
+    This is just an example post. Don't take it too seriously!
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et euismod
 nulla. Curabitur feugiat, tortor non consequat finibus, justo purus auctor
