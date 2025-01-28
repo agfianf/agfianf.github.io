@@ -8,6 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+      actions: read
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
@@ -33,7 +38,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
 
@@ -45,6 +50,8 @@ jobs:
     permissions:
       pages: write
       id-token: write
+      actions: read
+
 
     environment:
       name: github-pages
