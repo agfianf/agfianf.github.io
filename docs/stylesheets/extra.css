@@ -85,3 +85,51 @@ a:hover {
 .md-footer__link:hover {
     color: var(--color-green-light); /* Warna hijau muda saat hover */
 }
+
+
+
+/* resume - section */
+
+.job-company-location {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0px; /* Memberikan sedikit jarak antar baris */
+}
+
+.job-company-location .c-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--color-green-dark); /* Warna mencolok, bisa ganti sesuai selera */
+    margin: 0; /* Mengurangi jarak atas dan bawah */
+    text-decoration: none; /* Menghapus garis bawah link */
+
+}
+.job-company-location .c-loc {
+    color: #9e9e9e; /* Warna abu-abu */
+    font-weight: 500;
+    margin: 0; /* Mengurangi jarak atas dan bawah */
+}
+
+.job-title-date {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0px; /* Memberikan sedikit jarak antar baris */
+}
+
+.job-title-date .title {
+    color: var(--color-green-dark);
+    font-weight: 500;
+    margin: 0; /* Mengurangi jarak */
+    font-style: italic; /* Membuat semua teks di dalam .job-title-date jadi italic */
+}
+
+.job-title-date .date {
+    color: #9e9e9e;
+    font-weight: 400;
+    margin: 0; /* Mengurangi jarak */
+    
+
+}
+

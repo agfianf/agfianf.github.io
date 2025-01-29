@@ -1,4 +1,6 @@
 site_name: agfian's space
+extra:
+  generator: false
 theme:
   name: 'material'
   logo: 'assets/logo.png'
@@ -46,6 +48,11 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
