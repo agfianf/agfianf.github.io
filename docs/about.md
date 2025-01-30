@@ -28,7 +28,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
     </div>
     <div class="job-title-date">
         <span class="title">AI Engineer - Full Time Remote</span>
-        <span class="date">Jan 2021 - Present · 4 yrs 6 mos</span>
+        <span class="date">Jan 2021 - Present · 4 yrs ++</span>
     </div>
 
     _Joined as the first AI Engineer responsible for translating and refining business goals into appropriate machine learning objectives. Binsho is a startup company that provides smart technologies to the Palm Oil industry with the goal of Industry 4.0 revolution in mind._
@@ -152,8 +152,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
 ---
 ### :fontawesome-solid-medal: Achivements
-**Runner Up Remotely Operated Vehicle (ROV) Technogine 2019 Competition**
-
-- Responsible to lead the team for winning the competition (4 members)
-- Responsible for designing electrical and programs for robots.
+- **Runner Up Remotely Operated Vehicle (ROV) Technogine 2019 Competition**
+    - Responsible to lead the team for winning the competition (4 members)
+    - Responsible for designing electrical and programs for robots.
 
