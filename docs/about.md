@@ -125,7 +125,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
 ### :material-school: Education
 <div class="job-company-location">
-    <a class="c-name" href="https://binshosolutions.com/">Telkom University</a>
+    <a class="c-name" href="https://telkomuniversity.ac.id/">Telkom University</a>
     <span class="c-loc">Bandung, Indonesia</span>
 </div>
 <div class="job-title-date">
