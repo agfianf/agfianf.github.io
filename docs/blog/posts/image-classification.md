@@ -1,4 +1,5 @@
 ---
+
 draft: false 
 date: 2025-01-28 
 categories:
@@ -6,6 +7,9 @@ categories:
     - deep-learning
 tags:
     - image-classification
+
+comments: true
+
 ---
 
 # Computer Vision: Image Classification (End-to-End)
@@ -178,7 +182,7 @@ curl -X POST "http://127.0.0.1:8000/predict/" -F "file=@path/to/image.jpg"
 
 ---
 
-## References
+## References!
 
 - [PyTorch Documentation](https://pytorch.org/docs/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
