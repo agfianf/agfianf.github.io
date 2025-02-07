@@ -11,7 +11,7 @@ tags:
 slug: hello-world
 authors:
   - me
-
+comments: true
 ---
 
 # Hello world! :flag_sd:
