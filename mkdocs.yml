@@ -6,6 +6,7 @@ theme:
   language: en
   logo: 'assets/logo.png'
   favicon: 'assets/logo.png'
+  custom_dir: overrides
   font:
     text: 'Plus Jakarta Sans'
     code: 'Fira Code'
