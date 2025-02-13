@@ -5,7 +5,7 @@
 
 
 ### :wave: Hi!
-I'm a passionate programmer and AI engineer from Indonesia with expertise in building efficient, high-performance systems. My focus is on `backend development`, `data science`, and `computer vision`.
+I'm a passionate programmer and AI engineer from Indonesia with expertise in building efficient, high-performance systems. My focus is on `backend development`, `devops`, and `AI/ML`.
 
 ### [:fontawesome-brands-square-github:](https://github.com/agfianf)  [:fontawesome-brands-linkedin:](https://www.linkedin.com/in/magfianf/) [:octicons-mail-16:](mailto:muhammadagfian96@gmail.com)
 

@@ -94,4 +94,5 @@ nav:
   - Blog:
     - blog/index.md
   - Tags: tags.md
+  - Github: https://github.com/agfianf
   - About: about.md
