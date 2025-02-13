@@ -155,7 +155,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
         <span class="date">Feb 2021 - Oct 2022 · 1 yr 10 mos</span>
     </div>
 
-    _AIoT-focused software house in Indonesia, later acquired by eFishery._
+    _AIoT-focused software house in Indonesia, later acquired by PT Multidaya Teknologi Nusantara._
 
     - **Mask Classification Model:** Achieved **93.63% Accuracy** on edge devices.
     - **Data Annotation:** Reduced completion time from **3 weeks to 1 week** with self-hosted CVAT.
