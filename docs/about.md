@@ -30,20 +30,20 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 ![DeepStream](https://img.shields.io/badge/DeepStream-white?logo=nvidia)
 
 <!-- LLM -->
-![LLM OpenAI](https://img.shields.io/badge/LLM_OpenAI-white?logo=openai&logoColor=black)
+<!-- ![LLM OpenAI](https://img.shields.io/badge/LLM_OpenAI-white?logo=openai&logoColor=black)
 ![LangChain](https://img.shields.io/badge/LangChain-white?logo=langchain&logoColor=%231C3C3C)
 ![LangGraph](https://img.shields.io/badge/LangGraph-white?logo=langgraph&logoColor=%231C3C3C)
 ![Ollama](https://img.shields.io/badge/Ollama-white?logo=ollama&logoColor=black)
 ![DB Vector - Chroma](https://img.shields.io/badge/DB_Vector-Chroma-white)
-![DB Vector - FAISS](https://img.shields.io/badge/DB_Vector-FAISS-white?logo=meta)
+![DB Vector - FAISS](https://img.shields.io/badge/DB_Vector-FAISS-white?logo=meta) -->
 
-
-![Metabase](https://img.shields.io/badge/Metabase-white?logo=metabase)
+<!-- Data Engineer -->
+<!-- ![Metabase](https://img.shields.io/badge/Metabase-white?logo=metabase)
 ![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-white?logo=apachekafka&logoColor=black)
 ![Apache Spark](https://img.shields.io/badge/Apache_Spark-white?logo=apachespark)
 ![Apache Hadoop](https://img.shields.io/badge/Apache_Hadoop-white?logo=apachehadoop)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-white?logo=postgresql&logoColor=blue) 
-![MongoDB](https://img.shields.io/badge/MongoDB-white?logo=mongodb)
+![MongoDB](https://img.shields.io/badge/MongoDB-white?logo=mongodb) -->
 
 <!-- - Platform:  -->
 ![Streamlit](https://img.shields.io/badge/Streamlit-white?logo=streamlit)
@@ -64,13 +64,13 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 ![Docker](https://img.shields.io/badge/Docker-white?logo=Docker)
 ![Grafana](https://img.shields.io/badge/Grafana-white?logo=grafana)
 ![Prometheus](https://img.shields.io/badge/Prometheus-white?logo=prometheus)
-![Terraform](https://img.shields.io/badge/Terraform-white?logo=terraform)
-![Jenkins](https://img.shields.io/badge/Jenkins-white?logo=jenkins)
 ![CI/CD - Github Actions](https://img.shields.io/badge/CI%2FCD-Github_Actions-white?logo=githubactions)
-![CI/CD - Gitlab](https://img.shields.io/badge/CI%2FCD-Gitlab-white?logo=gitlab)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-white?logo=kubernetes)
 ![MLOps - ClearML](https://img.shields.io/badge/MLOps-ClearML-white)
-![MLOps - MLFlow](https://img.shields.io/badge/MLOps-MLFlow-white?logo=mlflow)
+<!-- ![Terraform](https://img.shields.io/badge/Terraform-white?logo=terraform) -->
+<!-- ![Jenkins](https://img.shields.io/badge/Jenkins-white?logo=jenkins) -->
+<!-- ![CI/CD - Gitlab](https://img.shields.io/badge/CI%2FCD-Gitlab-white?logo=gitlab) -->
+<!-- ![Kubernetes](https://img.shields.io/badge/Kubernetes-white?logo=kubernetes) -->
+<!-- ![MLOps - MLFlow](https://img.shields.io/badge/MLOps-MLFlow-white?logo=mlflow) -->
 
 ![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi-white?logo=raspberrypi&logoColor=maroon)
 ![Jetson Nano](https://img.shields.io/badge/Jetson_Nano-white?logo=nvidia)
