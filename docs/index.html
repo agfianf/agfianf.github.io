@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>agfian's space</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600&family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #f3f3f3;
+            --text-light: #1a202c;
+            --accent-light: #4caf50;
+            --bg-dark: #1a202c;
+            --text-dark: #f0f4f8;
+            --accent-dark: #66bb6a;
+            --terminal-bg: #0a0e14;
+            --terminal-text: #e6e1cf;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body.light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center; /* This ensures vertical centering */
+            flex-grow: 1;
+        }
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* Added this to center content vertically */
+            height: 100%; /* Added this to match height */
+            min-height: 400px; /* Added this to match terminal container height */
+        }
+        .profile-photo-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 1rem;
+            margin-top: 0rem;
+
+        }
+        .profile-photo {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            /* background-color: #ddd; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 0;
+        }
+        .profile-photo::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            background: linear-gradient(45deg, #4caf50, #66bb6a);
+            border-radius: 25px;
+            z-index: -1;
+            filter: blur(10px);
+            opacity: 0.7;
+        }
+        .profile-photo::after {
+            content: '🍃';
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            font-size: 2rem;
+            transform: rotate(30deg);
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .greeting {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            margin-top: 0;
+        }
+        .quote {
+            font-style: italic;
+            color: var(--accent-light);
+            margin-bottom: 1rem;
+            max-width: 400px;
+        }
+        .terminal-container-side {            
+            justify-content: center; /* Added this to center content vertically */
+            width: 100%;
+            max-width: 600px;
+            height: 100%; /* Added this to match height */
+            min-height: 400px; /* Added this to match terminal container height */
+            display: flex;
+            flex-direction: column;
+        }
+        .terminal-space-1 {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 8rem;
+            margin-top: 0rem;
+
+        }
+        .terminal-container {
+            background-color: var(--terminal-bg);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            min-width: 385px;
+            margin: 0 auto;
+        }
+
+        .terminal-topbar {
+            border-radius: 8px 8px 0 0;
+            background-color: #1e1f29;
+            padding: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .terminal-buttons {
+            display: flex;
+        }
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .terminal-button.red { background-color: #ff5f56; }
+        .terminal-button.yellow { background-color: #ffbd2e; }
+        .terminal-button.green { background-color: #27c93f; }
+        .terminal-title {
+            color: var(--terminal-text);
+            font-size: 0.8rem;
+            font-family: 'Fira Code', monospace;
+        }
+        .terminal {
+            font-family: 'Fira Code', monospace;
+            color: var(--terminal-text);
+            padding: 1rem;
+            flex-grow: 1; /* Added this to make terminal fill available space */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .terminal-line {
+            margin-bottom: 0.5rem;
+        }
+        .terminal-prompt {
+            color: #5af78e;
+        }
+        .terminal-content {
+            display: inline-block;
+        }
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: var(--terminal-text);
+            animation: blink 0.8s infinite;
+            /* vertical-align: middle; */
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #fff;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        } */
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        .light-mode .theme-toggle {
+            color: var(--accent-light);
+        }
+        .dark-mode .theme-toggle {
+            color: var(--accent-dark);
+        }
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .links a {
+            text-decoration: none;
+            color: inherit;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s, transform 0.2s;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .links a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        .dark-mode .links a {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .dark-mode .links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .profile-section {
+                align-items: center;
+                text-align: center;
+            }
+            h1 {
+                font-size: 2.5rem;
+            }
+            .greeting {
+                font-size: 1.2rem;
+            }
+            .terminal-container {
+                width: 100%;
+            }
+            .links {
+                justify-content: center;
+            }
+        }
+
+        @media (min-width: 769px) { /* Desktop view */
+            .terminal-space-1 {
+                visibility: hidden; /* Hides the content but maintains the space */
+                height: 200px; /* Adjust this value to match your desired spacing */
+                display: block;
+                
+            }
+        }
+
+        @media (max-width: 768px) { /* Mobile view */
+            .terminal-space-1 {
+                display: none; /* Completely removes the element and its space */
+            }
+            .terminal-container-side {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-photo-container">
+                <img class="profile-photo" src="assets/logo.png" alt="Logo"></img> 
+            </div>
+            <h1>agfian's space</h1>
+            <p class="greeting">👋 Hi there!</p>
+            <p class="quote">"The only way to do great work is to love what you do." - Steve Jobs</p>
+            <div class="links">
+                <a href="/blog">/blog</a>
+                <a href="/tags">/tags</a>
+                <a href="/about">/about-me</a>
+            </div>
+        </div>
+        <div class="terminal-container-side">
+            <div class="terminal-space-1">
+                <img class="profile-photo" src="assets/logo.png" alt="Logo"></img> 
+            </div>
+            <div class="terminal-container">
+                <div class="terminal-topbar">
+                    <div class="terminal-buttons">
+                        <div class="terminal-button red"></div>
+                        <div class="terminal-button yellow"></div>
+                        <div class="terminal-button green"></div>
+                    </div>
+                    <div class="terminal-title">agfian@space ~ </div>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-line">
+                        <span class="terminal-prompt">agfian@space:~$</span> <span id="first-command"></span><span class="cursor" id="command-cursor"></span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-content" id="whoami-content"></span><span class="cursor" id="whoami-cursor" style="display: none;"></span>
+                    </div>
+                    <div class="terminal-line" id="second-command" style="display: none;">
+                        <span class="terminal-prompt">agfian@space:~$</span> <span id="second-command-text"></span><span class="cursor" id="second-command-cursor"></span>
+                    </div>
+                    <div class="terminal-line">
+                        <span class="terminal-content" id="roles-content"></span><span class="cursor" id="roles-cursor" style="display: none;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            document.body.classList.toggle('dark-mode');
+        }
+
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 100, density: { enable: true, value_area: 800 } },
+                color: { value: '#4caf50' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.9, random: false },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: '#4caf50', opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { 
+                    onhover: { enable: true, mode: 'repulse' }, 
+                    onclick: { enable: true, mode: 'push' }, 
+                    resize: true 
+                },
+                modes: { 
+                    repulse: { distance: 50, duration: 0.2 }, 
+                    push: { particles_nb: 4 } 
+                }
+            },
+            retina_detect: true
+        });
+
+
+        // Terminal Typing Effect ---------------------
+        const whoamiInfo = [
+            "👨‍💻 AI Engineer",
+            "📍 Indonesia",
+            "💼 5++ years of experience"
+        ];
+        const firstCommand = "whoami";
+        const secondCommand = "sh working.sh";
+        const roles = [
+            "AI Engineer...", 
+            "DevOps Expert...", 
+            "MLOps Engineer...", 
+            "Writer..", 
+            "Problem Solver...", 
+            "Learner..."
+        ];
+        let whoamiIndex = 0;
+        let whoamiLineIndex = 0;
+        let roleIndex = 0;
+        let charIndex = 0;
+        let commandIndex = 0;
+        let secondCommandIndex = 0;
+        let isTypingCommand = true;
+        let isTypingWhoami = false;
+        let isTypingSecondCommand = false;
+        let hasStartedRoles = false;
+
+        function typeEffect() {
+            if (isTypingCommand) {
+                document.getElementById('command-cursor').style.display = 'inline-block';
+                const commandElement = document.getElementById('first-command');
+                if (commandIndex < firstCommand.length) {
+                    commandElement.textContent += firstCommand.charAt(commandIndex);
+                    commandIndex++;
+                    setTimeout(typeEffect, 200);
+                } else {
+                    document.getElementById('command-cursor').style.display = 'none';
+                    isTypingCommand = false;
+                    isTypingWhoami = true;
+                    document.getElementById('whoami-cursor').style.display = 'inline-block';
+                    setTimeout(typeEffect, 500);
+                }
+            } else if (isTypingWhoami) {
+                const whoamiElement = document.getElementById('whoami-content');
+                // console.log("running...", whoamiInfo[whoamiLineIndex].charAt(whoamiIndex), whoamiIndex, whoamiLineIndex, whoamiInfo[whoamiLineIndex].length);
+                // For new line
+                if (whoamiLineIndex < whoamiInfo.length) {
+                    if (whoamiIndex === 0) {
+                        whoamiElement.innerHTML += (whoamiLineIndex > 0 ? '<br>- ' : '- ');
+                    }
+
+                    // For each character typing
+                    if (whoamiIndex < whoamiInfo[whoamiLineIndex].length) {
+                        // This line keeps cursor at the end by:
+                        // 1. Remove last space (slice(0, -1))
+                        // 2. Add new character
+                        // 3. Add space again (' ')
+                        whoamiElement.innerHTML = whoamiElement.innerHTML.slice(0, -1) + 
+                            whoamiInfo[whoamiLineIndex].charAt(whoamiIndex) + '_';
+                        whoamiIndex++;
+                        setTimeout(typeEffect, 50);
+                    } else {
+                        whoamiElement.innerHTML =whoamiElement.innerHTML.slice(0, -1)
+                        whoamiIndex = 0;
+                        whoamiLineIndex++;
+                        setTimeout(typeEffect, 200);
+                    }
+                } else {
+                    document.getElementById('whoami-cursor').style.display = 'none';
+                    isTypingWhoami = false;
+                    isTypingSecondCommand = true;
+                    document.getElementById('second-command').style.display = 'block';
+                    document.getElementById('second-command-cursor').style.display = 'inline-block';
+                    setTimeout(typeEffect, 1000);
+                }
+            } else if (isTypingSecondCommand) {
+                const secondCommandElement = document.getElementById('second-command-text');
+                if (secondCommandIndex < secondCommand.length) {
+                    secondCommandElement.textContent += secondCommand.charAt(secondCommandIndex);
+                    secondCommandIndex++;
+                    setTimeout(typeEffect, 200);
+                } else {
+                    document.getElementById('second-command-cursor').style.display = 'none';
+                    isTypingSecondCommand = false;
+                    document.getElementById('roles-cursor').style.display = 'inline-block';
+                    setTimeout(() => {
+                        hasStartedRoles = true;
+                        typeRoles();
+                    }, 500);
+                }
+            }
+        }
+
+        function typeRoles() {
+            const rolesElement = document.getElementById('roles-content');
+            const currentRole = roles[roleIndex];
+            
+            if (charIndex < currentRole.length) {
+                rolesElement.textContent += currentRole.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeRoles, 100);
+            } else {
+                setTimeout(() => {
+                    rolesElement.textContent = '';
+                    charIndex = 0;
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    typeRoles();
+                }, 1000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', typeEffect);
+    </script>
+</body>
+</html>
+

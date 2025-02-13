@@ -69,6 +69,9 @@ markdown_extensions:
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.tilde
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -87,7 +90,7 @@ plugins:
   - blog
 
 nav:
-  - Home: index.md
+  - Home: index.html
   - Blog:
     - blog/index.md
   - Tags: tags.md
