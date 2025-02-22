@@ -55,21 +55,30 @@ theme:
     - search.suggest
     - content.code.copy
     - content.code.annotate
+    - content.tabs.link
+
 
 markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - attr_list
   - admonition
   - pymdownx.details
-  - pymdownx.superfences
   - pymdownx.critic
   - pymdownx.caret
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.tilde
   - def_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.highlight:
@@ -88,6 +97,9 @@ plugins:
   - tags:
       tags_file: tags.md 
   - blog
+  - glightbox
+
+
 
 nav:
   - Home: index.html
