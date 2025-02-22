@@ -21,6 +21,7 @@ Berikut adalah task yang harus diselesaikan pada sesi 3: **Linux and Unix Admini
 
 ## Project A
 
+### Step of Solution
 
 !!! warning "whoami"
 
@@ -79,6 +80,9 @@ ls -ld /home/shared/sesi_3
 - ini artinya `root` as `owner` **_di-configure_** agar tidak bisa akses ke folder ini, so sad. its okay, life must go on.
 - others cannot access this folder
 - `devteam` can access this folder
+
+
+### Result
 
 ???+ tip "Result of the project A"
 
