@@ -10,6 +10,7 @@ tags:
     - devops
     - digital-skola
     - linux
+    - homework
 
 comments: true
 
@@ -17,8 +18,9 @@ comments: true
 
 # Task Sesi 3: Linux and Unix Administration 1
 
-Berikut adalah task yang harus diselesaikan pada sesi 3: **Linux and Unix Administration**
+Berikut adalah task yang harus diselesaikan pada sesi 3: **Linux and Unix Administration 1**
 
+<!-- more -->
 ## Project A
 
 ### Step of Solution
