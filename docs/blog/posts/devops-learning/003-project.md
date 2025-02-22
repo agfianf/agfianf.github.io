@@ -15,9 +15,9 @@ comments: true
 
 ---
 
-# Task Sesi 3
+# Task Sesi 3: Linux and Unix Administration 1
 
-Berikut adalah task yang harus diselesaikan pada sesi 3: Linux and Unix Administration
+Berikut adalah task yang harus diselesaikan pada sesi 3: **Linux and Unix Administration**
 
 ## Project A
 
