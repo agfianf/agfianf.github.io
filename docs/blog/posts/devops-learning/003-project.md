@@ -23,7 +23,7 @@ Berikut adalah task yang harus diselesaikan pada sesi 3: **Linux and Unix Admini
 
 ### Step of Solution
 
-!!! warning "whoami"
+!!! warning "Perhatian!"
 
     ```bash
     whoami
@@ -54,6 +54,7 @@ sudo groupadd devops
 sudo usermod -aG devteam user1
 sudo usermod -aG devteam user2
 ```
+
 - Buat direktori baru `/home/shared` dengan nama `sesi_3`
         
 ```bash
@@ -68,7 +69,7 @@ sudo chown :devteam /home/shared/sesi_3
 
 - Set permission akses shingga hanya grup `devteam` yang dapat **read**, **write**, dan **execute** folder `sesi_3`, sedangkan pengguna lain tidak memiliki akses. 
 
-- :warning: _Asumsi pengguna lain adalah diluar `devteams`, termasuk `root`_
+- :warning: _Asumsi pengguna lain adalah diluar `devteams`, termasuk `root` (heii!!!)_
         
 ```bash
 sudo chmod 070 /home/shared/sesi_3
@@ -114,6 +115,7 @@ ls -ld /home/shared/sesi_3
 
     `root` is not part of `devteam` and **we configure owner has no permission** (no rwx) to that folder **but** can access still read, write, and execute the folder. this is the power of `root` (super user) :fire::fire::fire:
 
+---
 
 ## Project B
 
