@@ -1,9 +1,9 @@
 ---
 
-draft: true 
+draft: false 
 date: 
-    created: 2025-02-19
-    updated: 2025-02-21
+    created: 2025-02-24
+    updated: 2025-02-24
 categories:
     - fastapi
 tags:
@@ -15,7 +15,7 @@ comments: true
 
 ---
 
-# Instrumenting the application with RED metrics.
+# Monitoring FastAPI Applications with RED Metrics
 
 !!! info "TLDR;"
 
@@ -23,7 +23,7 @@ comments: true
 
 ## Introduction
 
-I often build PoC AI application using FastAPI and not yet think too much about the performance of the application. You know at that stage we just hope it works. Until finally we release it to some users, all sorts of problems pop up and we struggle to figure out whtas going wrong. Is it because of resource bottleneck? How many times the endpoint is hit until it reaches the bottleneck? Or is there something wrong with our code? This makes it difficult to control because we don't know what is the problem.
+I often build PoC (Proof of Concept) AI application using FastAPI and not yet think too much about the performance of the application. You know at that stage we just hope it works. Until finally we release it to some users, all sorts of problems pop up and we struggle to figure out what is going wrong? Is it because of resource bottleneck? How many times the endpoint is hit until it reaches the bottleneck? Or is there something wrong with our code? This makes it difficult to control because we don't know what is the problem.
 
 One way to control the performance of the application is to measure the performance of the application. As my teacher said, _"If we can't measure it, we can't manage it"_
 
@@ -48,14 +48,18 @@ Unlike metrics that focus on CPU, memory, or disk usage, RED metrics are all abo
 
 ## What is the Benefit of RED Metrics?
 
-it help us to monitoring our application health. Generally, monitoring is important to detect early issues, analyze and can be used to make decisions e.g. scaling up or down, error handling, etc. Have monitoring is a highly recommended.
+RED metrics help monitor the health of your application by providing insights into its performance. Monitoring is essential for:
+
+- Detecting issues early.
+- Analyzing performance bottlenecks.
+- Making informed decisions, such as scaling resources or improving error handling.
 
 ## How it Works?
 
 Prometheus and Grafana are two popular open-source tools used for monitoring and visualization. They work together to provide a comprehensive monitoring solution. This system has 3 main components:
 
 - **Application**: The application exposes metrics at the `/metrics` endpoint.
-- **Prometheus**: A time series database that scrapes the `/metrics` endpoint every 15 seconds (default, yeah you can configure it but will come with some trade off).
+- **Prometheus**: A time series database that scrapes the result of `/metrics` endpoint every 15 seconds (default, yeah you can configure it but will come with some trade off).
 - **Grafana**: A visualization tool that queries Prometheus and displays the metrics on a dashboard. You can build type of graph/chart you want.
 
 ```mermaid
@@ -64,7 +68,7 @@ sequenceDiagram
     participant Prom as Prometheus
     participant Graf as Grafana
 
-    Note over App,Graf: Maximum Latency: ~15-30 seconds from new metric to dashboard
+    Note over App,Graf: Maximum Latency: ~15-45 seconds from new metric to dashboard
     
     loop Every Scrape (15s)
         App->>Prom: Expose metrics
@@ -79,7 +83,9 @@ sequenceDiagram
 ```
 
 
-For short, the service expose endpoint `GET /metrics` and prometheus side will have configuration to scrape the endpoint every 15 seconds, and then grafana will query the prometheus every 5-30 seconds and you can see the metrics on the grafana dashboard.
+For short, the service expose endpoint `GET /metrics` and prometheus side will have configuration to scrape the endpoint every 15 seconds, and then grafana will query the prometheus every 5-30 seconds and you can see the metrics on the grafana dashboard. So the latency is around 15-45 seconds from new metric to dashboard.
+
+For more details what inside the prometheus and grafana, please see the sequence diagram below:
 
 ??? abstract "More Details"
     ### Sequence Diagram
@@ -94,7 +100,7 @@ For short, the service expose endpoint `GET /metrics` and prometheus side will h
         participant QP as Grafana<br><br>Query Panel
         participant U as Grafana<br><br>Dashboard
 
-        Note over App,U: Maximum Latency: ~15-30 seconds from new metric to dashboard
+        Note over App,U: Maximum Latency: ~15-45 seconds from new metric to dashboard
         
         loop Every Scrape (15s)
             App->>Scr: Expose metrics
@@ -117,73 +123,6 @@ For short, the service expose endpoint `GET /metrics` and prometheus side will h
         end
     ```
 
-    ### Understanding Prometheus and Grafana Metrics Flow
-
-    The sequence diagram above illustrates how metrics data flows from your application to the end user's Grafana dashboard. Here's a detailed explanation of each component and process:
-
-    #### Core Components
-
-    - Application /metrics: Your application exposes metrics in Prometheus format at the /metrics endpoint
-    - Prometheus: Acts as a time series database and collection service
-    - Grafana: Visualization platform that queries Prometheus and displays metrics
-    #### Data Flow Process
-
-    - Metrics Collection (Scraping):
-
-        - Prometheus scrapes /metrics endpoint every 15 seconds (default)
-        - This interval is configurable in `prometheus.yml`:
-
-            ```yaml
-            global:
-                scrape_interval: 15s
-            ```
-
-    - Data Storage:
-
-        - Scraped metrics are stored in Prometheus's TimeSeriesDB
-        - Data includes timestamps and labels for efficient querying
-
-    - Dashboard Updates:
-
-        - Grafana periodically requests updates based on dashboard refresh settings
-        - Refresh interval (5-30s) can be configured in:
-            - Dashboard Settings > Time Options > Refresh
-        - Each refresh triggers new PromQL queries to Prometheus
-
-    ## Important Timing Considerations
-
-    - New metrics take 15-30 seconds maximum to appear on dashboards
-    - This latency comes from:
-        - Waiting for next scrape cycle (up to 15s)
-        - Dashboard refresh interval (5-30s)
-
-    ## Configuration Tips
-
-    - For Development/Testing:
-        
-        ```yaml
-        # prometheus.yml
-        global:
-        scrape_interval: 5s  # Faster updates, more resource intensive
-        ```
-
-    - For Production:
-        
-        ```yaml
-        # prometheus.yml
-        global:
-        scrape_interval: 15s  # Default, good balance
-        ```
-
-    - Grafana Dashboard:
-
-        - Set refresh to match your monitoring needs:
-            - Real-time monitoring: 5s
-            - General metrics: 30s
-            - Resource usage: 1m+
-
-    This setup provides a robust monitoring pipeline while allowing flexibility in configuration based on specific needs.
-
 ## How to Implement RED Metrics on FastAPI?
 
 #### ⤷ Install the Required Libraries
@@ -194,62 +133,76 @@ prometheus-client==0.21.1
 uvicorn==0.34.0
 ```
 
-#### ⤷ Create the RED Metrics helper middleware
+!!! warning "Note"
 
-for the sake of simplicity, i will only show the important part i explain. We will use `prometheus_client` to expose the metrics, and `fastapi.middleware` to create a middleware.
+    Prerequisite:
+    
+    - know what is middleware in FastAPI
 
-=== "Intro Prometheus Client"
+#### ⤷ prometheus-client
 
-    in `prometheus_client` we have 3 main tools to collect the metrics:
+[Prometheus create a library](https://prometheus.io/docs/instrumenting/clientlibs/)  for clients to instrument, and its ready in many languages, including Python. In this article we will use `prometheus-client` for Python. In this post we will try to implement 3 instrumenting tools:
 
-    - **Counter**: 
-        - A counter is a cumulative metric that represents a single numerical value that **only ever goes up**. It can be reset to zero on restart.
-        - Use a Counter to count requests, errors, or any other event that should only increase.
+- **Counter**: 
+    - A counter is a cumulative metric that represents a single numerical value that **only ever goes up**. It can be reset to zero on restart.
+    - Use a Counter to count requests, errors, or any other event that should only increase.
 
-    - **Histogram**:
-        - A histogram samples observations (usually things like request durations or response sizes) and counts them in configurable buckets.
-        - Use a Histogram to measure the duration of requests, response sizes, etc.
-        - The histogram is a powerful tool for measuring the distribution of values. 
+- **Histogram**:
+    - A histogram samples observations (usually things like request durations or response sizes) and counts them in configurable buckets. The histogram is a powerful tool for measuring the distribution of values. Based on documentation, it use **cumulative histogram** to measure the duration of requests. 
+    - Use a Histogram to measure the duration of requests, response sizes, etc.
 
-        ??? example "Example Case"
-            - For example case measure the duration of requests. We can set of buckets to measure the duration of requests and can set for example:
+    ??? example "Example Case"
+        - For example case measure the duration of requests. We can set of buckets to measure the duration of requests and can set for example:
 
-            ![Histogram](../../../assets/instrumentation-RED/cum-histogram.png){ width="300" align="right"}
+        ![Histogram](../../../assets/instrumentation-RED/cum-histogram.png){ width="300" align="right"}
 
-            - The buckets set like this:
+        - The buckets set like this:
 
-            | Bucket      | Description                                   |
-            |-------------|-----------------------------------------------|
-            | ≤ 1 second  | Very Fast (requests completed in 1 second or less) |
-            | ≤ 2 seconds | Fast (requests completed in 2 seconds or less)      |
-            | ≤ 5 seconds | Moderate (requests completed in 5 seconds or less)   |
-            | ≤ 10 seconds| Slow (requests completed in 10 seconds or less)     |   
-            
-            - Example case request:
+        | Bucket      | Description                                   |
+        |-------------|-----------------------------------------------|
+        | ≤ 1 second  | Very Fast (requests completed in 1 second or less) |
+        | ≤ 2 seconds | Fast (requests completed in 2 seconds or less)      |
+        | ≤ 5 seconds | Moderate (requests completed in 5 seconds or less)   |
+        | ≤ 10 seconds| Slow (requests completed in 10 seconds or less)     |   
+        
+        - Example case request:
 
-            | Request | Duration (seconds) |
-            |---------|-------------------|
-            | A       | 0.8              |
-            | B       | 1.5              |
-            | C       | 1.7              |
-            | D       | 2.5              |
-            | E       | 7.5              |
+        | Request | Duration (seconds) |
+        |---------|-------------------|
+        | A       | 0.8              |
+        | B       | 1.5              |
+        | C       | 1.7              |
+        | D       | 2.5              |
+        | E       | 7.5              |
 
-            - So the prometheus will make the buckets like this:
+        - So the prometheus will make the buckets like this:
 
-            | Bucket      | Count | Requests       |
-            |-------------|-------|----------------|
-            | ≤ 1 second  | 1     | A             |
-            | ≤ 2 seconds | 3     | A, B, C       |
-            | ≤ 5 seconds | 4     | A, B, C, D    |
-            | ≤ 10 seconds| 5     | A, B, C, D, E |     
+        | Bucket      | Count | Requests       |
+        |-------------|-------|----------------|
+        | ≤ 1 second  | 1     | A             |
+        | ≤ 2 seconds | 3     | A, B, C       |
+        | ≤ 5 seconds | 4     | A, B, C, D    |
+        | ≤ 10 seconds| 5     | A, B, C, D, E |     
 
-    - **Gauge**:
-        - A gauge is a metric that represents a single numerical value that **can arbitrarily go up and down**.
-        - Use a Gauge to measure the number of active requests, memory usage, cpu usage, etc. 
+- **Gauge**:
+    - A gauge is a metric that represents a single numerical value that **can arbitrarily go up and down**.
+    - Use a Gauge to measure the number of active requests, memory usage, cpu usage, etc. 
 
 
-=== "Define the metrics"
+#### ⤷ Implementing RED Metrics Middleware using prometheus-client
+
+We will create middleware class to handle the metrics collections. Middleware allow us to apply metrics collection to all endpoints in a centralized class, without needing to instrument each endpoint individually. 
+
+We can implement this efficiently by inheriting from BaseHTTPMiddleware class. BaseHTTPMiddleware is a Starlette class that allows us to intercept and process requests and responses. By overriding the dispatch method, we can add custom logic to collect metrics before and after the request is processed. By leveraging middleware, we can ensure that our metrics collection is consistent and efficient across all endpoints.
+
+We will implement 4 metrics:
+
+- `REQUEST_COUNTER`: Counter to count the total number of requests.
+- `REQUEST_LATENCY`: Histogram to measure the duration of requests.
+- `ERROR_COUNTER`: Counter to count the total number of errors (4xx-5xx).
+- `ACTIVE_REQUESTS`: Gauge to measure the number of active requests.
+
+=== "Defining Metrics"
 
     ```python
     # middleware_metrics.py
@@ -289,16 +242,16 @@ for the sake of simplicity, i will only show the important part i explain. We wi
     ACTIVE_REQUESTS = Gauge(
         name="http_requests_active",
         documentation="Number of currently active HTTP requests",
-        labelnames=["method", "endpoint", "service"],
+        labelnames=["method", "path", "service"],
     )
     ```
 
     1. `name`: This is like naming a variable. We can use this name to `query` the metric in Prometheus or Grafana.
-    2. `ddocumentation`: This is a description of the metric. It tells us what the metric is about.
-    3. `labelnames`: These are like tags that help group your data. <br>For example, we can group the data by `method` (GET, POST, etc.), `status_code` (200, 404, etc.), `path` (/api/v1/users), and `service` (user-service).
-    4. `buckets`: This is a list of buckets for the histogram. Each bucket represents a range of values. For example, if we set a bucket of 0.1, it means that any request that takes less than 0.1 seconds will be counted in that bucket.
+    2. `documentation`: This is a description of the metric. It tells us what the metric is about.
+    3. `labelnames`: labels  are tags that help group and filter your data. <br>For example, we can group the data by `method` (GET, POST, etc.), `status_code` (200, 404, etc.), `path` (/api/v1/users), and `service` (user-service). <br><br>For instance, if a request is a GET request to `/api/v1/users` and returns a 200 status code, the labels would look like: `method='GET', path='/api/v1/users', status_code='200', service='user-service'`.
+    4. `buckets`: This is a list of buckets for the histogram. Each bucket represents a range of values. For example, if a request takes 0.03 seconds, it will fall into the 0.05 bucket.
 
-=== "Create the middleware"
+=== "Building the Metrics Middleware"
 
     ```python
     # middleware_metrics.py
@@ -326,7 +279,8 @@ for the sake of simplicity, i will only show the important part i explain. We wi
                 service=service_name,
             ).inc() # (5)
 
-            response = await call_next(request) # API call here ...
+            # Process the request and get the response from the next middleware or endpoint.
+            response = await call_next(request) 
             status_code = response.status_code
 
             ACTIVE_REQUESTS.labels(
@@ -369,10 +323,9 @@ for the sake of simplicity, i will only show the important part i explain. We wi
     5. Increment the active requests. Remember `Gauge` can go up and down.
     6. Decrement the active requests because request already finish. Remember `Gauge` can go up and down.
 
+    This middleware will be called for every request and will collect the metrics for every request. We set the logic when and where to do count, observe, inc, and dec active request.
 
-#### ⤷ Integrate the middleware to FastAPI
-
-=== "metrics expose"
+=== "Exposing Metrics Function"
 
     ```python
     # middleware_metrics.py
@@ -389,52 +342,12 @@ for the sake of simplicity, i will only show the important part i explain. We wi
         )
     ```
 
+    Prometheus requires the metrics to be exposed in a specific text format. This function serves as the handler for GET /metrics endpoint. Each time this called, it will be run `generate_latest()` that will be return the metrics in the required text format.
 
-=== "main.py"
+    - generate_latest() will generate the metrics in the text format prometheus requires.
+    - `CONTENT_TYPE_LATEST` is content type to `text/plain; version=0.0.4; charset=utf-8` which is the content type for prometheus metrics.
 
-    ```python
-    from middleware_metrics import PrometheusMetricsMiddleware, expose_metrics_endpoint
-
-    ...
-    app = FastAPI(
-        title="FastAPI RED Metrics",
-        version="v0.0.1-local",
-    )
-
-    ...
-
-    # Add routes
-    app.include_router(route_example)
-
-    # Add metrics endpoint
-    app.add_middleware(middleware_class=PrometheusMetricsMiddleware)
-    app.add_api_route(
-        "/metrics",
-        expose_metrics_endpoint,
-        methods=["GET"],
-        include_in_schema=False,
-    )
-
-
-    if __name__ == "__main__":
-        import uvicorn
-
-        print("running app")
-        uvicorn.run(
-            "main:app",
-            host="0.0.0.0",
-            port=8000,
-            reload=True,  # set to False for production
-        )
-    ```
-
-Run the Application:
-
-```bash
-python main.py
-```
-
-in case it looks too complicated, here is the full code:
+Here's the complete implementation of the metrics middleware for reference:
 
 ??? quote "middleware_metrics.py"
 
@@ -550,37 +463,37 @@ in case it looks too complicated, here is the full code:
         )
     ```
 
-??? quote "main.py"
+
+
+#### ⤷ Integrate the middleware to FastAPI
+
+After we implement RED metrics via middleware, we need to integrate it to FastAPI. We can do this by adding the middleware to FastAPI app. Here is the implementation:
+
+=== "main.py"
 
     ```python
-    from fastapi import FastAPI
-    from starlette.middleware.cors import CORSMiddleware
+    from middleware_metrics import PrometheusMetricsMiddleware, expose_metrics_endpoint
 
-    from middleware_metrics import (
-        PrometheusMetricsMiddleware,
-        expose_metrics_path,
-    )
-
+    ...
     app = FastAPI(
         title="FastAPI RED Metrics",
         version="v0.0.1-local",
     )
 
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+    ...
 
-    app.add_middleware(PrometheusMetricsMiddleware)
+    # Add routes
+    app.include_router(route_example)
+
+    # Add metrics endpoint
+    app.add_middleware(middleware_class=PrometheusMetricsMiddleware)
     app.add_api_route(
         "/metrics",
-        expose_metrics_path,
+        expose_metrics_endpoint,
         methods=["GET"],
         include_in_schema=False,
     )
+
 
     if __name__ == "__main__":
         import uvicorn
@@ -592,20 +505,22 @@ in case it looks too complicated, here is the full code:
             port=8000,
             reload=True,  # set to False for production
         )
-
     ```
 
 #### ⤷ Sample Output `GET /metrics`
 
-setiap kali kita panggil `GET /metrics` kita akan mendapatkan output seperti ini:
-Every time we call `GET /metrics` we will get an output like this:
 
-The output structure is like this:
+Every time we call `GET /metrics`, we will receive an structur text format output like this:
 
 ```bash
 # HELP <metric_name> <description>
 # TYPE <metric_name> <type>
-[nama_metric]{label1="value", label2="value", …} value
+[metric_name]{label1="value", label2="value", …} value
+...
+# HELP <metric_name> <description>
+# TYPE <metric_name> <type>
+[metric_name]{label1="value", label2="value", …} value
+[metric_name]{label1="value", label2="value", …} value
 ```
 
 - `# HELP` is a description of about the metric. It tells us what the metric is about.
@@ -618,21 +533,21 @@ for example
 # TYPE http_requests_total counter
 ```
 
-dan format
+and the data it self:
 
 ```
-[nama_metric]{label1="value", label2="value", …} value
+[metric_name]{label1="value", label2="value", …} value
 ```
 
 `http_requests_total{endpoint="/api/v1/products/:id",method="GET",service="fastapi-app--local",status_code="200"} 3.0`
 
-- `http_requests_total` -> nama metric
-- `endpoint`, `method`, `service`, `status_code` -> label
-- `3.0` -> value
+- `http_requests_total` -> metric_name
+- `endpoint=/api/v1/products/:id` -> label and label value
+- `3.0` -> value from the metric
 
-so, Total count of HTTP requests with endpoint `/api/v1/products/:id`, method `GET`, service `fastapi-app--local`, status code `200` is `3.0`
+So, Total count of HTTP requests with endpoint `/api/v1/products/:id`, method `GET`, service `fastapi-app--local`, status code `200` is `3.0`
 
-dalam artikel ini, kita menggunakan 3 tipe metric: Counter, Histogram, dan Gauge.
+In the output we can see 3 types of metrics:
 
 ??? example "Sample Output"
 
@@ -702,7 +617,8 @@ dalam artikel ini, kita menggunakan 3 tipe metric: Counter, Histogram, dan Gauge
         http_requests_active{endpoint="/api/v1/ai/predict",method="POST",service="fastapi-app--local"} 0.0
         http_requests_active{endpoint="/api/v1/products/:id/process",method="POST",service="fastapi-app--local"} 0.0
         ```
-        pada output ini kita bisa lihat bahwa `http_requests_active` adalah `0.0` karena tidak ada request yang aktif. Ini mirip dengan Counter, tapi ini bisa naik dan turun.
+
+        in this output we can see that `http_requests_active` is `0.0` because there are no active requests. This is similar to Counter, but this can go up and down.
 
 But you may notice that there are things that we don't set, but appear in the output.
 
@@ -747,12 +663,12 @@ But you may notice that there are things that we don't set, but appear in the ou
     process_max_fds 1.048576e+06
     ```
 
-This is metrics that are automatically generated by `prometheus-client` which are automatically registered by default collectors. We can use it to monitoring our application performance. or if you just want to monitor the metrics that you define, you can disable it [this way](https://github.com/prometheus/client_python/issues/414#issuecomment-1041233838)
+These metrics are automatically generated by `prometheus-client` and registered by default collectors. They provide additional insights into application performance, such as memory usage, CPU time, and garbage collection. We can use it to monitoring our application performance too or if you just want to monitor the metrics that you define, you can disable it [this way](https://github.com/prometheus/client_python/issues/414#issuecomment-1041233838)
 
 
 ## Next Step
 
-I think this is enoughtfor part 1, in the next part we will integrate with Prometheus and Grafana. However, There are many things to do next, such as:
+This concludes part 1 of the tutorial. In the next part, we will integrate the application with Prometheus and Grafana for monitoring and visualization. However, There are many things to do next, such as:
 
 - Integrate with Prometheus as Time Series Database
 - Integrate with Grafana as Visualization
