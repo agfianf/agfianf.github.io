@@ -525,27 +525,33 @@ Every time we call `GET /metrics`, we will receive an structur text format outpu
 
 - `# HELP` is a description of about the metric. It tells us what the metric is about.
 - `# TYPE` is the type of the metric. Metric type can be `counter`, `gauge`, `histogram`, or `summary`.
+- `[metric_name]{label1="value", label2="value", …} value` is the metric data.
 
-for example
+    - `metric_name` is the name of the metric.
+    - `{label1="value", label2="value", …}` is the labels and label values.
+    - `value` is the value of the metric.
 
-```bash
-# HELP http_requests_total Total count of HTTP requests
-# TYPE http_requests_total counter
-```
+???+ abstract "More Details"
 
-and the data it self:
+    ```bash
+    # HELP http_requests_total Total count of HTTP requests
+    # TYPE http_requests_total counter
+    ```
 
-```
-[metric_name]{label1="value", label2="value", …} value
-```
+    and the data it self:
 
-`http_requests_total{endpoint="/api/v1/products/:id",method="GET",service="fastapi-app--local",status_code="200"} 3.0`
+    ```
+    [metric_name]{label1="value", label2="value", …} value
+    ```
+    ```
+    http_requests_total{endpoint="/api/v1/products/:id",method="GET",service="fastapi-app--local",status_code="200"} 3.0
+    ```
 
-- `http_requests_total` -> metric_name
-- `endpoint=/api/v1/products/:id` -> label and label value
-- `3.0` -> value from the metric
+    - `http_requests_total` -> metric_name
+    - `endpoint=/api/v1/products/:id` -> label and label value
+    - `3.0` -> value from the metric
 
-So, Total count of HTTP requests with endpoint `/api/v1/products/:id`, method `GET`, service `fastapi-app--local`, status code `200` is `3.0`
+    So, Total count of HTTP requests with endpoint `/api/v1/products/:id`, method `GET`, service `fastapi-app--local`, status code `200` is `3.0`
 
 In the output we can see 3 types of metrics:
 
