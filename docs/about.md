@@ -1,7 +1,7 @@
 # About Me
 
 !!! warning "Under Construction"
-    Sorry, this page is still under construction. Please check back later.
+    Sorry, this page is still under construction. Please check back later. **All the information maybe not accurate.**
 
 
 ### :wave: Hi!
@@ -14,8 +14,8 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 ### :material-chart-arc: Skills and Expertise
 
 ![Python](https://img.shields.io/badge/Python-white?logo=python&logoColor=yellow) 
-![Rust](https://img.shields.io/badge/Rust-white?logo=rust&logoColor=black)
-![C++](https://img.shields.io/badge/C%2B%2B-white?logo=cplusplus&logoColor=%2300599C)
+<!-- ![Rust](https://img.shields.io/badge/Rust-white?logo=rust&logoColor=black) -->
+<!-- ![C++](https://img.shields.io/badge/C%2B%2B-white?logo=cplusplus&logoColor=%2300599C) -->
 ![Shell Script](https://img.shields.io/badge/Shell_Script-white?logo=gnubash)
 <!-- Deep Learning: -->
 ![PyTorch](https://img.shields.io/badge/PyTorch-white?logo=pytorch) 
@@ -76,7 +76,6 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 ![Jetson Nano](https://img.shields.io/badge/Jetson_Nano-white?logo=nvidia)
 
 
-
 ---
 
 ### :material-laptop: Experience
@@ -99,7 +98,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
     **MLOps Integration and Workflow Scaling**
 
-    - Increased experiment throughput from **1 per sprint to over 20 experiments per sprint** using a robust MLOps pipeline powered by {==ClearML==}.
+    - Increased experiment throughput from **1 per sprint to over 20 experiments per sprint** using a robust MLOps pipeline powered by ClearML.
     - Designed reusable experiment templates, reducing onboarding time for new team members by **~70%**.
     - Automated hyperparameter tuning and parallel experimentation, cutting model validation cycles by **~50%**.
     - Centralized tracking and versioning of models, data, and metrics, reducing debugging time by **~30%**.
@@ -119,7 +118,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
         <span class="c-loc">Bandung, Indonesia</span>
     </div>
     <div class="job-title-date">
-        <span class="title">AI Engineer - Part Time Remote</span>
+        <span class="title">AI Engineer - Remote</span>
         <span class="date">Oct 2022 - Oct 2024 · 2 yrs</span>
     </div>
 
@@ -127,7 +126,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
     **MLOps and Backend Standardization**
 
-    - Deployed MLOps pipelines with ClearML, CVAT, and on-premise blob storage, reducing model training time from **two weeks to 1–2 days**.
+    - Deployed MLOps pipelines with ClearML, CVAT, and blob storage (Azure/AWS), reducing model training time from **two weeks to 1–2 days**.
     - Optimized cloud resource utilization, saving **~$991/month**.
     - Established Python coding standards in FastAPI backend, reducing context-switching meetings by **30%**.
 
@@ -178,7 +177,6 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
     - **People Counting System:** Real-time monitoring with **YOLOv4 + TensorRT + IOU Tracker**.
     - **Facial Recognition Attendance:** Deployed system on **10 kiosk servers** using RetinaFace & ArcFace.
     - **Intelligent Door Lock System (POC):** Designed face recognition + thermal imaging system with Raspberry Pi 4.
-    - **Data Annotation:** Implemented self-hosted CVAT for improved dataset quality.
 
 ---
 
