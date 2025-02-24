@@ -14,9 +14,9 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 ### :material-chart-arc: Skills and Expertise
 
 ![Python](https://img.shields.io/badge/Python-white?logo=python&logoColor=yellow) 
+![Shell Script](https://img.shields.io/badge/Shell_Script-white?logo=gnubash)
 <!-- ![Rust](https://img.shields.io/badge/Rust-white?logo=rust&logoColor=black) -->
 <!-- ![C++](https://img.shields.io/badge/C%2B%2B-white?logo=cplusplus&logoColor=%2300599C) -->
-![Shell Script](https://img.shields.io/badge/Shell_Script-white?logo=gnubash)
 <!-- Deep Learning: -->
 ![PyTorch](https://img.shields.io/badge/PyTorch-white?logo=pytorch) 
 ![ONNX](https://img.shields.io/badge/ONNX-white?logo=onnx&logoColor=black)
@@ -78,6 +78,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
 ---
 
+
 ### :material-laptop: Experience
 ???+ quote "Binsho Solutions"
     <div class="job-company-location">
@@ -93,24 +94,15 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
     **End-to-End AI Inference Optimization**
 
-    - Improved AI system accuracy by **XX%**, reduced end-to-end processing time from **~120 minutes to ~10 seconds** by leveraging TensorRT and NVIDIA Triton Server.
-    - Reduced compute usage by **XX%**, enabling highly efficient processing on bare-metal infrastructure.
+    - _...(soon details to be added)_
 
     **MLOps Integration and Workflow Scaling**
 
-    - Increased experiment throughput from **1 per sprint to over 20 experiments per sprint** using a robust MLOps pipeline powered by ClearML.
-    - Designed reusable experiment templates, reducing onboarding time for new team members by **~70%**.
-    - Automated hyperparameter tuning and parallel experimentation, cutting model validation cycles by **~50%**.
-    - Centralized tracking and versioning of models, data, and metrics, reducing debugging time by **~30%**.
-    - Streamlined CI/CD workflows, enabling validated models to be deployed to production in under **XX hours**.
-    - Improved model performance and accuracy, cutting overall model development time by **~50%**.
+    - _...(soon details to be added)_
 
     **Backend Core Business Application Revamp**
 
-    - Led initiative to redesign backend v2, reducing service startup time from **10 minutes to 30 seconds**.
-    - Reduced production errors by **XX%** through fault-tolerant architecture.
-    - Refactored codebase following SOLID principles, improving onboarding time by **~50%**.
-    - Integrated CI/CD pipeline, reducing manual intervention by **80%**.
+    - _...(soon details to be added)_
 
 ???+ quote "PT Multidaya Teknologi Nusantara"
     <div class="job-company-location">
@@ -126,17 +118,12 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 
     **MLOps and Backend Standardization**
 
-    - Deployed MLOps pipelines with ClearML, CVAT, and blob storage (Azure/AWS), reducing model training time from **two weeks to 1–2 days**.
-    - Optimized cloud resource utilization, saving **~$991/month**.
-    - Established Python coding standards in FastAPI backend, reducing context-switching meetings by **30%**.
+    - _...(soon details to be added)_
+    - **Tech Stack:** ClearML, Azure Blob Storage, CVAT.
 
     **Satellite-Based Aquaculture Insights Platform**
 
-    - Built an AI-powered platform integrating **Computer Vision and GIS** for satellite pond monitoring.
-    - Trained and deployed an **instance segmentation model (82% mAP Mask)**, scaling daily pond data collection from **102 to over 1,000 ponds**.
-    - Optimized backend to handle **700,000+ spatial records**, enabling seamless frontend rendering.
-    - Developed **Indonesia-specific reverse-geocoding API**, reducing costs by **~$150/month**.
-    - Created API to monitor ponds via **Sentinel satellite**, reducing operational costs.
+    - _...(soon details to be added)_
     - **Tech Stack:** FastAPI, PyTorch, ONNX, SQLAlchemy, RabbitMQ, Redis, OpenCV, PostGIS, Docker, Azure ML, Azure OpenAI.
 
     **Automated Document Processing**
