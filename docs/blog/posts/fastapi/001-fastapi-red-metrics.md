@@ -144,7 +144,7 @@ uvicorn==0.34.0
 [Prometheus create a library](https://prometheus.io/docs/instrumenting/clientlibs/)  for clients to instrument, and its ready in many languages, including Python. In this article we will use `prometheus-client` for Python. In this post we will try to implement 3 instrumenting tools:
 
 - **Counter**: 
-    - A counter is a cumulative metric that represents a single numerical value that **only ever goes up**. It can be reset to zero on restart.
+    - A counter is a cumulative metric that represents a single numerical value that **only counter up (increase)**. It can be reset to zero on restart.
     - Use a Counter to count requests, errors, or any other event that should only increase.
 
 - **Histogram**:
@@ -185,7 +185,7 @@ uvicorn==0.34.0
         | ≤ 10 seconds| 5     | A, B, C, D, E |     
 
 - **Gauge**:
-    - A gauge is a metric that represents a single numerical value that **can arbitrarily go up and down**.
+    - A gauge is a metric that represents a single numerical value that **can go up and down**.
     - Use a Gauge to measure the number of active requests, memory usage, cpu usage, etc. 
 
 
@@ -193,14 +193,14 @@ uvicorn==0.34.0
 
 We will create middleware class to handle the metrics collections. Middleware allow us to apply metrics collection to all endpoints in a centralized class, without needing to instrument each endpoint individually. 
 
-We can implement this efficiently by inheriting from BaseHTTPMiddleware class. BaseHTTPMiddleware is a Starlette class that allows us to intercept and process requests and responses. By overriding the dispatch method, we can add custom logic to collect metrics before and after the request is processed. By leveraging middleware, we can ensure that our metrics collection is consistent and efficient across all endpoints.
+We can implement this efficiently by inheriting from `BaseHTTPMiddleware` class. `BaseHTTPMiddleware` is a Starlette class that allows us to intercept and process requests and responses. By overriding the `dispatch` method, we can add custom logic to collect metrics before and after the request is processed. By leveraging middleware, we can ensure that our metrics collection is consistent and efficient across all endpoints.
 
 We will implement 4 metrics:
 
-- `REQUEST_COUNTER`: Counter to count the total number of requests.
-- `REQUEST_LATENCY`: Histogram to measure the duration of requests.
-- `ERROR_COUNTER`: Counter to count the total number of errors (4xx-5xx).
-- `ACTIVE_REQUESTS`: Gauge to measure the number of active requests.
+- `REQUEST_COUNTER`: **Counter** to count the total number of requests.
+- `REQUEST_LATENCY`: **Histogram** to measure the duration of requests.
+- `ERROR_COUNTER`: **Counter** to count the total number of errors (4xx-5xx).
+- `ACTIVE_REQUESTS`: **Gauge** to measure the number of active requests.
 
 === "Defining Metrics"
 
