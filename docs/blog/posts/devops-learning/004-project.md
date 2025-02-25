@@ -145,7 +145,7 @@ Add this line:
 */1 * * * * echo "Hello World! Waktu: $(date)" >> /home/u24-1/server1.txt
 ```
 
-This appends a timestamped message to /home/u24-1/server1.txt every minute.
+This appends a timestamped message to `/home/u24-1/server1.txt` **every minute** because of `*/1` in the first column.
 
 ## Step 4: Automate File Transfer with Cron
 
