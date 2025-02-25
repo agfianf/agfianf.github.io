@@ -174,7 +174,7 @@ I'm a passionate programmer and AI engineer from Indonesia with expertise in bui
 </div>
 <div class="job-title-date">
     <span class="title">Bachelor’s Degree Engineering Physics</span>
-    <span class="date">Aug 2015 - Nov 2019 · 4 yr 3 mos</span>
+    <span class="date">4 yr 3 mos</span>
 </div>
 - **Award:** 3rd place for the best students in Faculty Engineering
 - **Final Projects:** Convolutional Neural Networks Based on Raspberry Pi for a Prototype of Vocal Cord Abnormalities Identification
