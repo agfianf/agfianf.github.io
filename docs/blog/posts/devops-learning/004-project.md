@@ -98,6 +98,8 @@ sequenceDiagram
     ssh-copy-id u24-2@192.168.64.8
     ```
 
+    This command will copies your public SSH key (located: `~/.ssh/id_rsa.pub`) to the remote server's authorized_keys file.
+
     ??? abstract "or manually copy the public key to server2"
         
 
@@ -159,8 +161,8 @@ Add this line:
 */5 * * * * scp /home/u24-1/server1.txt u24-2@192.168.64.8:/home/u24-2
 ```
 
-- scp securely copies the file over SSH.
-- If the transfer fails (e.g., Server 2 is down), check /var/log/syslog for errors.
+- `scp` securely copies the file over SSH.
+- Check log cron using `grep CRON /var/log/syslog | tail -5`. It will show the last 5 cron jobs.
 
 
 ??? quote "Full Crontab Configurate"
