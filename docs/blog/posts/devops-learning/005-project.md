@@ -46,9 +46,9 @@ comments: true
 
 !!! warning "Notes"
     
-    - because time issue and i am working in deadline, i will use date resolution until second precision. so `backup_ddmmyyyy` will be `backup_ddmmyyyy_HHMMSS`.
-    - also, cron job frequncy is 1 minute just for testing purpose. However, in real world, you can set cron job frequncy to 1 hour or 1 day with consideration of howlong the process backup will take.
-    - i also not MOVE (`mv`) the file, but COPY (`cp`) the file. because i am not sure if the file is still used by other process or not. so i will just copy the file to backup directory.
+    - Due to time constraints and deadlines, I will use date resolution with **second-level precision**. `backup_ddmmyyyy` will be renamed to `backup_ddmmyyyy_HHMMSS`.
+    - Instead of using the `mv` (move) command, I will use the `cp` (copy) command because I am unsure if the file is still being used by other processes. To avoid issues, I will copy the file to the backup directory.
+    - The cron job frequency is set to 1 minute for testing purposes. In a real-world scenario, it can be adjusted to 1 hour or 1 day, depending on how long the backup process takes.
 
 ### 1. Check list-file logfile in `/var/log`
 
@@ -66,14 +66,14 @@ These are the list of `*.log` in `/var/log` and we will zip all of this `*.log`:
 
 ### 2. TRY Create a directory with the name `backup_ddmmyyyy`
 
-we can create a directory with the name `backup_ddmmyyyy` using this command:
+We create a directory with the name `backup_ddmmyyyy` using this command:
 
 ```bash
 echo $(date +"%d%m%Y_%H%M%S")  # (1)
 # 27022025_093856 
 ```
 
-then we create shell script `backup.sh`:
+Then, we create shell script `backup.sh`:
 
 !!! quote "backup.sh"
 
@@ -95,7 +95,7 @@ mkdir backup_$(date +"%d%m%Y_%H%M%S")  # (2)
 # backup_27022025_093856
 ```
 
-### 3. Move all .log to the directory
+### 3. Move all logfile to the directory
 
 Moving/Copying all `*.log` to the directory we need to check if the directory exist or not.
 
@@ -168,6 +168,7 @@ Moving/Copying all `*.log` to the directory we need to check if the directory ex
     zip -r $foldername.zip $foldername
     echo "Successfully Zip $foldername to $foldername.zip"
     ```
+
 ### 5. Add success message
 
 !!! quote "backup.sh"
@@ -237,7 +238,7 @@ Add this line:
 */1 * * * * /home/u24-1/backup.sh
 ```
 
-### 7. Result
+### Result
 
 ???+ info "full `backup.sh`"
 
@@ -273,8 +274,6 @@ Add this line:
     saved_percent=$(($saved_bytes * 100 / $folder_bytes))
     echo "Saved $saved_bytes bytes | ($saved_percent%) from $folder_bytes bytes to $zip_bytes bytes"
     ```
-
-
 
 !!! tip "result"
     
