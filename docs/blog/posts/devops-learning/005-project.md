@@ -64,7 +64,7 @@ These are the list of `*.log` in `/var/log` and we will zip all of this `*.log`:
 ```
 
 
-### 2. TRY Create a directory with the name `backup_ddmmyyyy`
+### 2. Create a directory with the name `backup_ddmmyyyy`
 
 We create a directory with the name `backup_ddmmyyyy` using this command:
 
@@ -97,7 +97,7 @@ mkdir backup_$(date +"%d%m%Y_%H%M%S")  # (2)
 
 ### 3. Move all logfile to the directory
 
-Moving/Copying all `*.log` to the directory we need to check if the directory exist or not.
+Moving/copying all `*.log` to the directory we need to check if the directory exist or not.
 
 ???+ info "Check if directory exist"
 
@@ -143,6 +143,24 @@ Moving/Copying all `*.log` to the directory we need to check if the directory ex
 
 ### 4. Zip the directory
 
+Zipping the directory need to install `zip` package. You can install it using this command:
+
+```bash
+sudo apt install zip
+```
+
+Then, we can zip the directory using this command:
+
+```bash
+zip -r backup_27022025_093856.zip backup_27022025_093856
+```
+
+Explanation:
+
+- `-r` is a flag to zip the directory recursively. It means that if the directory has subdirectories, it will zip all of them too.
+- `backup_27022025_093856.zip` is the name of the zip file.
+- `backup_27022025_093856` is the name of the directory to be zipped.
+
 !!! quote "backup.sh"
 
     ```bash linenums="1" hl_lines="20 21"
@@ -170,6 +188,8 @@ Moving/Copying all `*.log` to the directory we need to check if the directory ex
     ```
 
 ### 5. Add success message
+
+We add success message and calculate compression after zipping the directory.
 
 !!! quote "backup.sh"
 
@@ -227,11 +247,17 @@ Moving/Copying all `*.log` to the directory we need to check if the directory ex
     Saved 1069540 bytes | (90%) from 1187738 bytes to 118198 bytes
     ```
 
+    You can see the saved bytes and saved percent from the original folder to the zip file.
+    That can compress the file up to 90%
+
 ### 6. Add to Crontab
+
+To run the script every minute, we can add it to crontab:
 
 ```bash
 crontab -e
 ```
+
 Add this line:
 
 ```bash
@@ -293,3 +319,6 @@ Add this line:
     -rw-rw-r-- 1 u24-1 u24-1 118334 Feb 27 16:08 backup_backup_27022025_160856.zip
     -rw-rw-r-- 1 u24-1 u24-1  33280 Feb 26 01:22 server1.txt
     ```
+
+    This is the result of the script. You can see that the script will create a new zip file every minute.
+    Sorry! The file `server1.txt` is the result of the previous project.
