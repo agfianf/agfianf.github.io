@@ -2,21 +2,21 @@
 
 draft: false
 date: 
-    created: 2025-02-25
-    updated: 2025-02-25
+    created: 2025-02-27
+    updated: 2025-02-27
 categories:
     - devops
 tags:
     - devops
     - digital-skola
-    - linux
+    - shell-scripting
     - homework
 
 comments: true
 
 ---
 
-# Task Sesi : Shell Scripting
+# Task Sesi 5: Shell Scripting
 
 !!! info "Project Challange"
 
