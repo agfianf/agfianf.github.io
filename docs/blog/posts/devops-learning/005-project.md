@@ -69,8 +69,11 @@ These are the list of `*.log` in `/var/log` and we will zip all of this `*.log`:
 We create a directory with the name `backup_ddmmyyyy` using this command:
 
 ```bash
-echo $(date +"%d%m%Y_%H%M%S")  # (1)
+echo $(date +"%d%m%Y_%H%M%S")
 # 27022025_093856 
+
+mkdir backup_$(date +"%d%m%Y_%H%M%S")
+# backup_27022025_093856
 ```
 
 Then, we create shell script `backup.sh`:
@@ -90,10 +93,6 @@ Then, we create shell script `backup.sh`:
 
     1. `date +"%d%m%Y_%H%M%S"` will return the current date and time in the format of `ddmmyyyy_HHMMSS`.<br><br>:warning: the `+` and `%d..` should be **not have space between** them.
 
-```bash
-mkdir backup_$(date +"%d%m%Y_%H%M%S")  # (2)
-# backup_27022025_093856
-```
 
 ### 3. Move all logfile to the directory
 
