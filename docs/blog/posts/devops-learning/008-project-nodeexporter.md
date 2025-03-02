@@ -5,7 +5,7 @@ authors:
   - me
 date: 
     created: 2025-03-02
-    updated: 2025-03-02
+    updated: 2025-03-03
 categories:
     - devops
 tags:
@@ -20,7 +20,7 @@ comments: true
 
 ---
 
-# Monitoring Server Memory Usage with Prometheus Node Exporter
+# Task 11: Monitoring Server Memory Usage with Prometheus Node Exporter
 
 In this guide, we’ll explore how to monitor memory usage on a server using Prometheus and Node Exporter.
 <!-- more -->
