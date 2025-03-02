@@ -55,19 +55,19 @@ Today we will learn how to use Docker Compose to manage multi-container applicat
         
         **Full source code bisa dilihat di [Github](https://github.com/agfianf/todo-app-rust)**
 
-Here, i will just explain the **docker-compose.yml** file that i created for this project.
+
 
 ## 0. Architecture
 
 ![architecture](../../../assets/devops/project-7/architecture-task-7.png)
 ///caption
-architecture of the project. 
+architecture of the project.
 _source: my own_
 ///
 
 ## 1. Docker Compose Explanation
 
-we will use Docker Compose to manage our multi-container application. We have 3 services in this docker-compose file:
+Here, i will just explain the **docker-compose.yml** file that i created for this project. We have 3 services in this docker-compose file:
 
 1. **PostgreSQL**: The database service.
 2. **App**: The backend service.
@@ -98,8 +98,6 @@ we will use Docker Compose to manage our multi-container application. We have 3 
         2. **Persistent Storage**: The PostgreSQL data is stored in a local directory (`./tmp/postgres`) to ensure data persistence even if the container is removed. It means also, if we made some changes it will be saved in the local directory, also if we do some changes in the local directory, it will be reflected in the container. Be careful!
         3. **Restart Policy**: The container will `restart-unless` it is explicitly stopped, ensuring high availability.
         4. **Network Configuration**: The PostgreSQL container is connected to a custom bridge network (`app-network`), allowing communication with other containers.
-
-        We create container
 
 === "service: app"
 
@@ -175,12 +173,12 @@ Here is the full docker-compose.yml file:
                 POSTGRES_PASSWORD: postgres
                 POSTGRES_DB: todo_db
             ports:
-                - "5432:5432" # (1)
+                - "5432:5432"
             volumes:
-                - ./tmp/postgres:/var/lib/postgresql/data # (2)
-            restart: unless-stopped # (3)
+                - ./tmp/postgres:/var/lib/postgresql/data
+            restart: unless-stopped
             networks:
-                - app-network # (4)
+                - app-network
 
         app:
             image: todo-app:latest
@@ -190,9 +188,9 @@ Here is the full docker-compose.yml file:
             ports:
                 - "8080:8080"
             environment:
-                - DATABASE_URL=postgres://postgres:postgres@postgres:5432/todo_db # (5)
+                - DATABASE_URL=postgres://postgres:postgres@postgres:5432/todo_db
             depends_on:
-                - postgres # (6)
+                - postgres
             networks:
                 - app-network
 
@@ -201,7 +199,7 @@ Here is the full docker-compose.yml file:
             working_dir: /app
             volumes:
                 - ./frontend:/app 
-            command: npx http-server -p 8081  # (7)
+            command: npx http-server -p 8081
             ports:
                 - "8081:8081"
             depends_on:
@@ -211,7 +209,7 @@ Here is the full docker-compose.yml file:
 
     networks:
         app-network:
-            driver: bridge # (8)
+            driver: bridge
     ```
 
 ## 2. Run the Docker Compose
