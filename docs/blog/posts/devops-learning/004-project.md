@@ -18,8 +18,11 @@ comments: true
 
 ---
 
-# Task Sesi 4: Linux and Unix Administration 2
+# Task 4: Linux and Unix Administration 2
 
+In i will setup 2 servers and configure passwordless SSH between them. Then, I will create a cron job to automate file transfer between the servers.
+
+<!-- more -->
 
 ## Project Challenge
 
@@ -30,7 +33,6 @@ comments: true
     3. Create a file named server1.txt on server1
     4. Create a cron job to automate sending the server1.txt file from server1 to server2 at a specified interval
 
-<!-- more -->
 
 ## Step 1: Setup Two Servers
 

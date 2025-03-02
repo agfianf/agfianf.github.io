@@ -18,7 +18,11 @@ comments: true
 
 ---
 
-# Task Sesi 5: Shell Scripting
+# Task 5: Shell Scripting
+
+In this session, I will create a shell script to backup log files from `/var/log` to a backup directory and zip the backup directory.
+
+<!-- more -->
 
 !!! info "Project Challange"
 
@@ -41,10 +45,9 @@ comments: true
     - Dapat dijalankan berulang kali tanpa menyebabkan konflik nama direktori.
     - Menangani error, misalnya jika direktori atau file tidak ditemukan.
 
-<!-- more -->
+
 
 ## Project
-
 
 !!! warning "Notes"
     

@@ -22,7 +22,7 @@ comments: true
 
 # Task 7: Docker Compose with To Do App
 
-Today we will learn how to use Docker Compose to manage multi-container applications (frontend, backend, database).
+In this section, we will learn how to use Docker Compose to manage multi-container applications (frontend, backend, database).
 
 <!-- more -->
 ???+ info "Project Challange"
