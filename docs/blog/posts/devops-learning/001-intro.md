@@ -1,6 +1,8 @@
 ---
 
 draft: true 
+authors:
+  - me
 date: 2025-02-14
 categories:
     - devops

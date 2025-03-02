@@ -1,6 +1,8 @@
 ---
 
 draft: false
+authors:
+  - me
 date: 
     created: 2025-02-22
     updated: 2025-02-22
