@@ -20,9 +20,9 @@ comments: true
 
 ---
 
-# Task 7: Networking, Security, and Orchestration of Docker
+# Task 7: Docker Compose with To Do App
 
-Today we will learn about Docker networking, security, and orchestration. We will also learn how to use Docker Compose to manage multi-container applications.
+Today w will also learn how to use Docker Compose to manage multi-container applications.
 
 <!-- more -->
 ???+ info "Project Challange"
@@ -49,9 +49,11 @@ Today we will learn about Docker networking, security, and orchestration. We wil
     Ada beberapa hal yang saya **ganti** dari project challange ini namun tanpa mengurangi esensi dari project ini. Yaitu:
 
     1. Frontend: Saya menggunakan **html+css+js** sederhana untuk frontend yang akan berinteraksi dengan RestAPI.
-    2. Backend: Saya menggunakan **Rust** sebagai backendnya.
+    2. Backend: Saya menggunakan **Rust** sebagai backendnya. Saya menggunakan **actix-web** sebagai frameworknya dan projectnya mengenai todo app sederhana.
 
-    **Full source code bisa dilihat di [Github](https://github.com/agfianf/todo-app-rust)**
+    !!! warning "Source Code"
+        
+        **Full source code bisa dilihat di [Github](https://github.com/agfianf/todo-app-rust)**
 
 Here, i will just explain the **docker-compose.yml** file that i created for this project.
 
