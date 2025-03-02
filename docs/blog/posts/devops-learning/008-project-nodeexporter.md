@@ -57,7 +57,8 @@ By monitoring these metrics with Prometheus Node Exporter, we can gain a compreh
 
 Let’s examine the memory usage on our server with a simple command:
 
-```bash
+```bash title="Check memory usage"
+
 free -h
 
 # output:
@@ -88,7 +89,8 @@ We’ll install Node Exporter on Server 2 using Docker Compose for its simplicit
 
 ???+ quote "docker-compose.nodeexporter.yml"
     
-    ```yaml
+    ```yaml title="docker-compose.nodeexporter.yml"
+
     version: '3.8'
 
     services:
@@ -144,15 +146,16 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
 
 === "Structure repository"
     
-    ```bash
+    ```bash title="Structure repository"
+
     .
     ├── docker-compose.prometheus.yml
     ├── prometheus.yml
     ```
 === "docker-compose.prometheus.yml"
 
-    ```yml
-    # docker-compose.prometheus.yml
+    ```yaml title="docker-compose.prometheus.yml"
+
     version: '3.8'
 
     services:
@@ -184,9 +187,10 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
     ```
 === "prometheus.yml"
 
-    ```yml
+    ```yaml title="prometheus.yml"
+
     global:
-    scrape_interval: 15s
+        scrape_interval: 15s
 
     scrape_configs:
     - job_name: 'prometheus'
@@ -200,7 +204,8 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
 
 === "Run"
     
-    ```bash
+    ```bash title="Run"
+
     docker-compose -f docker-compose.prometheus.yml up -d
     ```
 
