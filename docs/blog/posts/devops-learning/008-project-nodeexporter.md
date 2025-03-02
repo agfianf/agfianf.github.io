@@ -11,8 +11,7 @@ categories:
 tags:
     - devops
     - digital-skola
-    - docker
-    - rust
+    - prometheus
     - homework
 
 
