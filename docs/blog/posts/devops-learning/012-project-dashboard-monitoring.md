@@ -51,15 +51,15 @@ source: my own
 
 Before we dive into the setup, let’s establish what metrics we want to monitor. In this article, we’ll focus on tracking cpu and memory usage on our server using Prometheus and its Node Exporter. Understanding memory and cpu usage is critical for maintaining system performance and preventing issues like slowdowns or crashes due to resource exhaustion.
 
-- memory
+- Memory
 
-for memory explanation, i just write about that in [Monitoring Server Memory Usage with Prometheus Node Exporter](008-project-nodeexporter.md). Please read that first.
+    for memory explanation, i just write about that in [Monitoring Server Memory Usage with Prometheus Node Exporter](008-project-nodeexporter.md). Please read that first.
 
-- cpu
+- CPU
 
-To monitor CPU usage effectively, we’ll use Node Exporter to expose system metrics and Prometheus to collect them, focusing on the `node_cpu_seconds_total` metric. This metric tracks the total time the CPU spends in various modes (like user, system, and idle) allowing us to calculate usage as a percentage. 
+    To monitor CPU usage effectively, we’ll use Node Exporter to expose system metrics and Prometheus to collect them, focusing on the `node_cpu_seconds_total` metric. This metric tracks the total time the CPU spends in various modes (like user, system, and idle) allowing us to calculate usage as a percentage. 
 
-A simple yet powerful PromQL query, `100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[3m])) * 100)`, gives us the average CPU usage across all cores over a 3-minute window by subtracting idle time from the total. High CPU usage can indicate heavy workloads or potential bottlenecks, making this metric essential for maintaining server performance.
+    A simple yet powerful PromQL query: `100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[3m])) * 100)`, gives us the average CPU usage across all cores over a 3-minute window by subtracting idle time from the total. High CPU usage can indicate heavy workloads or potential bottlenecks, making this metric essential for maintaining server performance.
 
 ## 2. Setup Prometheus and Node Exporter
 
@@ -72,8 +72,8 @@ Here’s a summary of the setup:
 
 | Server   | Role          | IP Address     | Description                       |
 |----------|---------------|----------------|-----------------------------------|
-| Server 1 | Prometheus    | Localhost:9090 | Collects and stores metrics       |
-| Server 1 | Grafana       | Localhost:3000 | Vizualises metrics                |
+| Server 1 | Prometheus    | localhost:9090 | Collects and stores metrics       |
+| Server 1 | Grafana       | localhost:3000 | Vizualises metrics                |
 | Server 2 | Node Exporter | 10.8.0.10      | Exposes memory and system metrics |
 
 ### 2.1 Install Node Exporter on Server 2
