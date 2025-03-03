@@ -49,13 +49,17 @@ source: my own
 
 ## 1. Know What Metrics you want to Monitor
 
-Before we dive into the setup, let’s establish what metrics we want to monitor. In this article, we’ll focus on tracking cpu usage and memory usage on our server using Prometheus and its Node Exporter. Understanding memory usage is critical for maintaining system performance and preventing issues like slowdowns or crashes due to resource exhaustion.
+Before we dive into the setup, let’s establish what metrics we want to monitor. In this article, we’ll focus on tracking cpu and memory usage on our server using Prometheus and its Node Exporter. Understanding memory and cpu usage is critical for maintaining system performance and preventing issues like slowdowns or crashes due to resource exhaustion.
+
+- memory
 
 for memory explanation, i just write about that in [Monitoring Server Memory Usage with Prometheus Node Exporter](008-project-nodeexporter.md). Please read that first.
 
+- cpu
 
-This output provides a snapshot of memory utilization, which we’ll later compare with Prometheus metrics.
+To monitor CPU usage effectively, we’ll use Node Exporter to expose system metrics and Prometheus to collect them, focusing on the `node_cpu_seconds_total` metric. This metric tracks the total time the CPU spends in various modes (like user, system, and idle) allowing us to calculate usage as a percentage. 
 
+A simple yet powerful PromQL query, `100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[3m])) * 100)`, gives us the average CPU usage across all cores over a 3-minute window by subtracting idle time from the total. High CPU usage can indicate heavy workloads or potential bottlenecks, making this metric essential for maintaining server performance.
 
 ## 2. Setup Prometheus and Node Exporter
 
@@ -172,31 +176,31 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
                     max-size: "10m"
                     max-file: "3"
 
-    grafana:
-        image: grafana/grafana:11.5.2
-        ports:
-            - "3000:3000"
-        volumes:
-            - grafana_data:/var/lib/grafana
-            - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
-        environment:
-            - GF_SECURITY_ADMIN_USER=adminuser
-            - GF_SECURITY_ADMIN_PASSWORD=admin123
-            - GF_AUTH_ANONYMOUS_ENABLED=false
-        depends_on:
-            - prometheus
-        deploy:
-            resources:
-                limits:
-                    cpus: '0.5'
-                    memory: 512M
-        networks:
-            - monitoring
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "10m"
-                max-file: "3"
+        grafana:
+            image: grafana/grafana:11.5.2
+            ports:
+                - "3000:3000"
+            volumes:
+                - grafana_data:/var/lib/grafana
+                - ./grafana-provisioning/datasources:/etc/grafana/provisioning/datasources
+            environment:
+                - GF_SECURITY_ADMIN_USER=adminuser
+                - GF_SECURITY_ADMIN_PASSWORD=admin123
+                - GF_AUTH_ANONYMOUS_ENABLED=false
+            depends_on:
+                - prometheus
+            deploy:
+                resources:
+                    limits:
+                        cpus: '0.5'
+                        memory: 512M
+            networks:
+                - monitoring
+            logging:
+                driver: "json-file"
+                options:
+                    max-size: "10m"
+                    max-file: "3"
     volumes:
         prometheus_data:
         grafana_data:
