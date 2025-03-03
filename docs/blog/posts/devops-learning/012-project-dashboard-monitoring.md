@@ -21,7 +21,7 @@ comments: true
 
 ---
 
-# Task 12: Monitoring Server Memory Usage with Prometheus Node Exporter
+# Task 12: Hands-On Monitoring & Alerting with Node Exporter, Prometheus, and Grafana Dashboards
 
 In this guide, we’ll explore how to monitor cpu and memory usage on a server using Node Exporter as exposer, prometheus as collector, and Grafana as visualizer/Dashboard. At the end, we will create an alert based on usage.
 
