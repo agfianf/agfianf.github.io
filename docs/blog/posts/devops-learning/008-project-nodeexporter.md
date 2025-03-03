@@ -158,31 +158,31 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
     version: '3.8'
 
     services:
-    prometheus:
-        image: prom/prometheus:v3.2.1
-        ports:
-        - "9090:9090"
-        volumes:
-        - ./prometheus.yml:/etc/prometheus/prometheus.yml
-        - prometheus_data:/prometheus
-        command:
-        - '--config.file=/etc/prometheus/prometheus.yml'
-        - '--storage.tsdb.path=/prometheus'
-        - '--storage.tsdb.retention.time=90d'
-        - '--storage.tsdb.wal-compression'
-        deploy:
-        resources:
-            limits:
-            cpus: '0.5'
-            memory: 1G
-        logging:
-        driver: "json-file"
-        options:
-            max-size: "10m"
-            max-file: "3"
+        prometheus:
+            image: prom/prometheus:v3.2.1
+            ports:
+                - "9090:9090"
+            volumes:
+                - ./prometheus.yml:/etc/prometheus/prometheus.yml
+                - prometheus_data:/prometheus
+            command:
+                - '--config.file=/etc/prometheus/prometheus.yml'
+                - '--storage.tsdb.path=/prometheus'
+                - '--storage.tsdb.retention.time=90d'
+                - '--storage.tsdb.wal-compression'
+            deploy:
+                resources:
+                    limits:
+                        cpus: '0.5'
+                        memory: 1G
+            logging:
+                driver: "json-file"
+                options:
+                    max-size: "10m"
+                    max-file: "3"
 
-    volumes:
-    prometheus_data:
+        volumes:
+            prometheus_data:
     ```
 === "prometheus.yml"
 
