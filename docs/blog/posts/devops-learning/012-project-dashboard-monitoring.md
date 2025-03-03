@@ -800,7 +800,7 @@ if you want to use my template, you can use this json below. Copy this json and 
 #### 3.2.2 Create Dashboard by Import
 or, alternatively, you can use others dashboard from grafana.com. Here we can use [https://grafana.com/grafana/dashboards/1860-node-exporter-full/](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) for vizualization full node exporter.
 
-???+ abstract "Step Create Dashboard by Import"
+??? abstract "Step Create Dashboard by Import"
 
     1. Go to grafana dashboard sites and choose the dashboard you want to use. In this case, i choose [https://grafana.com/grafana/dashboards/1860-node-exporter-full/](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). **Copy ID** from the dashboard.
     ![add-datasource](../../../assets/devops/project-12/import-dashboard.png){ width=600 }
@@ -825,7 +825,7 @@ Oke, after we have a dashboard, now we can add alert to our dashboard. We can ad
 #### 3.3.1 Add Contact Point
 First, we need to add contact point to our grafana. We can add contact point by clicking on the "Alerting" tab on the left side of the dashboard and choose "Contact points".
 
-???+ abstract "Step Add Contact Point"
+??? abstract "Step Add Contact Point"
     
     ![add-datasource](../../../assets/devops/project-12/alert-point.png){ width=600 }
     ![add-datasource](../../../assets/devops/project-12/alert-2.png){ width=600 }
@@ -838,7 +838,7 @@ First, we need to add contact point to our grafana. We can add contact point by 
 
 Next, we need to create alert rules. We can create alert rules by clicking on the "Alerting" tab on the left side of the dashboard and choose "Alert rules".
 
-???+ abstract "Step Create Alert Rules"
+??? abstract "Step Create Alert Rules"
 
     ![add-datasource](../../../assets/devops/project-12/alert-4.png){ width=600 }
     ![add-datasource](../../../assets/devops/project-12/alert-5.png){ width=600 }
