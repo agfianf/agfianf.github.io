@@ -88,7 +88,7 @@ We’ll install Node Exporter on Server 2 using Docker Compose for its simplicit
 
 ???+ quote "docker-compose.nodeexporter.yml"
     
-    ```yaml title="docker-compose.nodeexporter.yml"
+    ```yaml title="docker-compose.nodeexporter.yml" linenums="1"
 
     version: '3.8'
 
@@ -121,8 +121,8 @@ We’ll install Node Exporter on Server 2 using Docker Compose for its simplicit
             deploy: # (7)
                 resources:
                     limits:
-                    cpus: '0.2'
-                    memory: 128M
+                        cpus: '0.2'
+                        memory: 128M
             logging: # (8)
                 driver: "json-file"
                 options:
@@ -153,7 +153,7 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
     ```
 === "docker-compose.prometheus.yml"
 
-    ```yaml title="docker-compose.prometheus.yml"
+    ```yaml title="docker-compose.prometheus.yml" linenums="1"
 
     version: '3.8'
 
@@ -186,7 +186,7 @@ We’ll install Prometheus on Server 1 using Docker Compose (i love you docker c
     ```
 === "prometheus.yml"
 
-    ```yaml title="prometheus.yml"
+    ```yaml title="prometheus.yml" linenums="1"
 
     global:
         scrape_interval: 15s
