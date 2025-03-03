@@ -42,10 +42,12 @@ In this guide, we’ll explore how to monitor cpu and memory usage on a server u
 
 ## Architecture Overview
 
-![architecture](../../../assets/devops/project-12/architecture.png)
+![architecture](../../../assets/devops/project-12/architecture-1.png)
 ///caption
 source: my own
 ///
+
+In this architecture, Server 2 will have Node Exporter installed to expose usage metrics from that server. Server 1, on the other hand, will host Prometheus as the database and Grafana as the visualization and alerting tool. Prometheus on Server 1 will scrape data from Server 2’s Node Exporter every 15 seconds. The collected data will be stored in Prometheus, and Grafana will then scrape this data from Prometheus every 15 seconds to update its visualizations. If predefined conditions are met based on the alert rules, Grafana will send notifications to Discord accordingly.
 
 ## 1. Know What Metrics you want to Monitor
 
