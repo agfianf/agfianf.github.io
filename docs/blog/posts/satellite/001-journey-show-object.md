@@ -129,19 +129,21 @@ I had multiple PMTiles since our data included various object types (e.g., regio
 
 - **Authentication:** Data is sensitive, so access must be tightly controlled.
 - **Caching:** For faster performance in frequently accessed areas.
-- **Rate **Limiting: To prevent server overload from too many requests.
-- **Simple **Endpoint: One URL for all PMTiles, keeping it easy for clients.
+- **Simple Endpoint:** One URL for all PMTiles, keeping it easy for clients.
 
 
 In the end, I chose Martin—a fast, lightweight Rust-based tile server. Why Martin?
 
+- **(Support Caching:)[https://maplibre.org/martin/run-with-cli.html?highlight=caching#command-line-interface]** Martin supports caching to improve performance.
 - **High Performance:** Blazing fast with a low memory footprint, perfect for large datasets like our 700,000 polygons.
 - **PostGIS Integration:** Can act as a hybrid—serving static PMTiles and real-time PostGIS data if needed later.
-- **Composite Sources:** One endpoint for multiple PMTiles, simplifying data consumption.
+- **Simple Endppoint:** [Composite Sources](https://maplibre.org/martin/sources-composite.html) -> One endpoint for multiple PMTiles, simplifying data consumption.
+- **Authentication:** However, martin doesn’t support authentication out of the box. We had to implement a reverse proxy with Nginx to handle this.
 
 Example with consume with Leaflet:
 
 ```javascript
+...
 L.vectorGrid
     .protobuf('http://localhost:7800/polygons/{z}/{x}/{y}', {
         vectorTileLayerStyles: {
@@ -149,6 +151,7 @@ L.vectorGrid
         }
     })
     .addTo(map);
+...
 ```
 
 When I tested this demo, the results were far smoother than GeoJSON—the map loaded instantly without delays, even with multiple layers.
@@ -170,7 +173,7 @@ If I get the chance, I’d love to continue this with performance metrics and in
 
 ## Next Up: Data Collection Adventure and Integrating Computer Vision into Maps
 
-Optimizing rendering is only half the story. How did those 700,000 polygons come together? In my next project, I’ll share how we built a system to "mesh" coastal regions from shapefiles, capture Google Maps satellite imagery via API, and predict objects with YOLO—all automated within a predefined grid. Stay tuned!
+Optimizing rendering is only half the story. How did those 700,000 polygons collected? In my next project, I’ll share how we built a system to "mesh" specified regions from shapefiles, capture Google Maps satellite imagery via API, and predict objects with YOLO, all automated within a predefined grid. Stay tuned!
 
 ## Reference
 - [Understanding Map Tile Grids and Zoom (Medium)](https://medium.com/tomtom-developers/understanding-map-tile-grids-and-zoom-levels-262b3cf644e2)
