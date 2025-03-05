@@ -18,7 +18,7 @@ comments: true
 # Optimizing Satellite Maps: Efficiently Rendering 700K++ Object Polygons and Their Attributes
 
 ## Introduction
-As an AI Engineer, I worked on object instance segmentation for satellite imagery and generating **700,000 polygons** stored in PostgreSQL with PostGIS. The final challenge came when our team was tasked with building a simple website to display these polygons, complete with details like names and areas, based on six months of data collected by the Computer Vision model we’d been using.
+As an AI Engineer, I worked on object instance segmentation for satellite imagery and generating **700,000 polygons** stored in PostgreSQL with PostGIS. **_The final challenge came when our team was tasked with building a simple website to display these 700K polygons_**, complete with details like names and areas, based on six months of data collected by the Computer Vision model we’d been using.
 
 <!-- more -->
 
@@ -33,7 +33,7 @@ GeoJSON 350-500 MB in the browser: poor performance
 This pushed me to search for a more efficient solution.
 
 ## First Experiment: Marker Clustering
-I tried **Marker Clustering** with `Leaflet.markercluster`, grouping nearby polygons into a single marker that split apart when zooming in. For fewer than 50,000 polygons, this was fairly effective. But with **700,000 polygons**, the real-time calculations still bogged down the browser. I decided it was time for a new approach.
+I tried **Marker Clustering** with `Leaflet.markercluster`, grouping nearby polygons into a single marker that split apart when zooming in. For fewer than 50,000 polygons, this was fairly effective. But with 700K polygons, the real-time calculations still bogged down the browser. I decided it was time for a new approach.
 
 ## Understanding Digital Map Technology
 After the solution above failed, I didn’t want to jump straight into finding another fix. Instead, I wanted to understand the fundamentals of how digital map technology works. Imagine a digital map as a stack of transparent sheets that can be rearranged at any time. Each sheet is a layer carrying different information, stacked together to create an interactive map. Here are its key components:
