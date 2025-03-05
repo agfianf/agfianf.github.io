@@ -15,7 +15,7 @@ tags:
 comments: true
 ---
 
-# Optimizing Satellite Maps: Efficiently Rendering 700K and More Polygons
+# Optimizing Satellite Maps: Efficiently Rendering 700K++ Object Polygons and Their Attributes
 
 ## Introduction
 As an AI Engineer, I worked on object instance segmentation for satellite imagery and generating **700,000 polygons** stored in PostgreSQL with PostGIS. The final challenge came when our team was tasked with building a simple website to display these polygons, complete with details like names and areas, based on six months of data collected by the Computer Vision model we’d been using.
