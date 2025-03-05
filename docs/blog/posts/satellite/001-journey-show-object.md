@@ -134,7 +134,7 @@ I had multiple PMTiles since our data included various object types (e.g., regio
 
 In the end, I chose Martin—a fast, lightweight Rust-based tile server. Why Martin?
 
-- **(Support Caching:)[https://maplibre.org/martin/run-with-cli.html?highlight=caching#command-line-interface]** Martin supports caching to improve performance.
+- **[Support Caching:](https://maplibre.org/martin/run-with-cli.html?highlight=caching#command-line-interface)** Martin supports caching to improve performance.
 - **High Performance:** Blazing fast with a low memory footprint, perfect for large datasets like our 700,000 polygons.
 - **PostGIS Integration:** Can act as a hybrid—serving static PMTiles and real-time PostGIS data if needed later.
 - **Simple Endppoint:** [Composite Sources](https://maplibre.org/martin/sources-composite.html) -> One endpoint for multiple PMTiles, simplifying data consumption.
