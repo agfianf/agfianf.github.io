@@ -1,7 +1,12 @@
 # Muhammad Agfian Fadilah { align=center }
+
 #### <span style="font-weight: normal; text-align: center;">[:octicons-mail-16: agfianfd@gmail.com](mailto:agfianfd@gmail.com) | [:fontawesome-brands-square-github: agfianf](https://github.com/agfianf) | [:fontawesome-brands-linkedin: magfianf](https://www.linkedin.com/in/magfianf/) |  [:material-web: agfianf.github.io](https://agfianf.github.io/)</span> { align=center }
 
+
+
 !!! info "Summary"
+    
+    ![Profile](./assets/profile.jpeg){ width=150px; align=left }
     
     an AI Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements.
 
