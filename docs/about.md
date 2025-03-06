@@ -1,5 +1,5 @@
 # Muhammad Agfian Fadilah { align=center }
-#### <span style="font-weight: normal; text-align: center;">[:octicons-mail-16: agfianfd@gmail.com](mailto:agfianfd@gmail.com) | [:fontawesome-brands-square-github: agfianf](https://github.com/agfianf) | [:fontawesome-brands-linkedin: in/magfianf](https://www.linkedin.com/in/magfianf/) |  [:material-web: agfianf.github.io](https://agfianf.github.io/)</span> { align=center }
+#### <span style="font-weight: normal; text-align: center;">[:octicons-mail-16: agfianfd@gmail.com](mailto:agfianfd@gmail.com) | [:fontawesome-brands-square-github: agfianf](https://github.com/agfianf) | [:fontawesome-brands-linkedin: magfianf](https://www.linkedin.com/in/magfianf/) |  [:material-web: agfianf.github.io](https://agfianf.github.io/)</span> { align=center }
 
 !!! info "Summary"
     
