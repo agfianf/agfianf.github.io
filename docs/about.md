@@ -8,7 +8,10 @@
     
     ![Profile](./assets/profile.jpeg){ width=150px; align=left }
     
-    an AI Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements.
+    an AI Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements. **Currently learning about Generative AI (LLM), MLOps (DevOps), and Rust.**
+
+    - **Domicile:** Indonesia
+    - **Language:** English, Bahasa (Indonesian)
 
 ---
 
@@ -46,7 +49,7 @@
     **Automation of Document Processing:**
     
     - Designed an automated bank document redaction system using Camelot, processing approximately 300-page files in 60 seconds (down from one week manually).
-    - Led the creation of a universal OCR API using PaddlePaddleOCR and FastAPI, accelerating proof-of-concept development by approximately 30%.
+    - Led the creation of a universal OCR API using PaddleOCR and FastAPI, accelerating proof-of-concept development by approximately 30%.
 
 ???+ quote "Binsho Solutions"
     <div class="job-company-location">
@@ -126,13 +129,13 @@
 |:--------------------------------------|:--------------------------------------------------------------------------------------------------|
 | **Programming Languages & Scripting** | `Python`, `Rust`, `Bash Script`, `SQL`                                                            |
 | **Geospatial Technologies**           | `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`                                |
-| **AI/ML Frameworks**                  | `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`, `ClearML`, `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly` |
+| **AI/ML Frameworks**                  | `ClearML`, `CVAT`, `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`,  `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly` |
 | **Databases & Data Storage**          | `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy`                     |
 | **Web Application**       | `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`                      |
 | **DevOps & Infrastructure**           | `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`                                |
 | **Dev Tools & Environments**  | `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`                                               |
 | **Hardware & Embedded Systems**       | `Raspberry Pi`, `Jetson Nano`                                                                     |
-| **Project Management Tools and Communication** | `JIRA`, `Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`                   |
+| **Project Management, Documentation, and Communication Tools** | `JIRA`,`Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`, `mkdocs`, `mkdocs-material`                   |
 
 ---
 
