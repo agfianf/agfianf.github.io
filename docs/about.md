@@ -114,7 +114,7 @@
 
 ---
 
-### :material-chart-arc: Skills and Expertise
+### :material-chart-arc: Skills
 
 - **Programming Languages & Scripting**: `Python`, `Rust`, `Bash Script`, `SQL`
 - **Geospatial Technologies:** `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`  
@@ -124,6 +124,7 @@
 - **DevOps & Infrastructure:** `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`
 - **Development Tools & Environments:** `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`
 - **Hardware & Embedded Systems:** `Raspberry Pi`, `Jetson Nano`
+- **Project Management Tools and Communication:** `JIRA`, `Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`
 
 ---
 
