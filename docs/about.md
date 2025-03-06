@@ -39,7 +39,7 @@
     - Collected and managed 700,000 pond spatial records using YOLOv8 segmentation and PostGIS.
     - Created a scanning system to detect ponds in Google Maps Satellite within specified areas.
     - Trained and deployed a YOLOv8 instance segmentation model achieving 82% mAP Mask for pond segmentation.
-    - Developed an AI-assisted annotation tool using Streamlit and Geoman, scaling daily pond data collection from approximately 100 to 800 ponds/day.
+    - Developed an AI-assisted annotation tool by integrating Streamlit and Geoman, scaling daily pond data collection from approximately 100 to 800 ponds/day.
     - Built a near real-time monitoring API (updated every 5 days) using Sentinel-2 data to classify pond activity based on historical water condition trends.
     - Developed a cost-efficient reverse-geocoding API for Indonesia, saving approximately $150/month.
     
