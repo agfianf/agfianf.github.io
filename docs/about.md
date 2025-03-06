@@ -121,15 +121,18 @@
 
 ### :material-chart-arc: Skills
 
-- **Programming Languages & Scripting**: `Python`, `Rust`, `Bash Script`, `SQL`
-- **Geospatial Technologies:** `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`  
-- **AI/ML Frameworks:** `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`, `ClearML`, `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly`
-- **Databases & Data Storage:** `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy`  
-- **Web & Application Framework:** `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`
-- **DevOps & Infrastructure:** `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`
-- **Development Tools & Environments:** `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`
-- **Hardware & Embedded Systems:** `Raspberry Pi`, `Jetson Nano`
-- **Project Management Tools and Communication:** `JIRA`, `Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`
+
+| **Category**                          | **Technologies**                                                                                   |
+|:--------------------------------------|:--------------------------------------------------------------------------------------------------|
+| **Programming Languages & Scripting** | `Python`, `Rust`, `Bash Script`, `SQL`                                                            |
+| **Geospatial Technologies**           | `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`                                |
+| **AI/ML Frameworks**                  | `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`, `ClearML`, `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly` |
+| **Databases & Data Storage**          | `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy`                     |
+| **Web Application**       | `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`                      |
+| **DevOps & Infrastructure**           | `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`                                |
+| **Dev Tools & Environments**  | `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`                                               |
+| **Hardware & Embedded Systems**       | `Raspberry Pi`, `Jetson Nano`                                                                     |
+| **Project Management Tools and Communication** | `JIRA`, `Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`                   |
 
 ---
 
