@@ -185,6 +185,10 @@
 - [2020 | Computer Vision Nanodegree - Udacity](https://www.udacity.com/certificate/RCA64PH3) 
 - [2020 | Getting Started with AWS Machine Learning - Coursera](https://www.coursera.org/account/accomplishments/verify/Q7XFQ5VVQTLH)
 
+---
+
+##### _last updated: 06 March 2025_ { align=right }
+
 <!--
 
 ![Python](https://img.shields.io/badge/Python-white?logo=python&logoColor=yellow) 
