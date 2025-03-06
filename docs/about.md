@@ -118,9 +118,9 @@
 
 - **Programming Languages & Scripting**: `Python`, `Rust`, `Bash Script`, `SQL`
 - **Geospatial Technologies:** `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`  
-- **AI/ML Frameworks:** `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`, `ClearML`, `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`
+- **AI/ML Frameworks:** `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`, `ClearML`, `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly`
 - **Databases & Data Storage:** `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy`  
-- **Web & Application Framework:** `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`
+- **Web & Application Framework:** `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`
 - **DevOps & Infrastructure:** `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`
 - **Development Tools & Environments:** `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`
 - **Hardware & Embedded Systems:** `Raspberry Pi`, `Jetson Nano`
@@ -136,16 +136,16 @@
     <span class="title">Bachelor’s Degree Engineering Physics</span>
     <span class="date">4 yr 3 mos</span>
 </div>
-- Awarded a full scholarship for the Bachelor’s program based on outstanding academic achievements.
+- awarded a full scholarship for my four-year Bachelor’s program based on my outstanding semester grades
 - **Award:** 3rd place for the best students in Faculty Engineering
 - **Final Projects:** Convolutional Neural Networks Based on Raspberry Pi for a Prototype of Vocal Cord Abnormalities Identification
 
 ---
 
 ### :octicons-file-directory-open-fill-16: Projects
-- [**:material-github: Color Correction**](https://github.com/agfianf/color-correction-asdfghjkl)
+- [**:material-github: Color Correction**](https://agfianf.github.io/color-correction/)
     
-    - Help to do color correction on images based on color checker card classic 24 patch with integrating image-processing and yolov8 with machine-learning.
+    - Developed an automated color correction system that adjusts image colors using a 24-patch color checker card. Integrated YOLOv8 for precise detection of the color checker card and utilized OpenCV for advanced image processing to apply color correction matrices.
     - **Tech Stack**: `Python`, `OpenCV`, `YOLOv8`, `FastAPI`, `Docker`, `Scikit-learn`
 
 
@@ -153,7 +153,7 @@
 ### :octicons-git-merge-16: Open Source Contributions
 - [**:material-github: PaddleOCR: Fix for Ambiguous Boolean Evaluation Error in PaddleOCR**](https://github.com/PaddlePaddle/PaddleOCR/pull/11287)
 
-    - This change will prevent the ValueError and ensure that the text detection functionality of PaddleOCR works as intended
+    - Resolved ambiguous boolean evaluation in PaddleOCR's text detection (Python 3.11), preventing ValueError and restoring stable functionality of the text detection-only pipeline.
 
 
 ---
