@@ -145,9 +145,9 @@
     <span class="title">Bachelor’s Degree Engineering Physics</span>
     <span class="date">4 yr 3 mos</span>
 </div>
-- awarded a full scholarship for my four-year Bachelor’s program based on my outstanding semester grades
-- **Award:** 3rd place for the best students in Faculty Engineering
-- **Final Projects:** Convolutional Neural Networks Based on Raspberry Pi for a Prototype of Vocal Cord Abnormalities Identification
+- Awarded a full scholarship for my four-year Bachelor’s program based on my outstanding semester grades
+- Awarded 3rd place for the best students in Faculty Engineering
+- Final Projects: `Convolutional Neural Networks Based on Raspberry Pi for a Prototype of Vocal Cord Abnormalities Identification`
 
 ---
 
