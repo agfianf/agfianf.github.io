@@ -114,7 +114,7 @@
     - **People Counting System:** Built a real-time people counting solution for multi-camera CCTV monitoring using YOLOv4 optimized with TensorRT and IOU Tracker, improving inference speed and reducing memory usage.
     - **Facial Recognition Attendance System:** Developed a facial recognition-based attendance system deployed in 10 kiosk servers, leveraging RetinaFace and ArcFace for high-accuracy detection and recognition.
     - **Intelligent Door Lock System (PoC):** Designed a PoC intelligent door lock system with face recognition and thermal imaging using Raspberry Pi 4, Jetson Nano and MLX thermal sensors, including power and electrical system design with Eagle PCB.
-    **Led Data Annotation:** Implemented a self-hosted CVAT tool, improving annotation efficiency and quality control for training datasets.
+    - **Led Data Annotation:** Implemented a self-hosted CVAT tool, improving annotation efficiency and quality control for training datasets.
 
 
 ---
