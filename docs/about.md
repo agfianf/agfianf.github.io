@@ -132,7 +132,7 @@
 | **AI/ML Frameworks**                  | `ClearML`, `CVAT`, `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`,  `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly` |
 | **Databases & Data Storage**          | `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy`                     |
 | **Web Application**       | `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`                      |
-| **DevOps & Infrastructure**           | `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`                                |
+| **DevOps & Infrastructure**           | `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`, `GCP`, `Terraform`, `Ansible`                                |
 | **Dev Tools & Environments**  | `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`                                               |
 | **Hardware & Embedded Systems**       | `Raspberry Pi`, `Jetson Nano`                                                                     |
 | **Project Management, Documentation, and Communication Tools** | `JIRA`,`Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`, `mkdocs`, `mkdocs-material`                   |
@@ -187,7 +187,7 @@
 
 ---
 
-##### _last updated: 06 March 2025_ { align=right }
+##### _last updated: 09 March 2025_ { align=right }
 
 <!--
 
