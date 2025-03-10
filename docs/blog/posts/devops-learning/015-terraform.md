@@ -49,7 +49,7 @@ This is order the way Terraform:
 
 ## Pre-requisites
 
-### GCP Account
+- GCP Account
 - [Terraform](https://www.terraform.io/downloads.html) installed on your local machine.
 
 ### Setup IAM Account Service Key
@@ -83,9 +83,6 @@ Terraform is an open-source infrastructure as code (IaC) tool that allows you to
 | `terraform plan` | Creates an execution plan, showing what actions Terraform will take to reach the desired state defined in the configuration files. |
 | `terraform apply` | Applies the changes required to reach the desired state of the configuration. It creates or updates resources as needed. |
 | `terraform destroy` | Destroys the resources created by Terraform, removing them from the cloud provider. |
-
-### Install Terraform
-
 
 
 ## Explain the Project Structure
