@@ -67,6 +67,9 @@ This server is designed to host a self-managed GitLab instance, which includes a
 
 
 ### 2. **FastAPI Infrastructure (`vpc-fastapi`)**
+
+The code for terraform this provisioning can be found [:fontawesome-brands-square-github: provisioning fastapi-server](https://github.com/agfianf/terraform-tutorial/tree/main/projects/004-app-node).
+
 This server is designed as target deployment for CI/CD Pipeline fastapi-app. It runs a FastAPI application and is set up to allow external access through specific ports.
 
 - **Components:**
@@ -98,6 +101,12 @@ This server is designed as target deployment for CI/CD Pipeline fastapi-app. It 
 | **FastAPI** | For building the web application |
 | **Python** | Programming language for the FastAPI application |
 | **Makefile** | For build and test commands |
+
+### Codes
+
+- [:fontawesome-brands-square-github: provisioning fastapi-server](https://github.com/agfianf/terraform-tutorial/tree/main/projects/004-app-node)
+- [:fontawesome-brands-square-github: provisioning gitlab-server](https://github.com/agfianf/terraform-tutorial/tree/main/projects/003-self-hosted-gitlab)
+- [:fontawesome-brands-square-github: fastapi-todo-demo](https://github.com/agfianf/fastapi-todo-demo)
 
 
 ## {==Install Self-hosted Gitlab==}
@@ -300,8 +309,10 @@ after installing GitLab server, and got root password:
     sudo systemctl start gitlab-runner-custom
     sudo systemctl status gitlab-runner-custom
     ```
-    ![GitLab Runner Status](../../../assets/devops/project-18/gitlab-runner-job.png)
-    ![GitLab Runner Status](../../../assets/devops/project-18/gitlab-runner-status.png)
+
+    This screenshot shows the status of the Gitlab runner:
+        ![GitLab Runner Status](../../../assets/devops/project-18/gitlab-runner-job.png)
+        ![GitLab Runner Status](../../../assets/devops/project-18/gitlab-runner-status.png)
 
 
 ## {==Create Simple FastAPI App==}
