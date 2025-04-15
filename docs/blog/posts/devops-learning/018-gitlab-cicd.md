@@ -23,7 +23,7 @@ comments: true
 
 # Hands-On Gitlab CI/CD
 
-Hi there! Today, I will demonstrate a hands-on implementation of GitLab CI/CD. This might be a bit overkill as I will also install a GitLab server. First, i will to **install self-hosted gitlab server**. Second, i will **create simple fastapi-app** and that deployed instance here. All instances will be deployed on GCP and will be managed using Terraform. Last, i will **create CI/CD pipeline** to deploy fastapi-app to GCP using gitlab ci/cd.
+Hi there! Today, I will demonstrate a hands-on implementation of GitLab CI/CD. {==This might be a bit **overkill** as I will also install a GitLab server==}. First, i will to **install self-hosted gitlab server**. Second, i will **create simple fastapi-app** and that deployed instance here. All instances will be deployed on GCP and will be managed using Terraform. Last, i will **create CI/CD pipeline** to deploy fastapi-app to GCP using gitlab ci/cd.
 
 <!-- more -->
 
@@ -102,7 +102,7 @@ This server is designed as target deployment for CI/CD Pipeline fastapi-app. It 
 
 ## {==Install Self-hosted Gitlab==}
 !!! warning "Warning"
-    if you directly use gitlab.com, you can skip this section.
+    if you directly use gitlab.com, you can skip this section. No judgment here. But if you want to learn how to self-host GitLab, this section is for you.
 
 In this section, I will install self-hosted GitLab CI/CD. I will use GCP as the cloud provider and Terraform to manage the infrastructure. I used terraform to spin up:
 
