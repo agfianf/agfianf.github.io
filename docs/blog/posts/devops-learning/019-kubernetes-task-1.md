@@ -438,7 +438,7 @@ kubectl logs -l app.kubernetes.io/name=fastapi-todo-demo-app
 # INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 ```
 
-### Check the deployment with `port-forward`
+## Check the deployment with `port-forward`
 
 port-forwarding is a way to access a service running in a Kubernetes cluster from your local machine. It allows you to forward traffic from a local port to a port on a pod or service in the cluster.
 
@@ -453,6 +453,20 @@ kubectl port-forward service/fastapi-todo-service 8080:80
 
 ![Deployment Check](../../../assets/devops/project-19/deployment-check.png)
 ![Deployment Check](../../../assets/devops/project-19/check-deploy.png)
+
+
+## Stop Minikube
+
+After you are done with the deployment, you can stop the minikube cluster to free up resources. You can do this by running the following command:
+
+```bash title="terminal"
+minikube stop -p demo-cluster
+
+# output ---
+# ✋  Stopping node "demo-cluster"  ...
+# 🛑  Powering off "demo-cluster" via SSH ...
+# 🛑  1 node stopped.
+```
 
 ## Conclusion
 
