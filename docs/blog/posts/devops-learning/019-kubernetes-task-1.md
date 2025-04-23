@@ -424,8 +424,6 @@ we curl name of the service `fastapi-todo-service` and the port `80` to access t
 ///
 
 ## Check the logs
-```bash title="terminal"
-### Check the logs
 
 ```bash title="terminal"
 kubectl logs fastapi-todo-demo-app-6747fbd95c-6lv62 # remember pod regularly change
