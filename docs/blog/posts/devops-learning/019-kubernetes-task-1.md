@@ -46,7 +46,7 @@ I am using MacOS and using `OrbStack` as my docker engine, you can use Docker De
 
 ### Installation
 #### `minikube`
-Minikube is a tool that makes it easy to run Kubernetes locally. Minikube runs a single-node Kubernetes cluster inside a VM on your laptop. But you can run multiple nodes using docker in docker (DinD).
+Minikube is a user-friendly tool for running Kubernetes locally. It sets up a single-node Kubernetes cluster on your machine with minimal effort, typically using a VM or container (e.g., via Docker). You can also easily create a multi-node cluster, including both control-plane and worker nodes, all running on your local machine.
 
 #### `kubectl`
 `kubectl` is a command line tool for interacting with Kubernetes clusters. It allows you to run commands for example, to deploy applications, inspect and manage cluster resources, and view logs.
