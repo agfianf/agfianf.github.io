@@ -402,7 +402,7 @@ This is live demo of demo i upload to my youtube channel. You can watch the vide
 <p style="text-align:center">
   <iframe width="640" height="380" src="https://www.youtube.com/embed/GC9pNG4daGQ?si=EDun35zS_Ft43O1F" title="Video FastAPI X Kubernetes AutoScaling" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </p>
-[https://www.youtube.com/embed/GC9pNG4daGQ?si=EDun35zS_Ft43O1F](https://www.youtube.com/embed/GC9pNG4daGQ?si=EDun35zS_Ft43O1F)
+[https://www.youtube.com/watch?v=GC9pNG4daGQ](https://www.youtube.com/watch?v=GC9pNG4daGQ)
 
 For short, this is the timeline of the video:
 
@@ -414,8 +414,13 @@ For short, this is the timeline of the video:
 just in case the video not work, this is the gif of the video.
 ///
 
+**Scale Up**
+![overview-kubernetes](../../../assets/devops/project-20/11-scaleup.png)
+
 **Scale Down**
 ![overview-kubernetes](../../../assets/devops/project-20/11-scaling-down.png)
+
+
 
 ## Stop the Application
 Alright! We already test the auto scaling and we can stop the application. We can stop the application by running this command:
