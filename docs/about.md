@@ -10,7 +10,7 @@
     
     an AI Engineer/Software Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements. **Currently learning about Generative AI (LLM), MLOps (DevOps), and Rust.**
 
-    - **Domicile:** Purwokerto, Indonesia
+    - **Domicile:** Indonesia
     - **Language:** English, Bahasa (Indonesian)
 
 ---
@@ -146,7 +146,7 @@
 </div>
 <div class="job-title-date">
     <span class="title">Bachelor’s Degree Engineering Physics</span>
-    <span class="date">2015 - 2019 · 4 yr 3 mos</span>
+    <span class="date"></span>
 </div>
 - Awarded a full scholarship for 4 year Bachelor’s program based on outstanding semester grades
 - Awarded 3rd place for the best students in Faculty Engineering
