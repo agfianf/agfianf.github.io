@@ -8,9 +8,9 @@
     
     ![Profile](./assets/profile.jpeg){ width=150px; align=left }
     
-    an AI Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements. **Currently learning about Generative AI (LLM), MLOps (DevOps), and Rust.**
+    an AI Engineer/Software Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements. **Currently learning about Generative AI (LLM), MLOps (DevOps), and Rust.**
 
-    - **Domicile:** Indonesia
+    - **Domicile:** Purwokerto, Indonesia
     - **Language:** English, Bahasa (Indonesian)
 
 ---
@@ -125,17 +125,17 @@
 ### :material-chart-arc: Skills
 
 
-| **Category**                          | **Technologies**                                                                                   |
-|:--------------------------------------|:--------------------------------------------------------------------------------------------------|
-| **Programming Languages & Scripting** | `Python`, `Rust`, `Bash Script`, `SQL`                                                            |
-| **Geospatial Technologies**           | `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`                                |
-| **AI/ML Frameworks**                  | `ClearML`, `CVAT`, `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`,  `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly` |
-| **Databases & Data Storage**          | `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy`                     |
-| **Web Application**       | `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`                      |
-| **DevOps & Infrastructure**           | `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`, `GCP`, `Terraform`, `Ansible`                                |
-| **Dev Tools & Environments**  | `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`                                               |
-| **Hardware & Embedded Systems**       | `Raspberry Pi`, `Jetson Nano`                                                                     |
-| **Project Management, Documentation, and Communication Tools** | `JIRA`,`Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`, `mkdocs`, `mkdocs-material`                   |
+| **Category**                                                   | **Technologies** |
+|:---------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Programming Languages & Scripting**                          | `Python`, `Rust`, `Bash Script`, `SQL`|
+| **Geospatial Technologies**                                    | `PostGIS`, `Google Maps API`, `Sentinel-2`, `Shapely`, `Geopandas`|
+| **AI/ML Frameworks**                                           | `ClearML`, `CVAT`, `PyTorch`, `PyTorch Lightning`, `ONNX`, `TensorRT`, `Triton Inference Server`, `Ultralytics`, `PaddleOCR`,  `Scikit-Learn`, `OpenCV`, `Pandas`, `FiftyOne`, `Plotly`|
+| **Databases & Data Storage**                                   | `PostgreSQL`, `MongoDB`, `Redis`, `MinIO`, `S3 Bucket (AWS S3)`, `SQLAlchemy` |
+| **Web Application**                                            | `FastAPI`, `Streamlit`, `Pydantic`, `RabbitMQ`, `Celery`, `PyTest`, `Gradio`, `Redis`|
+| **DevOps, Cloud & Infrastructure**                                    | `Docker`, `Prometheus`, `Grafana`, `CI/CD Github Actions`, `Azure`, `GCP`, `Terraform`, `Ansible`, `Kubernetes`, `Jenkins`, `AWS`, `GCP`, `Azure`, `CI/CD Gitlab`|
+| **Dev Tools & Environments**                                   | `Git`, `Jupyter Notebook`, `VSCode`, `Ubuntu`, `uv`, `ruff`|
+| **Hardware & Embedded Systems**                                | `Raspberry Pi`, `Jetson Nano`|
+| **Project Management, Documentation, and Communication Tools** | `JIRA`,`Notion`, `Google Workspace`, `Affine`, `Slack`, `Lark`, `Discord`, `mkdocs`, `mkdocs-material`|
 
 ---
 
@@ -160,6 +160,21 @@
     - Developed an automated color correction system that adjusts image colors using a 24-patch color checker card. Integrated YOLOv8 for precise detection of the color checker card and utilized OpenCV for advanced image processing to apply color correction matrices.
     - **Tech Stack**: `Python`, `OpenCV`, `YOLOv8`, `FastAPI`, `Docker`, `Scikit-learn`
 
+- [**:material-github: Reverse Geocode API**](https://github.com/agfianf/reverse-geocode-api)
+    
+    - Reverse Geocode is an API that takes latitude and longitude as input and returns the corresponding address (Kecamatan/District, Kabupaten/Regency, Provinsi/Province, and Country).
+    - **Tech Stack**: `FastAPI`, `Redis`, `PostgreSQL`, `Docker`, `GitHub Actions CI/CD`, `PyTest`, `Pydantic`, `SQLAlchemy`, `AWS EC2`, `AWS ECR`, `PostGIS`, `Terraform`
+
+- [**:material-github: fastapi-auth-service**](https://github.com/agfianf/fastapi-auth-service)
+    
+    - Auth Service is a microservice responsible for handling user authentication, authorization, and role-based access control (RBAC) in a distributed system. Saving time and effort by providing a ready-to-use authentication solution that can be easily integrated into various applications.
+    - **Tech Stack**: `FastAPI`, `Redis`, `PostgreSQL`, `Docker`, `GitHub Actions`, `PyTest`, `Pydantic`, `SQLAlchemy`
+
+- [**:material-github: Template Ultralytics ClearML**](https://github.com/agfianf/template-yolov8-clearml)
+    
+    - A robust, reproducible template for training Ultralytics YOLOv8/YOLO11 models with full ClearML integration. This project enables experiment tracking, dataset management, model registration, and remote execution, supporting multiple data sources and advanced data filtering.
+    - **Tech Stack**: `Python`, `Ultralytics`, `ClearML`, `Docker`, `PyTest`, `Pydantic`, `PyTorch`, `PyTorch Lightning`, `SQLAlchemy`
+
 
 ---
 ### :octicons-git-merge-16: Open Source Contributions
@@ -177,6 +192,7 @@
 ---
 ### :material-certificate: Certifications
 
+- [2025 | DevOps Engineer - DigitalSkola (012/BC/GRD/DOE6/V/2025)](https://drive.google.com/file/d/1VN5KjvTYLpxa8XY6ACDTU2pj3CB6rWv-/view?usp=sharing)
 - [2025 | Foundation of Generative AI - Udacity](https://www.udacity.com/certificate/e/ab60ea62-b7bc-11ef-acc3-fbedadd56ebf)
 - [2022 | Getting Started with AI on Jetson Nano - NVIDIA](https://learn.nvidia.com/certificates?id=mi2VjetmSkCQThO5Qwo6Lg)
 - [2021 | Cloud Practitioner Essentials](https://www.dicoding.com/certificates/MRZMGRM60ZYQ)
@@ -187,7 +203,7 @@
 
 ---
 
-##### _last updated: 09 March 2025_ { align=right }
+##### _last updated: 19 May 2025_ { align=right }
 
 <!--
 
