@@ -1,14 +1,19 @@
 # Muhammad Agfian Fadilah { align=center }
+#### <span style="font-weight: normal; text-align: center;">AI Engineer | Software Engineer (Backend) | Python</span> { align=center }
+
 
 #### <span style="font-weight: normal; text-align: center;">[:octicons-mail-16: agfianfd@gmail.com](mailto:agfianfd@gmail.com) | [:fontawesome-brands-square-github: agfianf](https://github.com/agfianf) | [:fontawesome-brands-linkedin: magfianf](https://www.linkedin.com/in/magfianf/) |  [:material-web: agfianf.github.io](https://agfianf.github.io/)</span> { align=center }
 
+!!! warning "Under Construction"
+    This page is under construction, please check back later for updates.
+    If you have any questions or need assistance, feel free to reach out via email or connect with me on GitHub or LinkedIn.
 
-
+<!-- 
 !!! success "Summary"
     
     ![Profile](./assets/profile.jpeg){ width=150px; align=left }
     
-    an AI Engineer/Software Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements. **Currently learning about Generative AI (LLM), MLOps (DevOps), and Rust.**
+    an AI Engineer/Software Engineer with over 4 years of expertise in machine learning, computer vision, and MLOps to deliver innovative, high-impact AI solutions across aquaculture, agriculture, and digital imaging sectors. Utilize proficiency in Python, PyTorch, FastAPI, Azure, and Docker to optimize workflows, enhance system performance, and reduce costs. Demonstrated success in leading projects like a satellite pond monitoring platform with 82% mAP and an FFB assessment system achieving ~87% accuracy, cutting training times by 85%, to drive scalable, results-oriented advancements.
 
     - **Domicile:** Indonesia
     - **Language:** English, Bahasa (Indonesian)
@@ -17,51 +22,17 @@
 
 ### :material-laptop: Experience
 
-???+ quote "PT Multidaya Teknologi Nusantara"
-    <div class="job-company-location">
-        <a class="c-name" href="https://efishery.com/id/">PT Multidaya Teknologi Nusantara</a>
-        <span class="c-loc">Bandung, Indonesia</span>
-    </div>
-    <div class="job-title-date">
-        <span class="title">AI Engineer - Full Time</span>
-        <span class="date">Oct 2022 - Oct 2024 · 2 yrs</span>
-    </div>
-
-    _PT Multidaya Teknologi Nusantara is Asia's first aquaculture technology startup, a leading Indonesian company with $200M in Series D funding_
-
-    **MLOps and Backend Standardization:**
-    
-    - Led end-to-end deployment of MLOps pipelines using ClearML, CVAT, and on-premise Azure blob storage, reducing model training time from 2 weeks to 1–2 days.
-    - Developed reusable YOLOv8 training and deployment templates in ClearML, standardizing experimentation and deployment across projects using ONNX.
-    - Standardized Python coding practices for FastAPI backend development, improving team collaboration and reducing meetings by 30%.
-    - Led development of a monitoring system for ML/AI services using Prometheus and Grafana.
-    
-    **Satellite Pond Monitoring Platform:**
-    
-    - Led the development of an AI-powered pond management platform integrating computer vision, GIS, and REST API for satellite-based pond monitoring.
-    - Collected and managed 700,000 pond spatial records using YOLOv8 segmentation and PostGIS.
-    - Created a scanning system to detect ponds in Google Maps Satellite within specified areas.
-    - Trained and deployed a YOLOv8 instance segmentation model achieving 82% mAP Mask for pond segmentation.
-    - Developed an AI-assisted annotation tool by integrating Streamlit and Geoman, scaling daily pond data collection from approximately 100 to 800 ponds/day.
-    - Built a near real-time monitoring API (updated every 5 days) using Sentinel-2 data to classify pond activity based on historical water condition trends.
-    - Developed a cost-efficient reverse-geocoding API for Indonesia, saving approximately $150/month.
-    
-    **Automation of Document Processing:**
-    
-    - Designed an automated bank document redaction system using Camelot, processing approximately 300-page files in 60 seconds (down from one week manually).
-    - Led the creation of a universal OCR API using PaddleOCR and FastAPI, accelerating proof-of-concept development by approximately 30%.
-
 ???+ quote "Binsho Solutions"
     <div class="job-company-location">
         <a id="binsho-solutions" class="c-name" href="https://binshosolutions.com/">Binsho Solutions</a>
         <span class="c-loc">Malaysia</span>
     </div>
     <div class="job-title-date">
-        <span class="title">AI Engineer - Part Time</span>
+        <span class="title">AI Engineer - Full Time</span>
         <span class="date">Jan 2021 - Present · 4 yrs ++</span>
     </div>
 
-    _Joined as the first AI Engineer responsible for translating and refining business goals into appropriate machine learning objectives. Binsho is a startup company that provides smart technologies to the Palm Oil industry with the goal of Industry 4.0 revolution in mind._
+    _Joined as the first Software Engineer (Backend AI/ML) responsible for translating and refining business goals into appropriate machine learning objectives. Binsho is a startup company that provides smart technologies to the Palm Oil industry with the goal of Industry 4.0 revolution in mind._
 
     **MLOps and Workflow Optimization**
     
@@ -80,8 +51,48 @@
     
     **Backend Core Business Application Revamp:**
     
-    - Led the redesign and development of backend v2, reducing startup time from 10 minutes to approximately 5 seconds with a modular, scalable architecture.
+    - Led built a backend service for a Palm Oil Management System, enabling management for AI-detected data (computer vision outputs) and manual inputs.
+    - Optimized REST APIs with caching, rate limiting, celery background tasks, and structured logging for high reliability and scalability. Reduced application startup time from 10 minutes to ~5 seconds using Docker.
     - Implemented RED metrics monitoring and an alert system, enabling faster error detection and scalable deployments across multiple sites.
+    - Created Authentication and Authorization Service with FastAPI, Redis, PostgreSQL, and Docker, enabling secure access control for the Palm Oil Management System.
+
+
+???+ quote "PT Multidaya Teknologi Nusantara"
+    <div class="job-company-location">
+        <a class="c-name" href="https://efishery.com/id/">PT Multidaya Teknologi Nusantara</a>
+        <span class="c-loc">Bandung, Indonesia</span>
+    </div>
+    <div class="job-title-date">
+        <span class="title">AI Engineer - Full Time</span>
+        <span class="date">Oct 2022 - Oct 2024 · 2 yrs</span>
+    </div>
+
+    _PT Multidaya Teknologi Nusantara is Asia's first aquaculture technology startup, a leading Indonesian company with $200M in Series D funding_
+
+    - Conducting code reviews and offering guidelines on writing clean code to ensure code quality and facilitate ease of continuation for other engineers.
+
+    **MLOps and Backend Standardization:**
+    
+    - Led end-to-end deployment of MLOps pipelines using ClearML, CVAT, and on-premise Azure blob storage, reducing model training time from 2 weeks to 1–2 days.
+    - Developed reusable YOLOv8 training and deployment templates in ClearML, standardizing experimentation and deployment across projects using ONNX, reducing preparation time by 85%.
+    - Standardized FastAPI backend development with Python best practices and modular microservices architecture following Agile and TDD, improving cross-team collaboration efficiency and reducing coordination meetings by 30%.
+    - Implemented robust ML model monitoring and alert systems leveraging Prometheus and Grafana to enhance system uptime and expedite error resolution.
+    - Collaborated with DevOps teams to integrate containerized applications using Docker and Kubernetes, enabling scalable cloud deployments and CI/CD automation.
+    - Led migration of ML/AI services from AWS to GCP/Azure, saving 57% in monthly costs.
+
+    
+    **Satellite Pond Monitoring Platform:**
+    
+    - Coordinated a 10-person MLAI squad, aligning with PMs, VPs, and Engineering Managers to deliver AI-driven solutions.
+    - Built a backend system for a map-based scanning tool, enabling users to draw regions for automated aquaculture pond detection, integrating Google Maps API, gridded processing, and AI segmentation to **accelerate data collection by 880%** from manual process. Generating Indirect Revenue Savings totaling 10 million IDR through Reduced Field Visits by optimizing data pond verification processes.
+    - Created a cost-efficient reverse-geocoding API with FastAPI, Redis, and PostgreSQL, saving ~$150/month.
+    - Trained and deployed a YOLOv8 instance segmentation model achieving 82% mAP Mask for pond segmentation.    
+    
+    **Automation of Document Processing:**
+
+    - Developed an automated bank document redaction API with RabbitMQ, FastAPI, and Camelot, processing ~300-page files in ~60 seconds (down from one week manually).
+    - Engineered a universal OCR API with PaddleOCR and FastAPI, speeding up OCR PoCs by ~30%.
+
 
 
 ???+ quote "PT DycodeX Teknologi Nusantara"
@@ -205,64 +216,4 @@
 
 ##### _last updated: 19 May 2025_ { align=right }
 
-<!--
-
-![Python](https://img.shields.io/badge/Python-white?logo=python&logoColor=yellow) 
-![Rust](https://img.shields.io/badge/Rust-white?logo=rust&logoColor=black)
-![Shell Script](https://img.shields.io/badge/Shell_Script-white?logo=gnubash)
-![C++](https://img.shields.io/badge/C%2B%2B-white?logo=cplusplus&logoColor=%2300599C)
-
-![PyTorch](https://img.shields.io/badge/PyTorch-white?logo=pytorch) 
-![ONNX](https://img.shields.io/badge/ONNX-white?logo=onnx&logoColor=black)
-![Lightning AI](https://img.shields.io/badge/Lightning_AI-white?logo=lightning&logoColor=%23792EE5)
-![Pandas](https://img.shields.io/badge/Pandas-white?logo=pandas&logoColor=navy)
-![ScikitLearn](https://img.shields.io/badge/Scikit_Learn-white?logo=scikitlearn)
-![OpenCV](https://img.shields.io/badge/OpenCV-white?logo=opencv&logoColor=red)
-![Triton Inference Server](https://img.shields.io/badge/Triton_Inference_Server-white?logo=nvidia)
-![TensorRT](https://img.shields.io/badge/TensorRT-white?logo=nvidia)
-![CUDA](https://img.shields.io/badge/CUDA-white?logo=nvidia) 
-![DeepStream](https://img.shields.io/badge/DeepStream-white?logo=nvidia)
-
-![LLM OpenAI](https://img.shields.io/badge/LLM_OpenAI-white?logo=openai&logoColor=black)
-![LangChain](https://img.shields.io/badge/LangChain-white?logo=langchain&logoColor=%231C3C3C)
-![LangGraph](https://img.shields.io/badge/LangGraph-white?logo=langgraph&logoColor=%231C3C3C)
-![Ollama](https://img.shields.io/badge/Ollama-white?logo=ollama&logoColor=black)
-![DB Vector - Chroma](https://img.shields.io/badge/DB_Vector-Chroma-white)
-![DB Vector - FAISS](https://img.shields.io/badge/DB_Vector-FAISS-white?logo=meta)
-
-![Metabase](https://img.shields.io/badge/Metabase-white?logo=metabase)
-![Apache Kafka](https://img.shields.io/badge/Apache_Kafka-white?logo=apachekafka&logoColor=black)
-![Apache Spark](https://img.shields.io/badge/Apache_Spark-white?logo=apachespark)
-![Apache Hadoop](https://img.shields.io/badge/Apache_Hadoop-white?logo=apachehadoop)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-white?logo=postgresql&logoColor=blue) 
-![MongoDB](https://img.shields.io/badge/MongoDB-white?logo=mongodb)
-
-![Streamlit](https://img.shields.io/badge/Streamlit-white?logo=streamlit)
-![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-white?logo=sqlalchemy&logoColor=black)
-![FastAPI](https://img.shields.io/badge/FastAPI-white?logo=fastapi)
-![Pydantic](https://img.shields.io/badge/Pydantic-white?logo=pydantic&logoColor=red)
-![RabbitMQ](https://img.shields.io/badge/RabbitMQ-white?logo=rabbitmq)
-![Celery](https://img.shields.io/badge/Celery-white?logo=celery&logoColor=%2337814A)
-![Redis](https://img.shields.io/badge/Redis-white?logo=redis)
-![MinIO](https://img.shields.io/badge/MinIO-white?logo=minio&logoColor=%23C72E49)
-![S3 Bucket](https://img.shields.io/badge/S3_Bucket-white?logo=amazons3)
-
-
-![Git](https://img.shields.io/badge/Git-white?logo=git) 
-![Jupyter Notebook](https://img.shields.io/badge/Jupyter_Notebook-white?logo=jupyter)
-![Ubuntu](https://img.shields.io/badge/Ubuntu-white?logo=ubuntu)
-![Docker](https://img.shields.io/badge/Docker-white?logo=Docker)
-![Grafana](https://img.shields.io/badge/Grafana-white?logo=grafana)
-![Prometheus](https://img.shields.io/badge/Prometheus-white?logo=prometheus)
-![CI/CD - Github Actions](https://img.shields.io/badge/CI%2FCD-Github_Actions-white?logo=githubactions)
-![MLOps - ClearML](https://img.shields.io/badge/MLOps-ClearML-white)
-![Terraform](https://img.shields.io/badge/Terraform-white?logo=terraform)
-![Jenkins](https://img.shields.io/badge/Jenkins-white?logo=jenkins)
-![CI/CD - Gitlab](https://img.shields.io/badge/CI%2FCD-Gitlab-white?logo=gitlab)
-![Kubernetes](https://img.shields.io/badge/Kubernetes-white?logo=kubernetes)
-![MLOps - MLFlow](https://img.shields.io/badge/MLOps-MLFlow-white?logo=mlflow)
-
-![Raspberry Pi](https://img.shields.io/badge/Raspberry_Pi-white?logo=raspberrypi&logoColor=maroon)
-![Jetson Nano](https://img.shields.io/badge/Jetson_Nano-white?logo=nvidia)
-
--->
+--> 
