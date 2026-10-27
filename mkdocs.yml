@@ -1,6 +1,20 @@
 site_name: agfian's space
+site_url: https://agfianf.github.io/
+site_author: M Agfian
+site_description: Notes on AI engineering, MLOps, DevOps, and whatever I'm learning.
+copyright: Copyright &copy; 2025 M Agfian
 extra:
   generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/agfianf
+      name: GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/magfianf/
+      name: LinkedIn
+    - icon: fontawesome/solid/rss
+      link: https://agfianf.github.io/feed_rss_created.xml
+      name: RSS feed
 theme:
   name: 'material'
   language: en
@@ -46,6 +60,8 @@ theme:
   features:
     - navigation.instant
     - navigation.instant.progress
+    - navigation.instant.prefetch
+    - navigation.footer
     - navigation.tabs
     # - navigation.tabs.sticky
     - navigation.sections
@@ -53,7 +69,11 @@ theme:
     - navigation.indexes
     - navigation.top
     - search.suggest
+    - search.highlight
+    - search.share
+    - toc.follow
     - content.code.copy
+    - content.code.select
     - content.code.annotate
     - content.tabs.link
 
@@ -66,6 +86,11 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
+  - toc:
+      permalink: true
+  - abbr
+  - footnotes
+  - tables
   - attr_list
   - admonition
   - pymdownx.details
@@ -94,10 +119,23 @@ extra_css:
 
 plugins:
   - search
-  - tags:
-      tags_file: tags.md 
+  - tags
   - blog
   - glightbox
+  # Social cards need Cairo; enabled in CI (GitHub Actions sets CI=true) to keep local serve fast
+  - social:
+      enabled: !ENV [CI, false]
+      cards_layout_options:
+        background_color: "#1B9533"
+        color: "#FFFFFF"
+  - rss:
+      match_path: blog/posts/.*
+      date_from_meta:
+        as_creation: date.created
+        as_update: date.updated
+      categories:
+        - categories
+        - tags
 
 
 

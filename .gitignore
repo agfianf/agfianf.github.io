@@ -10,3 +10,5 @@ wheels/
 .venv
 site/
 .DS_Store
+# MkDocs plugin cache (social cards)
+.cache/
