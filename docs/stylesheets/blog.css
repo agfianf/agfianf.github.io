@@ -163,13 +163,11 @@
   color: var(--ag-accent);
 }
 
-.blog-bar svg,
-.blog-note__go {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+/* Hugeicons carry their own stroke; these only size them */
+.blog-note__go svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .blog-bar svg {

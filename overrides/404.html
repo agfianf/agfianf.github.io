@@ -77,9 +77,9 @@
       <h1 class="ag404-title" id="ag404-title">This page didn't make it to <em>production.</em></h1>
       <p class="ag404-lede">The link may be stale, the post may have moved, or it never left the notebook. Everything that did ship is on the blog, and search can find the rest.</p>
       <div class="ag404-cta">
-        <a class="ag404-btn ag404-btn--primary" href="{{ base_url }}">Take me home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="ag404-btn ag404-btn--primary" href="{{ base_url }}">Take me home {% filter replace('<svg ', '<svg aria-hidden="true" ') %}{% include ".icons/hugeicons/arrow-right-02.svg" %}{% endfilter %}</a>
         <a class="ag404-btn" href="{{ 'blog/' | url }}">Read the blog</a>
-        <button class="ag404-btn" type="button" data-ag404-search hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>Search <kbd aria-hidden="true">/</kbd></button>
+        <button class="ag404-btn" type="button" data-ag404-search hidden>{% filter replace('<svg ', '<svg aria-hidden="true" ') %}{% include ".icons/hugeicons/search-01.svg" %}{% endfilter %}Search <kbd aria-hidden="true">/</kbd></button>
       </div>
       <p class="ag404-note">Followed a broken link on this site? <a href="mailto:agfianfd@gmail.com?subject=Broken%20link" data-ag404-report>Let me know</a> and I'll fix it.</p>
     </div>

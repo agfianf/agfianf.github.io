@@ -410,6 +410,12 @@ h2 em {
   transition: transform 0.25s var(--ease-out);
 }
 
+/* Hugeicons draw at 1.5; next to semibold text at this size a 2px stroke matches the letter weight */
+.btn svg path,
+.link-arrow svg path {
+  stroke-width: 2;
+}
+
 .btn:hover {
   transform: translateY(-2px);
 }

@@ -6,13 +6,13 @@ copyright: Copyright &copy; 2025 M Agfian
 extra:
   generator: false
   social:
-    - icon: fontawesome/brands/github
+    - icon: hugeicons/github-01
       link: https://github.com/agfianf
       name: GitHub
-    - icon: fontawesome/brands/linkedin
+    - icon: hugeicons/linkedin-01
       link: https://www.linkedin.com/in/magfianf/
       name: LinkedIn
-    - icon: fontawesome/solid/rss
+    - icon: hugeicons/rss
       link: https://agfianf.github.io/feed_rss_created.xml
       name: RSS feed
 theme:
@@ -30,29 +30,39 @@ theme:
       primary: custom
       accent: custom
       toggle:
-        icon: material/weather-sunny
+        icon: hugeicons/sun-03
         name: Switch to light mode
     - scheme: default
       primary: custom
       accent: custom
       toggle:
-        icon: material/weather-night
+        icon: hugeicons/moon-02
         name: Switch to dark mode
+  # Icons come from Hugeicons (free set, MIT) in overrides/.icons/hugeicons; add more with scripts/hugeicons.py
   icon:
+    menu: hugeicons/menu-01
+    search: hugeicons/search-01
+    share: hugeicons/share-08
+    close: hugeicons/cancel-01
+    top: hugeicons/arrow-up-02
+    previous: hugeicons/arrow-left-02
+    next: hugeicons/arrow-right-02
+    edit: hugeicons/edit-02
+    view: hugeicons/view
+    annotation: hugeicons/plus-sign
     admonition:
-      note: fontawesome/solid/note-sticky
-      abstract: fontawesome/solid/book
-      info: fontawesome/solid/circle-info
-      tip: fontawesome/solid/bullhorn
-      success: fontawesome/solid/check
-      question: fontawesome/solid/circle-question
-      warning: fontawesome/solid/triangle-exclamation
-      failure: fontawesome/solid/bomb
-      danger: fontawesome/solid/skull
-      bug: fontawesome/solid/robot
-      example: fontawesome/solid/flask
-      # quote: octicons/quote-16
-      quote: fontawesome/solid/expand
+      note: hugeicons/note-01
+      abstract: hugeicons/book-02
+      info: hugeicons/information-circle
+      tip: hugeicons/megaphone-01
+      success: hugeicons/tick-02
+      question: hugeicons/help-circle
+      warning: hugeicons/alert-02
+      failure: hugeicons/bomb
+      danger: hugeicons/skull
+      bug: hugeicons/robot-01
+      example: hugeicons/flask-conical
+      quote: hugeicons/expand
   features:
     - navigation.instant
     - navigation.instant.progress
@@ -109,6 +119,10 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      # Makes :hugeicons-<name>: shortcodes work in posts
+      options:
+        custom_icons:
+          - overrides/.icons
 
 extra_css:
   - stylesheets/tokens.css

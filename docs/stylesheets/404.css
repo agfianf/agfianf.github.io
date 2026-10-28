@@ -206,6 +206,11 @@
   transition: transform 0.25s var(--ag-ease-out);
 }
 
+/* Hugeicons draw at 1.5; next to semibold button text a 2px stroke matches the letter weight */
+.ag404 .ag404-btn svg :is(path, circle) {
+  stroke-width: 2;
+}
+
 .ag404 .ag404-btn--primary {
   --sketch: var(--ag-accent);
   border-color: transparent;

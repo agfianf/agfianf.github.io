@@ -51,7 +51,7 @@
             <span>Page {{ "%02d" | format(current) }} / {{ "%02d" | format(pages) }}</span>
           {% endif %}
           {% if "rss" in config.plugins %}
-            <a class="blog-bar__feed" href="{{ 'feed_rss_created.xml' | url }}">RSS <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="blog-bar__feed" href="{{ 'feed_rss_created.xml' | url }}">RSS {% filter replace('<svg ', '<svg aria-hidden="true" ') %}{% include ".icons/hugeicons/arrow-up-right-01.svg" %}{% endfilter %}</a>
           {% endif %}
         </p>
       </div>
