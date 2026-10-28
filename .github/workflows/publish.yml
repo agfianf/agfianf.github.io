@@ -33,7 +33,8 @@ jobs:
           restore-keys: mkdocs-material-
 
       - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v10
+        # setup-uv publishes only full version tags from v8 on, so there is no moving v10 tag to follow
+        uses: astral-sh/setup-uv@v10.3.2
         with:
           version: "0.13.5"
           enable-cache: true
