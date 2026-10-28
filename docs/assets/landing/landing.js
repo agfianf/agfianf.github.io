@@ -4,7 +4,8 @@
 
   const root = document.documentElement;
   const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
-  const narrowQuery = matchMedia('(max-width: 900px)');
+  // Phones and tablets held upright, where story chapters become cards; landscape phones keep the side-by-side layout (see landing.css)
+  const narrowQuery = matchMedia('(max-width: 900px) and (min-height: 501px)');
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
   const isDark = () => root.dataset.theme !== 'light';
 
@@ -72,6 +73,9 @@
     const el = document.getElementById('rotator');
     if (!el) return;
     let index = 0;
+    let timer = 0;
+    let onScreen = true;
+    let run = 0; // bumped to cancel a decode in flight
 
     // Each character scrambles, then locks into the next word, left to right with a little jitter
     function decode(next) {
@@ -79,7 +83,9 @@
       const len = Math.max(from.length, next.length);
       const lockAt = Array.from({ length: len }, (_, k) => (k / len) * 0.65 + Math.random() * 0.35);
       const start = performance.now();
+      const id = ++run;
       const step = (now) => {
+        if (id !== run) return;
         const p = (now - start) / 760;
         let out = '';
         for (let k = 0; k < len; k++) {
@@ -94,12 +100,37 @@
       requestAnimationFrame(step);
     }
 
-    setInterval(() => {
+    function next() {
       if (document.hidden) return;
       index = (index + 1) % CRAFTS.length;
-      if (motionQuery.matches) el.textContent = CRAFTS[index];
-      else decode(CRAFTS[index]);
-    }, 2600);
+      decode(CRAFTS[index]);
+    }
+
+    // Rotate only while the hero is on screen; with reduced motion the headline holds its first word
+    function sync() {
+      const still = motionQuery.matches;
+      if (still && (index || el.textContent !== CRAFTS[0])) {
+        run++;
+        index = 0;
+        el.textContent = CRAFTS[0];
+      }
+      const want = onScreen && !still;
+      if (want && !timer) timer = setInterval(next, 2600);
+      else if (!want && timer) {
+        clearInterval(timer);
+        timer = 0;
+      }
+    }
+
+    const hero = document.getElementById('hero');
+    if (hero && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+        sync();
+      }).observe(hero);
+    }
+    motionQuery.addEventListener('change', sync);
+    sync();
   }
 
   /* ------------------------------------------------------------------ latest notes */
@@ -122,15 +153,57 @@
     }
   }
 
+  // Feed HTML can carry markup the site renders but the feed does not: CriticMarkup, emoji shortcodes, raw fences and admonitions
+  function cleanText(text) {
+    return text
+      .replace(/\{~~[\s\S]*?~>([\s\S]*?)~~\}/g, '$1') // substitution: keep the new text
+      .replace(/\{(==|\+\+)([\s\S]*?)(==|\+\+)\}/g, '$2') // highlight and insertion: keep the text
+      .replace(/\{--[\s\S]*?--\}|\{>>[\s\S]*?<<\}/g, '') // deletion and comment: drop them
+      .replace(/:[a-z][a-z0-9_]*(?:-[a-z0-9_]+)*:/g, '') // :fontawesome-brands-jenkins:, :warning:
+      .replace(/\s+([.,;:!?])/g, '$1')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
   function excerpt(html) {
     const doc = new DOMParser().parseFromString(html || '', 'text/html');
+    doc.querySelectorAll('pre, .admonition-title').forEach((node) => node.remove());
+    let fenced = false;
     for (const p of doc.querySelectorAll('p')) {
-      if (p.classList.contains('admonition-title')) continue;
-      const text = p.textContent.replace(/\s+/g, ' ').trim();
+      const raw = p.textContent;
+      // Skip unrendered fences (which can run over several paragraphs) and admonitions, and paragraphs that are mostly inline code
+      const fences = (raw.match(/```|~~~/g) || []).length;
+      if (fenced || fences) {
+        if (fences % 2) fenced = !fenced;
+        continue;
+      }
+      if (/^\s*(!!!|\?\?\?)/.test(raw)) continue;
+      const code = [...p.querySelectorAll('code')].reduce((n, c) => n + c.textContent.length, 0);
+      if (code > raw.length * 0.3) continue;
+      const text = cleanText(raw).replace(/\.{3}$/, '…');
       if (text.length < 60) continue;
       return text.length > 180 ? text.slice(0, 180).replace(/\s+\S*$/, '') + '…' : text;
     }
     return '';
+  }
+
+  // Course and catch-all tags say little about a single post; they show only when a post has nothing better
+  const GENERIC_TAGS = new Set(['homework', 'digital-skola', 'devops']);
+  const HIDDEN_TOPICS = new Set(['homework', 'digital-skola']);
+
+  // The most telling tags first: generic ones last, then those already shown on an earlier card, then the rarest across the feed
+  function pickTags(tags, counts, shown) {
+    const score = (t) => [GENERIC_TAGS.has(t) ? 1 : 0, shown.get(t) || 0, counts.get(t) || 0];
+    const picked = [...new Set(tags || [])]
+      .sort((a, b) => {
+        const sa = score(a);
+        const sb = score(b);
+        return sa[0] - sb[0] || sa[1] - sb[1] || sa[2] - sb[2] || a.localeCompare(b);
+      })
+      .filter((t, k, all) => !GENERIC_TAGS.has(t) || GENERIC_TAGS.has(all[0]))
+      .slice(0, 3);
+    picked.forEach((t) => shown.set(t, (shown.get(t) || 0) + 1));
+    return picked;
   }
 
   function el(tag, className, text) {
@@ -140,7 +213,7 @@
     return node;
   }
 
-  function noteCard(item, i) {
+  function noteCard(item, i, tagList) {
     const li = el('li');
     const a = el('a', 'note');
     a.href = sitePath(item.url);
@@ -152,7 +225,7 @@
     meta.append(time);
 
     const tags = el('p', 'note-tags');
-    for (const tag of [...new Set(item.tags || [])].slice(0, 3)) tags.append(el('span', '', `#${tag}`));
+    for (const tag of tagList) tags.append(el('span', '', `#${tag}`));
 
     const go = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     go.setAttribute('viewBox', '0 0 24 24');
@@ -181,15 +254,17 @@
     }
     if (!items.length) return;
 
-    list.replaceChildren(...items.slice(0, 6).map(noteCard));
-
     const counts = new Map();
     for (const item of items) for (const tag of new Set(item.tags || [])) counts.set(tag, (counts.get(tag) || 0) + 1);
-    const top = [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 9);
+    const shown = new Map();
+    list.replaceChildren(...items.slice(0, 6).map((item, i) => noteCard(item, i, pickTags(item.tags, counts, shown))));
+
+    const top = [...counts].filter(([tag]) => !HIDDEN_TOPICS.has(tag)).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 9);
     topics.replaceChildren(...top.map(([tag, n]) => {
       const li = el('li');
       const a = el('a', 'topic', tag);
-      a.href = `tags/#tag:${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`;
+      // Same slug as the tags page anchors: "ci/cd" is #tag:cicd, "GIS" is #tag:gis
+      a.href = `tags/#tag:${tag.toLowerCase().replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '-')}`;
       a.append(el('span', '', String(n)));
       li.append(a);
       return li;
@@ -225,8 +300,8 @@
     },
   };
 
-  // Frame counts are at 60 fps and scale with the real frame time
-  const TIMING = { introScatter: 54, scatter: 32, build: 72, jitter: 26, flowStagger: 30, flowJitter: 12, heroScanMs: 1300, storyScanMs: 950, holdMs: 9000 };
+  // Frame counts are at 60 fps and scale with the real frame time. morph* is a story chapter change: a quick top-to-bottom wipe with no drift.
+  const TIMING = { introScatter: 54, scatter: 32, build: 72, jitter: 26, flowStagger: 30, flowJitter: 12, morphStagger: 8, morphJitter: 4, morphMs: 900, heroScanMs: 1300, storyScanMs: 950, holdMs: 9000 };
 
   /* ------------------------------------------------------------------ particle field: what it draws */
 
@@ -624,12 +699,19 @@
     const ctx = canvas && canvas.getContext && canvas.getContext('2d');
     const heroStage = document.getElementById('stage');
     const storyStage = document.getElementById('story-stage');
+    if (!ctx && heroStage) {
+      // No 2D canvas: show the logo as a still picture; it is only downloaded in this case
+      heroStage.prepend(Object.assign(new Image(), { className: 'stage-fallback', alt: '', src: 'assets/logo.png' }));
+    }
     if (!ctx || !heroStage || !storyStage) return;
 
     const scratch = document.createElement('canvas');
     const sctx = scratch.getContext('2d', { willReadFrequently: true });
     const atlas = document.createElement('canvas');
     const steps = [...document.querySelectorAll('[data-step]')];
+    // Text blocks the background dust fades out over, so it never speckles the copy
+    const quietEls = [...document.querySelectorAll('.hero-copy, .sec-head, .step, .quote')];
+    const coarseQuery = matchMedia('(pointer: coarse)');
 
     const anchor = (key, el, section, shapes, scanMs) => ({ key, el, section, shapes, scanMs, sources: [], grids: [], cols: 0, cs: 8, size: 0, x: 0, y: 0, lastX: 0, lastY: 0, current: 0 });
     const hero = anchor('hero', heroStage, document.getElementById('hero'), HERO_SHAPES, TIMING.heroScanMs);
@@ -679,6 +761,8 @@
     let fps = 60;
     let hudAt = 0;
     let fillShown = -1;
+    let morphUntil = 0; // until then, cells in flight draw as lit tiles, so a chapter change reads as one picture turning into the next
+    let quiet = [];
 
     // Particles as parallel typed arrays. mode: 0 parked, 1 dust, 2 part of the picture. gx/gy: the grid cell it is heading for.
     let N = 0;
@@ -933,7 +1017,8 @@
 
     function measureCanvas() {
       const r = canvas.getBoundingClientRect();
-      dpr = Math.min(2, window.devicePixelRatio || 1);
+      // Phones get at most 1.5× the pixels: the glyphs stay sharp enough and the canvas fills about half the pixels of 2×
+      dpr = Math.min(coarseQuery.matches ? 1.5 : 2, window.devicePixelRatio || 1);
       W = r.width;
       H = r.height;
       canvas.width = Math.round(W * dpr);
@@ -962,6 +1047,11 @@
             if (a === active) buildShape(a, a.current, motion ? 'place' : 'snap');
           }
         }
+      }
+      quiet = [];
+      for (const q of quietEls) {
+        const r = q.getBoundingClientRect();
+        if (r.bottom > -40 && r.top < H + 40 && r.width) quiet.push(r);
       }
       labelPx = active.size >= 440 ? 11 : 9.5;
       pointer.radius = active.size >= 440 ? 70 : 56;
@@ -1033,7 +1123,7 @@
       if (index === story.current) return;
       story.current = index;
       markStep(index);
-      buildShape(story, index, motion ? 'flow' : 'snap');
+      buildShape(story, index, motion ? 'morph' : 'snap');
     }
 
     function setActive(a) {
@@ -1055,8 +1145,46 @@
       vy[i] += Math.sin(a) * speed - 0.5;
     }
 
-    // how: 'intro' bursts every seed from one spot, 'scatter' blows the picture apart, 'flow' glides particles to the
-    // next picture, 'place' moves them without a show (resizes), 'snap' puts them there instantly (reduced motion).
+    // Position along a Hilbert curve over a 128×128 grid: points close on the curve are close on the stage
+    function hilbert(x, y) {
+      let d = 0;
+      for (let s = 64; s > 0; s >>= 1) {
+        const rx = x & s ? 1 : 0;
+        const ry = y & s ? 1 : 0;
+        d += s * s * ((3 * rx) ^ ry);
+        if (!ry) {
+          if (rx) {
+            x = 127 - x;
+            y = 127 - y;
+          }
+          [x, y] = [y, x];
+        }
+      }
+      return d;
+    }
+
+    // Hand each cell of the next picture the particle at the same place along the curve in the current one, so every particle makes a short trip
+    function pairByPlace(a, grid, prevCount) {
+      const n = grid.count;
+      const toCurve = (x, y) => hilbert(clamp(Math.floor((x * 128) / grid.size), 0, 127), clamp(Math.floor((y * 128) / grid.size), 0, 127));
+      const oldKey = new Float64Array(prevCount);
+      for (let j = 0; j < prevCount; j++) oldKey[j] = toCurve((px[j] - a.x) / a.cs, (py[j] - a.y) / a.cs);
+      const newKey = new Float64Array(n);
+      for (let i = 0; i < n; i++) newKey[i] = toCurve(grid.cx[i], grid.cy[i]);
+      const olds = Array.from({ length: prevCount }, (_, j) => j).sort((p, q) => oldKey[p] - oldKey[q]);
+      const news = Array.from({ length: n }, (_, i) => i).sort((p, q) => newKey[p] - newKey[q]);
+      const ox = px.slice(0, prevCount);
+      const oy = py.slice(0, prevCount);
+      for (let r = 0; r < n; r++) {
+        const i = news[r];
+        const j = olds[Math.floor((r * prevCount) / n)];
+        px[i] = ox[j];
+        py[i] = oy[j];
+        vx[i] = vy[i] = 0;
+      }
+    }
+
+    // how: 'intro' bursts every seed from one spot, 'scatter' blows the picture apart, 'flow' glides particles to the next picture (between stages), 'morph' turns one story picture straight into the next, 'place' moves them without a show (resizes), 'snap' puts them there instantly (reduced motion).
     function buildShape(a, index, how) {
       const grid = a.grids[index];
       if (!grid) return;
@@ -1065,6 +1193,9 @@
       shapeCount = grid.count;
       invert = !isDark() && Boolean(a.shapes[index].invertOnLight);
       ensurePool(maxCount + dustCount);
+      if (how === 'morph' && !prevCount) how = 'flow';
+      morphUntil = how === 'morph' ? performance.now() + TIMING.morphMs : 0;
+      if (how === 'morph') pairByPlace(a, grid, prevCount);
       const cx = a.x + a.size / 2;
       const cy = a.y + a.size / 2;
       const quiet = how === 'place' || how === 'snap';
@@ -1080,7 +1211,7 @@
           val[i] = grid.v[i];
           const tx = a.x + (gx[i] + 0.5) * a.cs;
           const ty = a.y + (gy[i] + 0.5) * a.cs;
-          if (was !== 2 && how !== 'intro' && alpha[i] < 0.05 && prevCount) {
+          if (was !== 2 && how !== 'intro' && how !== 'morph' && alpha[i] < 0.05 && prevCount) {
             // A parked particle joins from inside the crowd rather than popping in from nowhere
             const j = Math.floor(Math.random() * Math.min(prevCount, i || 1));
             px[i] = px[j] + (Math.random() - 0.5) * 8;
@@ -1101,6 +1232,10 @@
           const order = fromTop ? sweep : 1 - sweep;
           if (how === 'flow') {
             wait[i] = order * TIMING.flowStagger + Math.random() * TIMING.flowJitter;
+            continue;
+          }
+          if (how === 'morph') {
+            wait[i] = order * TIMING.morphStagger + Math.random() * TIMING.morphJitter;
             continue;
           }
           wait[i] = scatter + order * TIMING.build + Math.random() * TIMING.jitter;
@@ -1141,7 +1276,8 @@
       h.file.textContent = shape.file;
       h.pts.textContent = (a.grids[a.current] ? a.grids[a.current].count : 0).toLocaleString('en-US');
       if (h.buttons) h.buttons.forEach((b, s) => b.setAttribute('aria-pressed', String(s === a.current)));
-      if (h.chapter) h.chapter.textContent = `${String(a.current + 1).padStart(2, '0')} / ${shape.chapter}`;
+      // Story chapters read as stages of the pipeline, so they never look like the page's own section numbers
+      if (h.chapter) h.chapter.textContent = `${a === story ? 'stage ' : ''}${String(a.current + 1).padStart(2, '0')} / ${shape.chapter}`;
       if (h.segments) h.segments.forEach((seg, s) => seg.classList.toggle('on', s <= a.current));
     }
 
@@ -1157,8 +1293,10 @@
 
     function update(dt, now) {
       const a = active;
-      const kHome = 0.06 * dt;
-      const dHome = Math.pow(0.78, dt);
+      const morphing = now < morphUntil;
+      // A morph pulls a little harder, so the next picture lands in about half the time
+      const kHome = (morphing ? 0.1 : 0.06) * dt;
+      const dHome = Math.pow(morphing ? 0.72 : 0.78, dt);
       const dFree = Math.pow(0.955, dt);
       const dDust = Math.pow(0.97, dt);
       const vmax = 26 * dt; // long flows between stages stream instead of teleporting
@@ -1180,6 +1318,11 @@
             vx[i] *= vmax / sp;
             vy[i] *= vmax / sp;
           }
+        } else if (m === 2 && morphing) {
+          // A morph waits in place for the wipe to reach it instead of drifting off
+          vx[i] *= dHome;
+          vy[i] *= dHome;
+          wait[i] -= dt;
         } else {
           // Drift on a slow flow field, like seeds in the wind
           const ang = Math.sin(px[i] * 0.0042 + t) * 2.1 + Math.cos(py[i] * 0.0037 - t * 1.3) * 2.1;
@@ -1358,7 +1501,14 @@
       if (motion) {
         for (let i = 0; i < N; i++) {
           if (mode[i] === 2 || alpha[i] < 0.02) continue;
-          ctx.globalAlpha = alpha[i];
+          // Fade out over text blocks, over the last 24px before their edge
+          let fade = 1;
+          for (const r of quiet) {
+            const d = Math.max(r.left - px[i], px[i] - r.right, r.top - py[i], py[i] - r.bottom);
+            if (d < 24) fade = Math.min(fade, Math.max(0, d) / 24);
+          }
+          if (fade <= 0) continue;
+          ctx.globalAlpha = alpha[i] * fade;
           ctx.fillStyle = pal.dust[i % 3];
           const s = i % 7 === 0 ? 2 : 1.25;
           ctx.fillRect(px[i], py[i], s, s);
@@ -1371,6 +1521,7 @@
       const scanY = scanning ? a.y + ((now - scanAt) / a.scanMs) * a.size : -1e9;
       const near = pointer.active ? pointer.radius * pointer.radius * 0.8 : -1;
       const top = STEPS - 1;
+      const morphing = now < morphUntil;
       for (let i = 0; i < N; i++) {
         if (mode[i] !== 2) continue;
         const y = py[i];
@@ -1388,8 +1539,9 @@
         if (level > top) level = top;
         // Moving cells cycle through random glyphs and lock in when they land
         const glyph = settled && flick[i] <= 0 ? level : (Math.imul(i + 1, 2654435761) ^ Math.imul((tick >> 2) + i, 40503)) >>> 0;
-        const size = settled ? cs : cs * 0.82;
-        ctx.drawImage(atlas, (glyph % STEPS) * cpx, ((settled ? 0 : STEPS) + level) * cpx, cpx, cpx, px[i] - size / 2, y - size / 2, size, size);
+        const lit = settled || morphing;
+        const size = lit ? cs : cs * 0.82;
+        ctx.drawImage(atlas, (glyph % STEPS) * cpx, ((lit ? 0 : STEPS) + level) * cpx, cpx, cpx, px[i] - size / 2, y - size / 2, size, size);
       }
 
       if (scanning) {

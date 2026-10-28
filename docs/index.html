@@ -15,7 +15,7 @@
   <meta property="og:image" content="https://agfianf.github.io/assets/logo.png">
   <meta name="twitter:card" content="summary">
   <meta name="theme-color" content="#0d100b">
-  <link rel="icon" type="image/png" href="assets/logo-sq.png">
+  <link rel="icon" type="image/png" href="assets/logo-mark.png">
   <link rel="alternate" type="application/rss+xml" title="RSS feed" href="feed_rss_created.xml">
   <script>
     // Apply the saved theme before first paint, dark unless the visitor picked light. Material stores it as "<site root>.__palette", so the blog and this page share one choice.
@@ -44,7 +44,7 @@
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="brand" href="./" aria-label="agfian's space, home">
-        <img src="assets/logo-sq.png" alt="" width="30" height="30">
+        <img src="assets/logo-mark.png" alt="" width="28" height="30">
         <span>agfian's space</span>
       </a>
       <nav class="nav-links" aria-label="Primary">
@@ -94,7 +94,7 @@
 
         <div class="stage" id="stage">
           <p class="sr-only">An animated portrait of Agfian drawn with ASCII characters. Particles scatter and rebuild the picture, then computer-vision style bounding boxes label the face and smile. The bars below it switch between the portrait and the lightning-bolt logo.</p>
-          <img class="stage-fallback" src="assets/logo.png" alt="">
+          <noscript><img class="stage-fallback" src="assets/logo.png" alt=""></noscript>
           <span class="corner corner--tl"></span><span class="corner corner--tr"></span><span class="corner corner--bl"></span><span class="corner corner--br"></span>
           <div class="hud hud--tl" aria-hidden="true"><span class="rec"></span>cam_01 <span class="hud-sep">▸</span> <span id="hud-file">agfian.jpg</span></div>
           <div class="hud hud--tr" aria-hidden="true"><span id="hud-fps">60</span> fps <span class="hud-sep">·</span> <span id="hud-pts">0</span> pts</div>
@@ -128,14 +128,14 @@
                 <span class="corner corner--tl"></span><span class="corner corner--tr"></span><span class="corner corner--bl"></span><span class="corner corner--br"></span>
                 <div class="hud hud--tl" aria-hidden="true"><span class="rec"></span>pipeline <span class="hud-sep">▸</span> <span id="story-file">dataset/</span></div>
                 <div class="hud hud--tr" aria-hidden="true"><span id="story-fps">60</span> fps <span class="hud-sep">·</span> <span id="story-pts">0</span> pts</div>
-                <div class="hud hud--bl hud-progress" aria-hidden="true"><span id="story-chapter">01 / see</span><span class="progress"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span></div>
+                <div class="hud hud--bl hud-progress" aria-hidden="true"><span id="story-chapter">stage 01 / see</span><span class="progress"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span></div>
               </div>
             </div>
           </div>
 
           <ol class="steps">
             <li class="step is-active" data-step="0">
-              <p class="step-idx"><b>01</b> / Data</p>
+              <p class="step-idx">Stage <b>01</b> / Data</p>
               <h3>Great models start as great datasets.</h3>
               <p class="step-copy">I build the labelling and curation loop first: self-hosted CVAT with AI-assisted annotation, then FiftyOne to catch duplicates, gaps and mislabels before they ever reach training.</p>
               <dl class="proof">
@@ -145,7 +145,7 @@
               <ul class="chips"><li>CVAT</li><li>FiftyOne</li><li>MinIO</li><li>OpenCV</li></ul>
             </li>
             <li class="step" data-step="1">
-              <p class="step-idx"><b>02</b> / Train &amp; evaluate</p>
+              <p class="step-idx">Stage <b>02</b> / Train &amp; evaluate</p>
               <h3>Experiments you can repeat. Numbers you can trust.</h3>
               <p class="step-copy">Reusable training templates, every run tracked and versioned in ClearML, and evaluation that goes past a single mAP: per-class errors, hard cases, and a held-out set that looks like the field.</p>
               <dl class="proof">
@@ -155,7 +155,7 @@
               <ul class="chips"><li>PyTorch</li><li>Ultralytics YOLO</li><li>ClearML</li><li>ONNX</li></ul>
             </li>
             <li class="step" data-step="2">
-              <p class="step-idx"><b>03</b> / Ship to the edge</p>
+              <p class="step-idx">Stage <b>03</b> / Ship to the edge</p>
               <h3>Fast enough for the factory floor.</h3>
               <p class="step-copy">Models compiled with TensorRT and served with Triton, running on Jetson devices right next to the cameras, where the network is flaky and every millisecond counts.</p>
               <dl class="proof">
@@ -165,7 +165,7 @@
               <ul class="chips"><li>TensorRT</li><li>Triton</li><li>NVIDIA Jetson</li><li>Docker</li></ul>
             </li>
             <li class="step" data-step="3">
-              <p class="step-idx"><b>04</b> / Serve</p>
+              <p class="step-idx">Stage <b>04</b> / Serve</p>
               <h3>APIs and infrastructure that stay up.</h3>
               <p class="step-copy">FastAPI services with PostgreSQL and Redis behind them, packaged in Docker, running on Kubernetes and described in Terraform, so a new environment is a pull request, not a week of clicking.</p>
               <dl class="proof">
@@ -175,7 +175,7 @@
               <ul class="chips"><li>FastAPI</li><li>PostgreSQL</li><li>Redis</li><li>Kubernetes</li><li>Terraform</li><li>CI/CD</li></ul>
             </li>
             <li class="step" data-step="4">
-              <p class="step-idx"><b>05</b> / Monitor</p>
+              <p class="step-idx">Stage <b>05</b> / Monitor</p>
               <h3>Know a model is drifting before users do.</h3>
               <p class="step-copy">RED metrics for the service, distribution checks for the data, and alerts that land in chat with enough context to act on, so a silent accuracy drop becomes a ticket instead of a complaint.</p>
               <dl class="proof">
@@ -185,7 +185,7 @@
               <ul class="chips"><li>Prometheus</li><li>Grafana</li><li>Loki</li><li>Alerting</li></ul>
             </li>
             <li class="step" data-step="5">
-              <p class="step-idx"><b>06</b> / Automate with LLMs</p>
+              <p class="step-idx">Stage <b>06</b> / Automate with LLMs</p>
               <h3>LLM systems with evals and guardrails.</h3>
               <p class="step-copy">Document pipelines, agent workflows and automations that do real work, each shipped with an eval set, so swapping a prompt or a model is a measured change rather than a hopeful one.</p>
               <dl class="proof">

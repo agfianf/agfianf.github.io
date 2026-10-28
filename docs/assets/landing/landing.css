@@ -57,6 +57,12 @@
   box-sizing: border-box;
 }
 
+/* clip, not hidden: nothing can widen the page, and clip makes no scroll container, so the sticky story still pins */
+html,
+body {
+  overflow-x: clip;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
@@ -72,7 +78,6 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
@@ -149,9 +154,10 @@ button {
   top: 0;
   z-index: 50;
   height: var(--nav-h);
-  background: color-mix(in srgb, var(--bg) 74%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
+  /* Nearly opaque: a thinner veil smeared the copy scrolling under it */
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s, background-color 0.35s;
 }
@@ -172,6 +178,7 @@ button {
   align-items: center;
   gap: 10px;
   margin-right: auto;
+  padding-block: 7px; /* a 44px target around the 30px mark */
   font-weight: 700;
   letter-spacing: -0.01em;
   text-decoration: none;
@@ -189,8 +196,11 @@ button {
   gap: 2px;
 }
 
+/* Touch targets are 44px tall; the transparent border keeps the hover fill at the old 38px */
 .nav-links a {
   padding: 7px 12px;
+  border-block: 3px solid transparent;
+  background-clip: padding-box;
   color: var(--ink-2);
   font-size: 0.94rem;
   font-weight: 500;
@@ -198,10 +208,6 @@ button {
   transition: color 0.2s, background-color 0.2s;
 }
 
-.nav-links a:hover {
-  color: var(--ink);
-  background: var(--chip);
-}
 
 .nav-icons {
   display: flex;
@@ -209,27 +215,35 @@ button {
   gap: 2px;
 }
 
+/* A 44px target that draws and lays out as 36px: the padding is clipped out of the fill and the margin gives the room back */
 .icon-btn {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
+  width: 44px;
+  height: 44px;
+  margin: -4px;
+  padding: 4px;
   border: 0;
   background: transparent;
+  background-clip: content-box;
   color: var(--ink-2);
   cursor: pointer;
   transition: color 0.2s, background-color 0.2s;
 }
 
-.icon-btn:hover {
-  color: var(--ink);
-  background: var(--chip);
-}
 
 .icon-btn svg {
   width: 18px;
   height: 18px;
+}
+
+/* Hover styles only where a real hover exists, so a tap on a phone never leaves a control lit */
+@media (hover: hover) {
+  .nav-links a:hover,
+  .icon-btn:hover {
+    color: var(--ink);
+    background-color: var(--chip);
+  }
 }
 
 .theme-toggle .icon-sun,
@@ -319,7 +333,7 @@ main,
 
 h1 {
   margin: 0;
-  font-size: clamp(2.6rem, 5.4vw, 4.9rem);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.04em;
@@ -347,7 +361,7 @@ h2 em {
   max-width: 33rem;
   margin: 26px 0 0;
   color: var(--ink-2);
-  font-size: clamp(1.02rem, 1.25vw, 1.14rem);
+  font-size: clamp(1rem, 1.1vw, 1.06rem);
   line-height: 1.7;
 }
 
@@ -396,12 +410,26 @@ h2 em {
   border-inline: 1px solid var(--sketch);
 }
 
-.btn:hover::before {
-  inset: -1px -11px;
-}
+@media (hover: hover) {
+  .btn:hover::before {
+    inset: -1px -11px;
+  }
 
-.btn:hover::after {
-  inset: -11px -1px;
+  .btn:hover::after {
+    inset: -11px -1px;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+
+  .btn:hover svg {
+    transform: translateX(3px);
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--ink-3);
+  }
 }
 
 .btn svg {
@@ -416,14 +444,6 @@ h2 em {
   stroke-width: 2;
 }
 
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn:hover svg {
-  transform: translateX(3px);
-}
-
 .btn--primary {
   --sketch: var(--accent);
   background: var(--accent);
@@ -433,10 +453,6 @@ h2 em {
 .btn--ghost {
   border-color: var(--line-strong);
   background: color-mix(in srgb, var(--bg) 60%, transparent);
-}
-
-.btn--ghost:hover {
-  border-color: var(--ink-3);
 }
 
 /* Proof strip under the hero copy: the number on top, what it means below */
@@ -463,7 +479,7 @@ h2 em {
 
 .stats dd {
   margin: 0;
-  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.6rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -487,16 +503,13 @@ h2 em {
   cursor: crosshair;
   background: radial-gradient(closest-side, var(--glow), transparent);
   -webkit-tap-highlight-color: transparent;
+  container-type: inline-size; /* the HUD below adapts to the stage's own size, which follows the screen's height too */
 }
 
+/* Only exists when the canvas cannot run: inside <noscript>, or added by the script when there is no 2D context */
 .stage-fallback {
-  display: none;
   width: 70%;
   margin: 15%;
-}
-
-html:not(.js) .stage-fallback {
-  display: block;
 }
 
 .corner {
@@ -599,7 +612,19 @@ html:not(.js) .stage-fallback {
   background: var(--accent);
 }
 
+/* A small stage has room for one readout on top: the counters give way and the progress bars get shorter */
+@container (max-width: 300px) {
+  .hud--tr {
+    display: none;
+  }
+
+  .progress i {
+    width: 10px;
+  }
+}
+
 /* In the hero the bars are buttons; the current one is longer and fills up until the next picture */
+/* Each button is a 44px-tall target 22px wider than its bar, and negative margins give that room back, so the row looks as it did */
 .bars {
   display: flex;
   align-items: center;
@@ -607,8 +632,9 @@ html:not(.js) .stage-fallback {
 
 .bars button {
   position: relative;
-  width: 22px;
-  height: 22px;
+  width: 44px;
+  height: 44px;
+  margin: -11px;
   padding: 0;
   border: 0;
   background: none;
@@ -616,13 +642,18 @@ html:not(.js) .stage-fallback {
   transition: width 0.4s var(--ease-out);
 }
 
+/* Where two targets overlap, the one you can still switch to wins */
+.bars button[aria-pressed="false"] {
+  z-index: 1;
+}
+
 .bars button::before,
 .bars button::after {
   content: "";
   position: absolute;
   top: 50%;
-  right: 2px;
-  left: 2px;
+  right: 13px;
+  left: 13px;
   height: 3px;
   margin-top: -1.5px;
 }
@@ -638,12 +669,14 @@ html:not(.js) .stage-fallback {
   transform-origin: left;
 }
 
-.bars button:hover::before {
-  background: var(--ink-3);
+@media (hover: hover) {
+  .bars button:hover::before {
+    background: var(--ink-3);
+  }
 }
 
 .bars button[aria-pressed="true"] {
-  width: 44px;
+  width: 66px;
 }
 
 .bars button[aria-pressed="true"]::after {
@@ -711,13 +744,14 @@ html:not(.js) .stage-fallback {
 
 h2 {
   margin: 0;
-  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-size: clamp(1.65rem, 2.8vw, 2.15rem);
   font-weight: 800;
   line-height: 1.04;
   letter-spacing: -0.035em;
 }
 
 .link-arrow {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -736,19 +770,29 @@ h2 {
   transition: transform 0.25s var(--ease-out);
 }
 
-.link-arrow:hover {
-  border-color: var(--accent);
-  color: var(--ink);
+/* A taller invisible target around the underlined link */
+.link-arrow::before {
+  content: "";
+  position: absolute;
+  inset: -10px -6px -8px;
 }
 
-.link-arrow:hover svg {
-  transform: translateX(3px);
+@media (hover: hover) {
+  .link-arrow:hover {
+    border-color: var(--accent);
+    color: var(--ink);
+  }
+
+  .link-arrow:hover svg {
+    transform: translateX(3px);
+  }
 }
 
+/* Rows sit 16px apart so each chip's 44px target never overlaps the row above */
 .topics {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 16px 8px;
   margin: 0 0 36px;
   padding: 0;
   list-style: none;
@@ -759,6 +803,7 @@ h2 {
 }
 
 .topic {
+  position: relative;
   display: inline-flex;
   gap: 8px;
   padding: 7px 12px;
@@ -773,10 +818,18 @@ h2 {
   color: var(--ink-3);
 }
 
-.topic:hover {
-  border-color: var(--accent);
-  background: var(--chip);
-  color: var(--ink);
+.topic::before {
+  content: "";
+  position: absolute;
+  inset: -9px -1px;
+}
+
+@media (hover: hover) {
+  .topic:hover {
+    border-color: var(--accent);
+    background: var(--chip);
+    color: var(--ink);
+  }
 }
 
 .notes {
@@ -828,22 +881,41 @@ h2 {
   transition: opacity 0.25s, transform 0.3s var(--ease-out);
 }
 
-.note:hover,
 .note:focus-visible {
   border-color: var(--line-strong);
   transform: translateY(-3px);
 }
 
-.note:hover::before,
 .note:focus-visible::before {
   inset: -7px;
   opacity: 1;
 }
 
-.note:hover::after,
 .note:focus-visible::after {
   opacity: 1;
   transform: translateY(-100%);
+}
+
+@media (hover: hover) {
+  .note:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-3px);
+  }
+
+  .note:hover::before {
+    inset: -7px;
+    opacity: 1;
+  }
+
+  .note:hover::after {
+    opacity: 1;
+    transform: translateY(-100%);
+  }
+
+  .note:hover .note-go {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
 }
 
 .note-meta {
@@ -858,7 +930,7 @@ h2 {
 
 .note-title {
   margin: 0;
-  font-size: 1.14rem;
+  font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.32;
   letter-spacing: -0.015em;
@@ -894,11 +966,6 @@ h2 {
   height: 16px;
   color: var(--ink-3);
   transition: transform 0.3s var(--ease-out), color 0.3s;
-}
-
-.note:hover .note-go {
-  color: var(--accent);
-  transform: translate(2px, -2px);
 }
 
 .sec-sub {
@@ -977,7 +1044,7 @@ h2 {
 
 .step h3 {
   margin: 16px 0 12px;
-  font-size: clamp(1.5rem, 2.4vw, 2rem);
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.03em;
@@ -986,7 +1053,7 @@ h2 {
 .step-copy {
   margin: 0;
   color: var(--ink-2);
-  font-size: 1.02rem;
+  font-size: 0.97rem;
   line-height: 1.7;
 }
 
@@ -1010,7 +1077,7 @@ h2 {
 .proof dd {
   margin: 0;
   color: var(--accent);
-  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  font-size: clamp(1.35rem, 1.9vw, 1.65rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -1064,14 +1131,14 @@ h2 {
 
 .contact-card h2 {
   max-width: 18ch;
-  font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+  font-size: clamp(1.8rem, 3.3vw, 2.6rem);
 }
 
 .contact-copy {
   max-width: 36rem;
   margin: 22px 0 0;
   color: var(--ink-2);
-  font-size: clamp(1.02rem, 1.25vw, 1.12rem);
+  font-size: clamp(1rem, 1.1vw, 1.06rem);
   line-height: 1.7;
 }
 
@@ -1090,7 +1157,7 @@ h2 {
   max-width: 24ch;
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  font-size: clamp(1.6rem, 3vw, 2.25rem);
   font-style: italic;
   line-height: 1.12;
   letter-spacing: -0.01em;
@@ -1119,22 +1186,28 @@ h2 {
   font: 500 12px/1.4 var(--font-mono);
 }
 
+/* Each link is a 44px target; the padding is taken back with margins so the row keeps its rhythm */
 .foot-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 20px;
-  margin: 0;
+  gap: 0 20px;
+  margin: -14px 0;
   padding: 0;
   list-style: none;
 }
 
 .foot-links a {
+  display: block;
+  margin-inline: -8px;
+  padding: 14px 8px;
   text-decoration: none;
   transition: color 0.2s;
 }
 
-.foot-links a:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .foot-links a:hover {
+    color: var(--ink);
+  }
 }
 
 /* ---------------------------------------------------------------- motion */
@@ -1227,21 +1300,28 @@ h2 {
 
 /* ---------------------------------------------------------------- small screens */
 
-@media (max-width: 900px) {
+/* Narrow and tall (phones and tablets held upright): one column. The script's card check uses the same query. */
+@media (max-width: 900px) and (min-height: 501px) {
   .hero {
     min-height: 0;
-    padding-block: 28px 88px;
+    padding-block: 20px 88px;
   }
 
   .hero-grid {
     grid-template-columns: minmax(0, 1fr);
-    gap: 40px;
+    gap: 24px;
   }
 
-  .stage {
+  /* Sized by the screen's height too, so the headline and lede start on the first screen of a phone */
+  .hero .stage {
     order: -1;
     justify-self: center;
-    max-width: 540px;
+    max-width: min(540px, 38svh);
+    margin-block: 30px 40px;
+  }
+
+  .kicker {
+    margin-bottom: 18px;
   }
 
   .hero-copy {
@@ -1299,11 +1379,51 @@ h2 {
   }
 }
 
-@media (max-width: 600px) {
+/* Landscape phones: keep the two columns, and size both stages to the short screen so the HUD and the pictures fit */
+@media (max-width: 900px) and (max-height: 500px) {
+  :root {
+    --nav-h: 56px;
+  }
+
+  .hero {
+    padding-block: 24px 48px;
+  }
+
+  .hero-grid {
+    align-items: start;
+    gap: clamp(24px, 4vw, 40px);
+  }
+
+  .hero .stage {
+    max-width: min(540px, calc(100svh - var(--nav-h) - 96px));
+    margin-block: 40px 44px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 4.6vw, 2.6rem);
+  }
+
+  .kicker {
+    margin-bottom: 18px;
+  }
+
+  .story {
+    --s: min(540px, 42vw, calc(100svh - var(--nav-h) - 96px));
+  }
+
+  .step {
+    min-height: 80svh;
+  }
+}
+
+/* The icon links leave the nav before it runs out of room */
+@media (max-width: 680px) {
   .hide-sm {
     display: none;
   }
+}
 
+@media (max-width: 600px) {
   .nav-links a {
     padding-inline: 9px;
   }
@@ -1312,6 +1432,7 @@ h2 {
     font-size: 0.95rem;
   }
 
+  .hud--tl,
   .hud--tr {
     letter-spacing: 0.06em;
   }
@@ -1342,7 +1463,8 @@ h2 {
   }
 }
 
-@media (max-width: 380px) {
+/* The mark alone below this: the name, three links and the theme toggle need about 440px */
+@media (max-width: 460px) {
   .brand span {
     display: none;
   }
