@@ -1,0 +1,60 @@
+{#-
+  One 64px row like the landing page's nav (docs/index.html): the drawer button on small screens, the brand, inline links to Blog, Tags, About and Contact, then the theme toggle and search. It replaces Material's two rows (title bar plus navigation tabs), so main.html empties the tabs block. Based on Material's partials/header.html.
+
+  Instant navigation keeps the header and only swaps a few components in it, so the brand and links sit in one element marked as the "logo" component: Material replaces it on every page change, with its links already made absolute, and the current section stays marked.
+-#}
+{% set home = config.extra.homepage | d(nav.homepage.url, true) | url %}
+{% set url = page.url if page and page.url else "" %}
+{% if url.startswith("blog/") %}
+  {% set section = "blog" %}
+{% elif url.startswith("tags/") %}
+  {% set section = "tags" %}
+{% elif url.startswith("about/") %}
+  {% set section = "about" %}
+{% else %}
+  {% set section = "" %}
+{% endif %}
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header') }}">
+    <label class="md-header__button md-icon" for="__drawer" title="Menu">
+      {% set icon = config.theme.icon.menu or "material/menu" %}
+      {% include ".icons/" ~ icon ~ ".svg" %}
+    </label>
+    <div class="ag-nav" data-md-component="logo">
+      <a class="ag-nav__brand" href="{{ home }}" aria-label="{{ config.site_name }}, home">
+        {% if config.theme.logo %}
+          <img src="{{ config.theme.logo | url }}" alt="" width="30" height="30">
+        {% endif %}
+        <span>{{ config.site_name }}</span>
+      </a>
+      <div class="ag-nav__links">
+        {% for key, href, label in [
+          ("blog", "blog/" | url, "Blog"),
+          ("tags", "tags/" | url, "Tags"),
+          ("about", "about/" | url, "About"),
+          ("contact", (home ~ "/#contact") | replace("/./", "/"), "Contact")
+        ] %}
+          <a class="ag-nav__link ag-nav__link--{{ key }}" href="{{ href }}" {% if key == section %}aria-current="{{ 'page' if url == key ~ '/' else 'true' }}"{% endif %}>{{ label }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% if config.theme.palette %}
+      {% if not config.theme.palette is mapping %}
+        {% include "partials/palette.html" %}
+      {% endif %}
+    {% endif %}
+    {% if not config.theme.palette is mapping %}
+      {% include "partials/javascripts/palette.html" %}
+    {% endif %}
+    {% if "material/search" in config.plugins %}
+      {% set search = config.plugins["material/search"] | attr("config") %}
+      {% if search.enabled %}
+        <label class="md-header__button md-icon" for="__search" title="{{ lang.t('search.placeholder') }}">
+          {% set icon = config.theme.icon.search or "material/magnify" %}
+          {% include ".icons/" ~ icon ~ ".svg" %}
+        </label>
+        {% include "partials/search.html" %}
+      {% endif %}
+    {% endif %}
+  </nav>
+</header>

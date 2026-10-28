@@ -5,6 +5,10 @@
   --ag-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --ag-font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --ag-ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Material's font variables; the fonts themselves load in overrides/main.html (theme.font is off) */
+  --md-text-font: "Plus Jakarta Sans";
+  --md-code-font: "IBM Plex Mono";
 }
 
 [data-md-color-scheme="slate"] {
@@ -91,11 +95,12 @@
   --ag-bg-sunk: #e6e2d4;
   --ag-ink: #1b2015;
   --ag-ink-2: #464e3c;
-  --ag-ink-3: #676e5d;
+  /* ink-3 and leaf hold 4.5:1 or better on bg, bg-raise and bg-sunk (lowest: 4.97 and 4.94 on sunk) */
+  --ag-ink-3: #5a6150;
   --ag-line: rgba(27, 32, 21, 0.1);
   --ag-line-strong: rgba(27, 32, 21, 0.24);
   --ag-grid: rgba(27, 32, 21, 0.05);
-  --ag-leaf: #4f7a1d;
+  --ag-leaf: #44691a;
   --ag-accent: #3f6a14;
   --ag-accent-ink: #f6f4ec;
   --ag-soil: #8a5f36;

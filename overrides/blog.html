@@ -24,7 +24,7 @@
     <div class="md-content__inner">
       <header class="md-typeset blog-head">
         {% if generated %}
-          <p class="blog-eyebrow"><strong>03</strong> / Field notes / {{ "Category" if kind == "Category" else "Archive" }}{{ page_no }}</p>
+          <p class="blog-eyebrow">Field notes / {{ "Category" if kind == "Category" else "Archive" }}{{ page_no }}</p>
           <h1>{{ "Notes on" if kind == "Category" else "Written in" }} <em>{{ page.title }}</em></h1>
           <p class="blog-lede">
             {%- if kind == "Category" -%}
@@ -34,7 +34,7 @@
             {%- endif -%}
           </p>
         {% elif kind == "View" and current > 1 %}
-          <p class="blog-eyebrow"><strong>03</strong> / Field notes{{ page_no }}</p>
+          <p class="blog-eyebrow">Field notes{{ page_no }}</p>
           <h1>Older <em>notes.</em></h1>
           <p class="blog-lede">Page {{ current }} of {{ pages }} of everything I have written, newest first.</p>
         {% else %}

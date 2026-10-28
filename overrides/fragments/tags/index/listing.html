@@ -1,0 +1,21 @@
+{#-
+  One tag's list on the tags page (docs/tags.md, layout "index"): its headline and the notes under it, kept together as a group so blog.css can flow the groups into two columns. Based on Material's fragments/tags/default/listing.html.
+-#}
+{% macro render(listing) %}
+  <section class="tag-group">
+    {{ listing.content }}
+    <ul class="tag-group__list">
+      {% for mapping in listing.mappings %}
+        <li>
+          <a href="{{ mapping.item.url | url }}">
+            {{ mapping.item.title }}
+          </a>
+        </li>
+      {% endfor %}
+      {% for child in listing %}
+        <li>{{ render(child) }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endmacro %}
+{{ render(listing) }}

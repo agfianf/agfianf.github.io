@@ -3,6 +3,13 @@
 /* ---------------------------------------------------------------- base */
 
 /* Material sets the scheme on <body>; this hands it to the root as well, so the page scrollbar follows the theme */
+/* Material grows the root size to 137.5% from 100em and 150% from 125em wide, which made the header and text larger than the landing page on big screens; hold it at 125% (20px) everywhere so the two match at every width */
+@media screen and (min-width: 100em) {
+  html {
+    font-size: 125%;
+  }
+}
+
 html:has(> body[data-md-color-scheme="slate"]) {
   color-scheme: dark;
 }
@@ -38,7 +45,12 @@ body::before {
 
 /* ---------------------------------------------------------------- header */
 
-/* Translucent page colour with a blur, as on the landing nav. The blur sits on a pseudo-element because backdrop-filter on the header itself would trap the fixed-position search panel inside it. */
+/* One 64px row like the landing nav (partials/header.html): brand, inline links, theme and search. Material sizes the header to its 48px buttons, so the sticky sidebars and anchor offsets below follow the taller row. */
+:root {
+  --ag-header-h: 3.2rem;
+}
+
+/* Near-opaque page colour with a light blur: enough to separate the header, without smearing what scrolls beneath into blobs. The blur sits on a pseudo-element because backdrop-filter on the header itself would trap the fixed-position search panel inside it. */
 .md-header {
   background-color: transparent;
   color: var(--ag-ink);
@@ -51,9 +63,9 @@ body::before {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-color: color-mix(in srgb, var(--ag-bg) 74%, transparent);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  backdrop-filter: blur(14px) saturate(140%);
+  background-color: color-mix(in srgb, var(--ag-bg) 92%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(140%);
+  backdrop-filter: blur(8px) saturate(140%);
   transition: background-color 0.35s;
 }
 
@@ -62,7 +74,23 @@ body::before {
   box-shadow: 0 1px 0 var(--ag-line);
 }
 
+.md-header__inner {
+  gap: 0.1rem;
+  height: var(--ag-header-h);
+}
+
+.md-sidebar {
+  top: var(--ag-header-h);
+}
+
+.md-typeset :target {
+  --md-scroll-margin: calc(var(--ag-header-h) + 1.2rem);
+}
+
+/* Icon buttons as 44px squares, like the landing's .icon-btn */
 .md-header__button {
+  margin: 0;
+  padding: 0.5rem;
   color: var(--ag-ink-2);
   transition: color 0.2s, background-color 0.2s;
 }
@@ -73,103 +101,130 @@ body::before {
   color: var(--ag-ink);
 }
 
-.md-header__button.md-logo {
-  padding: 0.2rem;
+/* Brand and links; partials/header.html marks this block as Material's "logo" component so instant navigation swaps it with each page */
+.ag-nav {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  height: 100%;
 }
 
-.md-header__button.md-logo:hover {
-  background-color: transparent;
-}
-
-/* The logo file has wide margins; cropping it square makes the bolt read at header size */
-.md-header__button.md-logo img,
-.md-header__button.md-logo svg {
-  width: 1.6rem;
-  height: 1.6rem;
-  object-fit: cover;
-}
-
-[dir="ltr"] .md-header__title {
-  margin-left: 0.5rem;
-}
-
-.md-header__title {
+.ag-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  margin-right: auto;
+  padding: 0 0.2rem;
+  color: var(--ag-ink);
   font-size: 0.8rem;
-  letter-spacing: -0.01em;
-}
-
-.md-header__topic:first-child {
   font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 
-.md-header__topic + .md-header__topic {
+.ag-nav__brand:focus-visible {
+  outline: 2px solid var(--ag-accent);
+  outline-offset: 2px;
+}
+
+.ag-nav__brand img {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  object-fit: contain;
+}
+
+.ag-nav__brand span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ag-nav__links {
+  display: flex;
+  gap: 0.1rem;
+}
+
+/* Each link is 44px tall; the current section is marked with an accent rule under its label */
+.ag-nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 2.2rem;
+  padding: 0 0.6rem;
   color: var(--ag-ink-2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.ag-nav__link:focus-visible {
+  outline: 2px solid var(--ag-accent);
+  outline-offset: -2px;
+}
+
+.ag-nav__link[aria-current] {
+  color: var(--ag-ink);
   font-weight: 600;
 }
 
-/* ---------------------------------------------------------------- tabs */
-
-.md-tabs {
-  background-color: transparent;
-  color: var(--ag-ink-2);
-  box-shadow: inset 0 -1px 0 var(--ag-line);
-}
-
-.md-tabs__item {
-  position: relative;
-  padding-inline: 0.7rem;
-}
-
-.md-tabs__item:first-child {
-  padding-left: 0.6rem;
-}
-
-/* The active tab is marked with an accent rule sitting on the bar's hairline; hovering shows a quieter one */
-.md-tabs__item::after {
+.ag-nav__link[aria-current]::after {
   content: "";
   position: absolute;
-  right: 0.7rem;
-  bottom: 0;
-  left: 0.7rem;
-  height: 2px;
-  background-color: transparent;
-  transition: background-color 0.2s;
-}
-
-.md-tabs__item:first-child::after {
+  right: 0.6rem;
+  bottom: 0.3rem;
   left: 0.6rem;
-}
-
-.md-tabs__item:hover::after {
-  background-color: var(--ag-line-strong);
-}
-
-.md-tabs__item--active::after,
-.md-tabs__item--active:hover::after {
+  height: 2px;
   background-color: var(--ag-accent);
 }
 
-.md-tabs[hidden] .md-tabs__item::after {
-  opacity: 0;
+@media (hover: hover) {
+  .ag-nav__link:hover {
+    background-color: var(--ag-chip);
+    color: var(--ag-ink);
+  }
 }
 
-.md-tabs__link {
-  margin-top: 0.75rem;
-  color: var(--ag-ink-2);
-  font-size: 0.7rem;
-  font-weight: 500;
-  opacity: 1;
-  transition: transform 0.4s cubic-bezier(0.1, 0.7, 0.1, 1), opacity 0.25s, color 0.2s;
+/* Small screens, as on the landing: Tags goes first (it is in the drawer), then the site name next to the mark */
+@media screen and (max-width: 37.5em) {
+  .ag-nav {
+    gap: 0.2rem;
+  }
+
+  .ag-nav__link--tags {
+    display: none;
+  }
+
+  .ag-nav__link {
+    padding-inline: 0.45rem;
+  }
+
+  .ag-nav__link[aria-current]::after {
+    right: 0.45rem;
+    left: 0.45rem;
+  }
 }
 
-.md-tabs__link:hover,
-.md-tabs__link:focus {
-  color: var(--ag-ink);
-}
+@media screen and (max-width: 26em) {
+  .ag-nav__brand span {
+    display: none;
+  }
 
-.md-tabs__item--active .md-tabs__link {
-  color: var(--ag-ink);
-  font-weight: 600;
+  .md-header__inner {
+    gap: 0;
+  }
+
+  .ag-nav__link {
+    padding-inline: 0.35rem;
+  }
+
+  .ag-nav__link[aria-current]::after {
+    right: 0.35rem;
+    left: 0.35rem;
+  }
 }
 
 /* ---------------------------------------------------------------- search */
@@ -450,7 +505,9 @@ body::before {
 
 /* ---------------------------------------------------------------- typography */
 
+/* Plus Jakarta Sans runs large for its size (tall x-height, wide letters), so body text is 15px rather than Material's 16px */
 .md-typeset {
+  font-size: 0.75rem;
   line-height: 1.72;
 }
 
@@ -463,7 +520,7 @@ body::before {
 
 .md-typeset h1 {
   margin: 0 0 1em;
-  font-size: clamp(1.8em, 1.2em + 1.6vw, 2.35em);
+  font-size: clamp(1.55em, 1.1em + 1vw, 1.85em);
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.035em;
@@ -471,7 +528,7 @@ body::before {
 
 .md-typeset h2 {
   margin: 2.2em 0 0.75em;
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: 800;
   line-height: 1.22;
   letter-spacing: -0.03em;
@@ -488,7 +545,7 @@ body::before {
 
 .md-typeset h3 {
   margin: 1.9em 0 0.6em;
-  font-size: 1.22em;
+  font-size: 1.1em;
   font-weight: 700;
   line-height: 1.32;
   letter-spacing: -0.02em;
@@ -650,6 +707,16 @@ body::before {
   border-radius: 0;
 }
 
+/* Bright screenshots glare on the dark page; dim them a little until hovered. Icons, emoji and SVG drawings are left alone. */
+[data-md-color-scheme="slate"] .md-typeset img:not([src$=".svg"], .twemoji, .emojione, .gemoji) {
+  filter: brightness(0.88);
+  transition: filter 0.3s;
+}
+
+[data-md-color-scheme="slate"] .md-typeset img:not([src$=".svg"], .twemoji, .emojione, .gemoji):hover {
+  filter: none;
+}
+
 /* Pictures in posts sit in a detached hairline frame, like a plate in a drawing */
 .md-typeset .glightbox img,
 .md-typeset figure img {
@@ -766,6 +833,40 @@ body::before {
 
 .md-code__nav {
   border-radius: 0;
+  background-color: var(--md-code-bg-color);
+}
+
+:hover > .md-code__nav {
+  background-color: var(--md-code-bg-color);
+}
+
+/* Titled blocks: the select and copy buttons move up into the file name bar, which keeps room for them on its right, so they never sit on the first line of code. Material anchors them to the <pre>; here they anchor to the whole block instead. */
+.md-typeset .highlight:has(span.filename) {
+  position: relative;
+}
+
+.md-typeset .highlight:has(span.filename) pre {
+  position: static;
+}
+
+.md-typeset .highlight:has(span.filename) .md-code__nav {
+  background-color: transparent;
+}
+
+.md-typeset .highlight span.filename {
+  padding-right: 5.2em;
+}
+
+/* Untitled blocks keep the buttons in the top corner, on the code background so a long first line is cut off cleanly under them rather than showing through; with a mouse they only appear while the block is hovered or focused */
+@media (hover: hover) {
+  .md-typeset .highlight:not(:has(span.filename)) .md-code__nav {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .md-typeset .highlight:not(:has(span.filename)):is(:hover, :focus-within) .md-code__nav {
+    opacity: 1;
+  }
 }
 
 .md-code__button {
@@ -1088,7 +1189,18 @@ body::before {
 
 /* ---------------------------------------------------------------- back to top */
 
+/* Material floats the button at the top centre, over the text. Here it sits at the bottom right: inside the table of contents column where there is one, and as a 44px square in the corner on small screens. */
+[dir="ltr"] .md-top {
+  margin-left: 0;
+}
+
 .md-top {
+  /* Material's script writes an inline top (header height + 16px) on every scroll, so only !important moves the button down */
+  top: auto !important;
+  right: calc(max(0px, (100vw - 64rem) / 2) + var(--ag-gutter, 0px) + 1.2rem);
+  bottom: 1.2rem;
+  left: auto;
+  transform: none;
   padding: 0.45rem 0.8rem;
   border-radius: 0;
   background-color: color-mix(in srgb, var(--ag-bg-raise) 88%, transparent);
@@ -1126,21 +1238,63 @@ body::before {
   border-inline: 1px solid var(--ag-line-strong);
 }
 
-.md-top:hover,
-.md-top:focus {
+.md-top[hidden] {
+  transform: translateY(0.2rem);
+}
+
+/* Material fills the button on :hover and :focus, which sticks after a tap; only keyboard focus and a real hover fill it here */
+.md-top:is(:hover, :focus) {
+  background-color: color-mix(in srgb, var(--ag-bg-raise) 88%, transparent);
+  color: var(--ag-ink-2);
+}
+
+.md-top:focus-visible {
   background-color: var(--ag-accent);
   box-shadow: 0 0 0 1px var(--ag-accent), var(--ag-shadow);
   color: var(--ag-accent-ink);
 }
 
-.md-top:hover::before,
-.md-top:focus::before {
+.md-top:focus-visible::before {
   inset: 0 -10px;
 }
 
-.md-top:hover::after,
-.md-top:focus::after {
+.md-top:focus-visible::after {
   inset: -10px 0;
+}
+
+@media (hover: hover) {
+  .md-top:hover {
+    background-color: var(--ag-accent);
+    box-shadow: 0 0 0 1px var(--ag-accent), var(--ag-shadow);
+    color: var(--ag-accent-ink);
+  }
+
+  .md-top:hover::before {
+    inset: 0 -10px;
+  }
+
+  .md-top:hover::after {
+    inset: -10px 0;
+  }
+}
+
+/* No table of contents column: an icon-only square in the corner, its label kept for screen readers */
+@media screen and (max-width: 59.984375em) {
+  .md-top {
+    right: 0.8rem;
+    bottom: 0.8rem;
+    display: grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0;
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  .md-top svg {
+    margin: 0;
+  }
 }
 
 /* ---------------------------------------------------------------- footer */
@@ -1210,13 +1364,11 @@ body::before {
     transition: opacity 0.25s, inset 0.3s var(--ag-ease-out);
   }
 
-  .md-footer__link:hover,
   .md-footer__link:focus-visible {
     border-color: var(--ag-line-strong);
     transform: translateY(-2px);
   }
 
-  .md-footer__link:hover::before,
   .md-footer__link:focus-visible::before {
     inset: -6px;
     opacity: 1;
@@ -1225,6 +1377,20 @@ body::before {
   .md-footer__title {
     margin-bottom: 0;
     padding: 0 0.6rem;
+  }
+
+}
+
+/* Hover effects only where there is a real pointer, so they do not stick after a tap */
+@media screen and (min-width: 45em) and (hover: hover) {
+  .md-footer__link:hover {
+    border-color: var(--ag-line-strong);
+    transform: translateY(-2px);
+  }
+
+  .md-footer__link:hover::before {
+    inset: -6px;
+    opacity: 1;
   }
 
   .md-footer__link:hover .md-footer__button {
@@ -1255,9 +1421,19 @@ body::before {
   color: var(--ag-ink-2);
 }
 
+/* 44px squares around 16px icons */
 html .md-footer-meta.md-typeset a.md-social__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
   color: var(--ag-ink-3);
   transition: color 0.2s, background-color 0.2s;
+}
+
+html .md-footer-meta.md-typeset a.md-social__link svg {
+  vertical-align: 0;
 }
 
 html .md-footer-meta.md-typeset a.md-social__link:hover,
@@ -1326,6 +1502,49 @@ html .md-footer-meta.md-typeset a.md-social__link:focus {
 }
 
 /* ---------------------------------------------------------------- small screens */
+
+/* Tablet widths: header, content and footer get the landing's wider gutter (about 40px at 1024px, 31px at 768px) instead of Material's 16px, and the text column is capped near 75 characters a line. Posts and pages only: the blog views are card grids. The 404 page lays itself out. */
+/* From 76.25em the grid is the landing's container (1280px with its clamp(16px, 4vw, 48px) gutter, less the 0.2rem Material already pads the header with), so the brand and both edges line up between the two pages */
+@media screen and (min-width: 76.25em) {
+  :root {
+    --ag-gutter: calc(clamp(16px, 4vw, 48px) - 0.2rem);
+  }
+
+  .md-grid {
+    max-width: 64rem;
+    padding-inline: var(--ag-gutter);
+  }
+}
+
+@media screen and (min-width: 45em) and (max-width: 76.234375em) {
+  :root {
+    --ag-gutter: clamp(0.4rem, 4vw - 0.8rem, 1.2rem);
+  }
+
+  .md-grid {
+    padding-inline: var(--ag-gutter);
+  }
+
+  .md-footer__inner {
+    padding-inline: calc(0.8rem + var(--ag-gutter));
+  }
+
+  /* The header's right edge lines up with the text column */
+  .md-header__inner {
+    padding-right: calc(0.8rem + var(--ag-gutter));
+  }
+
+  article.md-content__inner:not(:has(.ag404)) {
+    max-width: 42em;
+  }
+}
+
+/* Without a table of contents beside it, the capped column sits in the middle */
+@media screen and (min-width: 45em) and (max-width: 59.984375em) {
+  article.md-content__inner:not(:has(.ag404)) {
+    margin-inline: auto;
+  }
+}
 
 /* Material runs code blocks edge to edge on phones; drop the side hairlines there so nothing doubles up against the screen edge */
 @media screen and (max-width: 44.984375em) {

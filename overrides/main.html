@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
-{#- Material loads the text and code fonts at 300/400/700 only; the landing's look also needs the 500, 600 and 800 weights and Instrument Serif italic for accent words. -#}
-{% block extrahead %}
-  {{ super() }}
+{#- Material's own font link is off (theme.font: false in mkdocs.yml), so this is the only one: the families and weights the theme actually uses, with Instrument Serif italic for accent words. tokens.css points --md-text-font and --md-code-font at them. -#}
+{% block fonts %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Instrument+Serif:ital@1&family=Plus+Jakarta+Sans:wght@500;600;800&display=swap">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Instrument+Serif:ital@1&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap">
 {% endblock %}
+
+{#- The header carries the site links inline (partials/header.html), so the second row of navigation tabs is not drawn. The navigation.tabs feature stays on: it keeps the left sidebar scoped to the current section on wide screens. -#}
+{% block tabs %}{% endblock %}

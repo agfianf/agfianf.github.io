@@ -1,0 +1,6 @@
+{#-
+  Tag cloud at the top of the tags page (docs/tags.md, layout "cloud"): one chip per tag with the number of notes under it, linking to that tag's list further down. The tags plugin renders this once per tag and hands it the tag's headline, which this layout leaves out and only reads the anchor from. Chips reuse .blog-topic from blog.css.
+-#}
+{%- set slug = listing.content.split('id="', 1)[1].split('"', 1)[0] -%}
+{%- set count = listing.mappings | length -%}
+<a class="blog-topic" href="#{{ slug }}">{{ listing.tag.name }}<span class="blog-topic__count" title="{{ count }} {{ 'note' if count == 1 else 'notes' }}">{{ count }}</span></a>

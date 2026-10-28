@@ -3,7 +3,7 @@ title: Blog
 description: Notes on computer vision, MLOps, backend, DevOps and LLM systems, written while building them.
 ---
 
-**03** / Field notes
+Field notes
 { .blog-eyebrow }
 
 # Notes from *the build.*
@@ -21,6 +21,5 @@ Notes on computer vision, MLOps, backend, DevOps and LLM systems, written while 
 [backend](../tags.md#tag:backend){ .blog-topic }
 [prometheus](../tags.md#tag:prometheus){ .blog-topic }
 [grafana](../tags.md#tag:grafana){ .blog-topic }
-[satellite](../tags.md#tag:satellite){ .blog-topic }
-[All tags](../tags.md){ .blog-topic .blog-topic--all }
+<span class="blog-topics__end">[satellite](../tags.md#tag:satellite){ .blog-topic } [All tags](../tags.md){ .blog-topic .blog-topic--all }</span>
 </nav>

@@ -2,7 +2,8 @@ site_name: agfian's space
 site_url: https://agfianf.github.io/
 site_author: M Agfian
 site_description: Notes on AI engineering, MLOps, DevOps, and whatever I'm learning.
-copyright: Copyright &copy; 2025 M Agfian
+# Same line as the landing page's footer; partials/copyright.html swaps the last year for the year of the build
+copyright: "&copy; 2025–2026 M Agfian · Indonesia"
 extra:
   generator: false
   social:
@@ -18,25 +19,26 @@ extra:
 theme:
   name: 'material'
   language: en
-  logo: 'assets/logo.png'
-  favicon: 'assets/logo.png'
+  # A small square crop of the bolt (3.5 KB); assets/logo.png stays for feeds and social cards
+  logo: 'assets/logo-mark.png'
+  favicon: 'assets/logo-mark.png'
   custom_dir: overrides
-  font:
-    text: 'Plus Jakarta Sans'
-    code: 'IBM Plex Mono'
+  # Fonts load once, from overrides/main.html (Plus Jakarta Sans, IBM Plex Mono, Instrument Serif italic)
+  font: false
   # Dark is the default (first entry); colours come from stylesheets/tokens.css, shared with the landing page
+  # The toggle shows the current scheme (moon in dark, sun in light), the same as the landing page's button
   palette:
     - scheme: slate
       primary: custom
       accent: custom
       toggle:
-        icon: hugeicons/sun-03
+        icon: hugeicons/moon-02
         name: Switch to light mode
     - scheme: default
       primary: custom
       accent: custom
       toggle:
-        icon: hugeicons/moon-02
+        icon: hugeicons/sun-03
         name: Switch to dark mode
   # Icons come from Hugeicons (free set, MIT) in overrides/.icons/hugeicons; add more with scripts/hugeicons.py
   icon:
@@ -68,8 +70,8 @@ theme:
     - navigation.instant.progress
     - navigation.instant.prefetch
     - navigation.footer
+    # The tabs bar itself is not drawn (the header has inline links, see overrides/main.html); the feature keeps the left sidebar scoped to the current section
     - navigation.tabs
-    # - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
     - navigation.indexes
@@ -130,6 +132,13 @@ extra_css:
   - stylesheets/blog.css
   - stylesheets/404.css
 
+extra_javascript:
+  - javascripts/site.js
+
+# Adds loading="lazy" and decoding="async" to images in page content
+hooks:
+  - hooks/lazy_images.py
+
 plugins:
   - search
   - tags
@@ -157,11 +166,12 @@ plugins:
       cards_layout: agfian
   - rss:
       match_path: blog/posts/.*
+      image: https://agfianf.github.io/assets/logo.png
       date_from_meta:
         as_creation: date.created
         as_update: date.updated
+      # Every published post's category is also one of its tags, so tags alone avoid duplicate <category> entries
       categories:
-        - categories
         - tags
 
 

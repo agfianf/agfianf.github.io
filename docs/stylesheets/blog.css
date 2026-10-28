@@ -8,7 +8,8 @@
   margin: 0 0 2rem;
 }
 
-.blog-view .blog-head .blog-eyebrow {
+/* A square accent dot instead of a section number, so it does not read as part of the landing page's numbered sections */
+.md-typeset .blog-eyebrow {
   margin: 0 0 0.9rem;
   color: var(--ag-ink-3);
   font: 500 0.6rem/1 var(--ag-font-mono);
@@ -16,16 +17,21 @@
   text-transform: uppercase;
 }
 
-.blog-view .blog-eyebrow strong {
-  color: var(--ag-accent);
-  font-weight: 600;
+.md-typeset .blog-eyebrow::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin: 0 0.7em 0.15em 0;
+  background-color: var(--ag-accent);
+  vertical-align: middle;
 }
 
 .blog-view .blog-head h1 {
   margin: 0;
   color: var(--ag-ink);
   font-family: var(--ag-font-sans);
-  font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+  font-size: clamp(1.5rem, 2.6vw, 1.9rem);
   font-weight: 800;
   line-height: 1.04;
   letter-spacing: -0.04em;
@@ -49,7 +55,7 @@
   max-width: 32rem;
   margin: 1rem 0 0;
   color: var(--ag-ink-2);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   line-height: 1.7;
 }
 
@@ -57,17 +63,26 @@
   margin: 1.4rem 0 0;
 }
 
-.blog-view .blog-topics > p {
+.blog-view .blog-topics > p,
+.blog-topics__end {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.5rem 0.4rem;
   margin: 0;
 }
 
+/* The last topic and "All tags" wrap as one, so the link never ends up alone on a line */
+.blog-topics__end {
+  flex-wrap: nowrap;
+}
+
+/* Chips stay 30px tall; a transparent band above and below brings the tap target to 44px */
 .md-typeset .blog-topic {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.35rem 0.6rem;
+  min-height: 1.5rem;
+  padding: 0.3rem 0.6rem;
   border: 1px solid var(--ag-line-strong);
   color: var(--ag-ink-2);
   font: 500 0.6rem/1 var(--ag-font-mono);
@@ -81,11 +96,33 @@
   color: var(--ag-ink-3);
 }
 
-.md-typeset .blog-topic:hover,
+.md-typeset .blog-topic:not(.blog-topic--all)::after {
+  content: "";
+  position: absolute;
+  inset: -7px -1px;
+}
+
 .md-typeset .blog-topic:focus-visible {
   border-color: var(--ag-accent);
   background: var(--ag-chip);
   color: var(--ag-ink);
+}
+
+@media (hover: hover) {
+  .md-typeset .blog-topic:hover {
+    border-color: var(--ag-accent);
+    background: var(--ag-chip);
+    color: var(--ag-ink);
+  }
+}
+
+/* Note count on the tags page's chips */
+.md-typeset .blog-topic__count {
+  margin-left: 0.5rem;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--ag-line);
+  color: var(--ag-ink-3);
+  font-variant-numeric: tabular-nums;
 }
 
 /* "All tags" reads as a link, not another chip */
@@ -235,22 +272,42 @@
   transition: opacity 0.25s, transform 0.3s var(--ag-ease-out);
 }
 
-.blog-note:hover,
 .blog-note:focus-within {
   border-color: var(--ag-line-strong);
   transform: translateY(-3px);
 }
 
-.blog-note:hover::before,
 .blog-note:focus-within::before {
   inset: -7px;
   opacity: 1;
 }
 
-.blog-note:hover::after,
 .blog-note:focus-within::after {
   opacity: 1;
   transform: translateY(-100%);
+}
+
+/* Only with a real pointer, so a tapped card does not stay "detected" */
+@media (hover: hover) {
+  .blog-note:hover {
+    border-color: var(--ag-line-strong);
+    transform: translateY(-3px);
+  }
+
+  .blog-note:hover::before {
+    inset: -7px;
+    opacity: 1;
+  }
+
+  .blog-note:hover::after {
+    opacity: 1;
+    transform: translateY(-100%);
+  }
+
+  .blog-note:hover .blog-note__go {
+    color: var(--ag-accent);
+    transform: translate(2px, -2px);
+  }
 }
 
 .blog-note__meta {
@@ -282,6 +339,16 @@
   transition: color 0.2s;
 }
 
+/* Small mono links, 15 to 17px tall: a transparent band around each brings the tap target to 44px without moving the text. Shared by the cards, the post byline and the post's tag row. */
+.blog-note__meta a::before,
+.blog-note__tags a::before,
+.md-typeset .post-byline__meta a::before,
+.md-typeset .post-tags__tag[href]::before {
+  content: "";
+  position: absolute;
+  inset: -15px -0.25rem;
+}
+
 .blog-note__meta a {
   color: var(--ag-soil);
 }
@@ -302,7 +369,7 @@
 .blog-note__title {
   margin: 0;
   color: var(--ag-ink);
-  font: 700 0.9rem/1.35 var(--ag-font-sans);
+  font: 700 0.84rem/1.35 var(--ag-font-sans);
   letter-spacing: -0.015em;
   overflow-wrap: anywhere;
 }
@@ -361,10 +428,6 @@
   transition: transform 0.3s var(--ag-ease-out), color 0.3s;
 }
 
-.blog-note:hover .blog-note__go {
-  color: var(--ag-accent);
-  transform: translate(2px, -2px);
-}
 
 /* ---------------------------------------------------------------- pagination */
 
@@ -380,8 +443,8 @@
 
 .blog-view .md-pagination > * {
   position: relative;
-  min-width: 1.9rem;
-  height: 1.9rem;
+  min-width: 2.2rem;
+  height: 2.2rem;
   padding: 0 0.45rem;
   border: 1px solid var(--ag-line-strong);
   border-radius: 0;
@@ -392,11 +455,18 @@
   transition: color 0.2s, border-color 0.2s, background-color 0.2s;
 }
 
-.blog-view .md-pagination__link:hover,
 .blog-view .md-pagination__link:focus-visible {
   border-color: var(--ag-accent);
   background: var(--ag-chip);
   color: var(--ag-ink);
+}
+
+@media (hover: hover) {
+  .blog-view .md-pagination__link:hover {
+    border-color: var(--ag-accent);
+    background: var(--ag-chip);
+    color: var(--ag-ink);
+  }
 }
 
 .blog-view .md-pagination__link svg,
@@ -541,6 +611,7 @@
 }
 
 .md-typeset .post-byline__meta a {
+  position: relative;
   color: var(--ag-soil);
   text-decoration: none;
   transition: color 0.2s;
@@ -554,13 +625,14 @@
 .md-typeset .post-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3rem 0.8rem;
+  gap: 0.6rem 0.8rem;
   margin: 0 0 1.8rem;
   font: 500 0.6rem/1.4 var(--ag-font-mono);
 }
 
 .md-typeset .post-tags a,
 .md-typeset .post-tags span {
+  position: relative;
   color: var(--ag-leaf);
   text-decoration: none;
   transition: color 0.2s;
@@ -655,6 +727,191 @@
   font: 500 0.5rem/1 var(--ag-font-mono);
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- post table of contents */
+
+/* Below 960px Material hides the table of contents, so posts carry a folded one under the byline (blog-post.html). It borrows the admonition frame from extra.css; the leading :root outweighs those rules. */
+:root .md-typeset details.post-toc {
+  --adm: var(--ag-accent);
+  margin: 0 0 1.8rem;
+  border-color: var(--ag-line);
+  border-left-color: var(--ag-accent);
+  background-color: var(--ag-bg-raise);
+}
+
+:root .md-typeset details.post-toc > summary.post-toc__title {
+  display: flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0 2.2rem 0 0.9rem;
+  background-color: transparent;
+  color: var(--ag-ink-2);
+  font: 500 0.6rem/1 var(--ag-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+:root .md-typeset details.post-toc > summary.post-toc__title::before {
+  position: static;
+  flex: none;
+  width: 5px;
+  height: 5px;
+  margin-right: 0.7em;
+  background-color: var(--ag-accent);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+:root .md-typeset details.post-toc > summary.post-toc__title::after {
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+}
+
+:root .md-typeset details.post-toc[open] > summary.post-toc__title::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+:root .md-typeset .post-toc__list {
+  margin: 0.4rem 0 0.8rem;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--ag-line);
+}
+
+:root .md-typeset .post-toc__list .post-toc__list {
+  margin: 0 0 0 0.8rem;
+}
+
+:root .md-typeset .post-toc__list li {
+  margin: 0;
+}
+
+:root .md-typeset .post-toc__list li::marker {
+  content: none;
+}
+
+/* Each entry is a 44px-high row, the hairline rail on its left like the sidebar contents */
+:root .md-typeset .post-toc__list a {
+  display: flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0.2rem 0 0.2rem 0.8rem;
+  color: var(--ag-ink-2);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 0.2s, box-shadow 0.2s;
+}
+
+:root .md-typeset .post-toc__list a:focus-visible {
+  box-shadow: inset 2px 0 0 var(--ag-accent);
+  color: var(--ag-ink);
+}
+
+@media (hover: hover) {
+  .md-typeset .post-toc__list a:hover {
+    box-shadow: inset 2px 0 0 var(--ag-accent);
+    color: var(--ag-ink);
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-typeset .post-toc {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- mermaid */
+
+/* site.js wraps each rendered diagram in .ag-mermaid. On small screens the diagram keeps a readable width and the wrapper scrolls sideways instead of shrinking it. */
+.md-typeset .ag-mermaid {
+  margin: 1em 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: var(--ag-line-strong) transparent;
+}
+
+.md-typeset .ag-mermaid:focus-visible {
+  outline: 2px solid var(--ag-accent);
+  outline-offset: 2px;
+}
+
+.md-typeset .ag-mermaid > .mermaid {
+  margin: 0;
+}
+
+@media screen and (max-width: 59.984375em) {
+  .md-typeset .ag-mermaid > .mermaid {
+    min-width: 36rem;
+  }
+}
+
+/* ---------------------------------------------------------------- tags page */
+
+/* docs/tags.md: a lede, a cloud of every tag with its note count, then each tag's notes, flowed into two columns on wide screens */
+.md-typeset .tags-lede {
+  max-width: 32rem;
+  margin: -0.4rem 0 0;
+  color: var(--ag-ink-2);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.md-typeset .tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.4rem;
+  margin: 1.4rem 0 2.8rem;
+}
+
+.md-typeset .tag-group {
+  padding: 1rem 0 0.4rem;
+  border-top: 1px solid var(--ag-line);
+  break-inside: avoid;
+}
+
+.md-typeset .tag-group h2 {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  background: none;
+  color: var(--ag-ink);
+  font: 600 0.7rem/1.4 var(--ag-font-mono);
+  letter-spacing: 0.02em;
+}
+
+.md-typeset .tag-group__name::before {
+  content: "#";
+  margin-right: 0.15rem;
+  color: var(--ag-leaf);
+}
+
+:root .md-typeset .tag-group__list {
+  margin: 0 0 0.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+:root .md-typeset .tag-group__list li {
+  margin: 0;
+}
+
+:root .md-typeset .tag-group__list li::marker {
+  content: none;
+}
+
+:root .md-typeset .tag-group__list a {
+  display: block;
+  padding: 0.35rem 0;
+  font-size: 0.74rem;
+  line-height: 1.45;
+}
+
+@media screen and (min-width: 60em) {
+  .md-typeset .tag-index {
+    columns: 2;
+    column-gap: 3rem;
+  }
 }
 
 /* ---------------------------------------------------------------- small screens */

@@ -1,0 +1,11 @@
+{#-
+  The copyright line from mkdocs.yml, matching the landing page's footer ("© <year> M Agfian · Indonesia"). The range ends in the year of the build, so the line stays current without editing the config every January. Based on Material's partials/copyright.html.
+-#}
+{% set year = build_date_utc.strftime("%Y") %}
+<div class="md-copyright">
+  {% if config.copyright %}
+    <div class="md-copyright__highlight">
+      {{ config.copyright | replace("–2026", "–" ~ year) }}
+    </div>
+  {% endif %}
+</div>

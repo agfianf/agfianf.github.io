@@ -132,6 +132,33 @@
             {% endfor %}
           </nav>
         {% endif %}
+        {#- Below 960px Material hides the table of contents and the drawer only lists the blog, so the post carries its own, folded; blog.css shows it at those widths only -#}
+        {% set toc = page.toc %}
+        {% set first = toc | first %}
+        {% if first and first.level == 1 %}
+          {% set toc = first.children %}
+        {% endif %}
+        {% if toc %}
+          <details class="post-toc">
+            <summary class="post-toc__title">On this page</summary>
+            <nav aria-label="On this page">
+              <ol class="post-toc__list">
+                {% for item in toc %}
+                  <li>
+                    <a href="{{ item.url }}">{{ item.title }}</a>
+                    {% if item.children %}
+                      <ol class="post-toc__list">
+                        {% for child in item.children %}
+                          <li><a href="{{ child.url }}">{{ child.title }}</a></li>
+                        {% endfor %}
+                      </ol>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ol>
+            </nav>
+          </details>
+        {% endif %}
         {{ parts[1] }}
         {% include "partials/source-file.html" %}
         {% include "partials/feedback.html" %}
