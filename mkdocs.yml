@@ -23,25 +23,21 @@ theme:
   custom_dir: overrides
   font:
     text: 'Plus Jakarta Sans'
-    code: 'Fira Code'
+    code: 'IBM Plex Mono'
+  # Dark is the default (first entry); colours come from stylesheets/tokens.css, shared with the landing page
   palette:
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default 
+    - scheme: slate
+      primary: custom
+      accent: custom
       toggle:
-        icon: material/lightbulb
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
         name: Switch to dark mode
-      primary: white
-      accent: grey
-
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/lightbulb-outline
-        name: Switch to system preference
-      primary: black
-      accent: white
   icon:
     admonition:
       note: fontawesome/solid/note-sticky
@@ -115,19 +111,36 @@ markdown_extensions:
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
 extra_css:
+  - stylesheets/tokens.css
   - stylesheets/extra.css
+  - stylesheets/blog.css
+  - stylesheets/404.css
 
 plugins:
   - search
   - tags
-  - blog
+  # Blog views use overrides/blog.html and overrides/partials/post.html (cards); posts use overrides/blog-post.html (byline)
+  - blog:
+      blog_toc: false
+      post_date_format: dd MMM yyyy
+      post_excerpt: optional
+      post_excerpt_max_categories: 2
+      post_readtime: true
+      post_readtime_words_per_minute: 265
+      archive: true
+      archive_date_format: yyyy
+      categories: true
+      authors_file: "{blog}/.authors.yml"
+      pagination: true
+      pagination_per_page: 12
+      pagination_format: "$link_previous ~2~ $link_next"
   - glightbox
   # Social cards need Cairo; enabled in CI (GitHub Actions sets CI=true) to keep local serve fast
   - social:
       enabled: !ENV [CI, false]
-      cards_layout_options:
-        background_color: "#1B9533"
-        color: "#FFFFFF"
+      # Dark landing-style cards: layouts/agfian.yml with its assets in layouts/agfian/
+      cards_layout_dir: layouts
+      cards_layout: agfian
   - rss:
       match_path: blog/posts/.*
       date_from_meta:

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Social card background for layouts/agfian.yml, drawn in the landing page's dark scheme. Text is not drawn here: the layout's typography layers render it with the real fonts. Positions must match the layers in agfian.yml. -->
+  <defs>
+    <!-- Lime glow behind the glyph-tile logo, like the glow behind the landing's stage -->
+    <radialGradient id="glow" gradientUnits="userSpaceOnUse" cx="972" cy="334" r="340">
+      <stop offset="0" stop-color="#a8cc3f" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#a8cc3f" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Fades the survey grid out towards the edges and the text, so it is strongest behind the stage -->
+    <radialGradient id="fade" gradientUnits="userSpaceOnUse" cx="900" cy="315" r="760">
+      <stop offset="0.25" stop-color="#0d100b" stop-opacity="0"/>
+      <stop offset="0.82" stop-color="#0d100b" stop-opacity="1"/>
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0.5H0.5V48" fill="none" stroke="#e9ecd9" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- Field, grid, glow -->
+  <rect width="1200" height="630" fill="#0d100b"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#fade)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Corner brackets framing the card -->
+  <g fill="none" stroke="#d4e85a" stroke-opacity="0.85" stroke-width="3">
+    <path d="M30 60V30H60"/>
+    <path d="M1140 30H1170V60"/>
+    <path d="M30 570V600H60"/>
+    <path d="M1140 600H1170V570"/>
+  </g>
+
+  <!-- Detection box around the glyph-tile logo (art layer at 828,178 size 288x312): a faint outline, heavier corners and the label tab -->
+  <rect x="816.5" y="166.5" width="311" height="335" fill="none" stroke="#d4e85a" stroke-opacity="0.45" stroke-width="1"/>
+  <g fill="none" stroke="#d4e85a" stroke-width="3">
+    <path d="M817.5 186V167.5H836"/>
+    <path d="M1108 167.5H1126.5V186"/>
+    <path d="M817.5 482V500.5H836"/>
+    <path d="M1108 500.5H1126.5V482"/>
+  </g>
+  <rect x="816" y="139" width="142" height="28" fill="#d4e85a"/>
+
+  <!-- Accent rule beside the description, like the proof figures on the landing page -->
+  <rect x="72" y="478" width="3" height="60" fill="#d4e85a"/>
+</svg>

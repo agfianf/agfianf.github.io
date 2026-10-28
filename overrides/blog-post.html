@@ -1,0 +1,142 @@
+{#-
+  Blog post: a byline under the title (author, date, read time, categories, tags) replaces the author card and metadata that Material puts in the sidebar, so they never show twice. The sidebar keeps the back link and references, and adds "More in <category>". Based on Material's blog-post.html.
+-#}
+{% extends "main.html" %}
+{% import "partials/nav-item.html" as item with context %}
+
+{% block container %}
+  {% set category = page.categories | first %}
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="{{ page.parent.url | url }}" class="md-nav__link">
+                  {% include ".icons/material/arrow-left.svg" %}
+                  <span class="md-ellipsis">
+                    {{ lang.t("blog.index") }}
+                  </span>
+                </a>
+              </div>
+            </div>
+            {% if page.config.links %}
+              <ul class="md-post__meta md-nav__list">
+                <li class="md-nav__item md-nav__item--section">
+                  <div class="md-post__title">
+                    <span class="md-ellipsis">
+                      {{ lang.t("blog.references") }}
+                    </span>
+                  </div>
+                  <nav class="md-nav">
+                    <ul class="md-nav__list">
+                      {% for nav_item in page.config.links %}
+                        {% set path = "__ref_" ~ loop.index %}
+                        {{ item.render(nav_item, path, 1) }}
+                      {% endfor %}
+                    </ul>
+                  </nav>
+                </li>
+              </ul>
+            {% endif %}
+          </nav>
+          {#- A short reading list from the post's first category; it lands below the post on small screens -#}
+          {% if category %}
+            {% set related = category.posts | reject("sameas", page) | list %}
+            {% if related %}
+              <div class="post-related">
+                <p class="post-related__title">More in <a class="post-related__category" href="{{ category.url | url }}">{{ category.title }}</a></p>
+                <ol class="post-related__list">
+                  {% for other in related[:5] %}
+                    <li>
+                      <a class="post-related__link" href="{{ other.url | url }}">
+                        <time datetime="{{ other.config.date.created }}">{{ other.config.date.created | date }}</time>
+                        <span>{{ other.title }}</span>
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ol>
+              </div>
+            {% endif %}
+          {% endif %}
+          {% if "toc.integrate" in features %}
+            {% include "partials/toc.html" %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      {% block content %}
+        {#- Posts without `authors:` in front matter are by the blog's owner -#}
+        {% set blog = config.plugins.get("material/blog") %}
+        {% if page.authors %}
+          {% set authors = page.authors %}
+        {% elif blog and blog.authors %}
+          {% set authors = [blog.authors.get("agfian") or (blog.authors.values() | first)] %}
+        {% else %}
+          {% set authors = [] %}
+        {% endif %}
+        {#- Named so they do not leak into partials/source-file.html, which reads `created` and `updated` -#}
+        {% set byline_created = page.config.date.created %}
+        {% set byline_updated = page.config.date.updated %}
+
+        {#- Same parts as partials/content.html, with the byline right after the first h1 and the tags moved under it -#}
+        {% include "partials/actions.html" %}
+        {% if "</h1>" in page.content %}
+          {% set parts = page.content.split("</h1>", 1) %}
+          {{ parts[0] }}</h1>
+        {% else %}
+          {% set parts = ["", page.content] %}
+          <h1>{{ page.title | d(config.site_name, true) }}</h1>
+        {% endif %}
+        <div class="post-byline">
+          {% for author in authors %}
+            {% set face %}
+              <span class="post-byline__face"><img src="{{ author.avatar | url }}" alt="" width="64" height="64"></span>
+              <span class="post-byline__name">{{ author.name }}</span>
+            {% endset %}
+            {% if author.url %}
+              <a class="post-byline__author" href="{{ author.url | url }}" title="{{ author.name }}, {{ author.description }}">{{ face }}</a>
+            {% else %}
+              <span class="post-byline__author" title="{{ author.name }}, {{ author.description }}">{{ face }}</span>
+            {% endif %}
+          {% endfor %}
+          <p class="post-byline__meta">
+            <time datetime="{{ byline_created }}">{{ byline_created | date }}</time>
+            {% if byline_updated and (byline_updated | date) != (byline_created | date) %}
+              <span>Updated <time datetime="{{ byline_updated }}">{{ byline_updated | date }}</time></span>
+            {% endif %}
+            {% if page.config.readtime %}
+              <span>{{ page.config.readtime }} min read</span>
+            {% endif %}
+            {% if page.categories %}
+              <span>
+                {{- lang.t("blog.categories.in") }}
+                {% for cat in page.categories -%}
+                  <a class="post-byline__category" href="{{ cat.url | url }}">{{ cat.title }}</a>
+                  {%- if not loop.last %}, {% endif %}
+                {%- endfor -%}
+              </span>
+            {% endif %}
+          </p>
+        </div>
+        {% if tags %}
+          <nav class="post-tags" aria-label="Tags">
+            {% for tag in tags %}
+              {% if tag.url %}
+                <a class="post-tags__tag" href="{{ tag.url | url }}">#{{ tag.name }}</a>
+              {% else %}
+                <span class="post-tags__tag">#{{ tag.name }}</span>
+              {% endif %}
+            {% endfor %}
+          </nav>
+        {% endif %}
+        {{ parts[1] }}
+        {% include "partials/source-file.html" %}
+        {% include "partials/feedback.html" %}
+        {% include "partials/comments.html" %}
+      {% endblock %}
+    </article>
+  </div>
+{% endblock %}

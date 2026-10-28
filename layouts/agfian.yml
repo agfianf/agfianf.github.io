@@ -1,0 +1,220 @@
+# Social card layout for agfian's space, in the landing page's dark style (docs/assets/landing/landing.css): survey grid, corner brackets, the logo drawn as ASCII glyph tiles inside a detection box, a mono eyebrow in lime, the title in Plus Jakarta Sans ExtraBold and the description beside a lime rule.
+#
+# Assets live in layouts/agfian/: background.svg (field, grid, glow, frame, box) and logo-tiles.png (docs/assets/logo-sq.png rendered on a 24 x 26 tile grid with the landing's glyph ramp and colours). Their positions must match the layers below.
+#
+# The card cache (.cache/plugin/social, restored between CI runs) is keyed on this file's text, not on the assets, so bump assets_version whenever you change a file in layouts/agfian/ or the old cards stay cached.
+
+definitions:
+
+  - &assets_version "1"
+
+  # Assets, resolved from the docs directory so the build works from any working directory
+  - &background >-
+    {{ config.docs_dir }}/../layouts/agfian/background.svg
+
+  - &logo_tiles >-
+    {{ config.docs_dir }}/../layouts/agfian/logo-tiles.png
+
+  - &logo >-
+    {{ config.docs_dir }}/assets/logo-sq.png
+
+  # Brand row: site name, and the bare domain on the right
+  - &site_name >-
+    {{ config.site_name | upper }}
+
+  - &domain >-
+    {{ (config.site_url or "").split("://")[-1].rstrip("/") | upper }}
+
+  # Eyebrow: posts show "FIELD NOTES / CATEGORY · DATE", other blog pages "FIELD NOTES", anything else nothing
+  - &eyebrow >-
+    {%- set meta = page.meta or {} -%}
+    {%- set categories = meta.get("categories") or [] -%}
+    {%- set date = meta.get("date") -%}
+    {%- if date is mapping -%}{%- set date = date.get("created") -%}{%- endif -%}
+    {%- if categories or date -%}
+      FIELD NOTES
+      {%- if categories %} / {{ categories | join(" · ") | upper }}{% endif -%}
+      {%- if date %} · {{ (date | string)[:10] }}{% endif -%}
+    {%- elif page.url.startswith("blog/") -%}
+      FIELD NOTES
+    {%- endif -%}
+
+  # Title, split in two: short titles (20 characters or fewer, no word over 12) get display size, everything else the three-line size. Only one of the two has content on a given page. Cards are drawn before the Markdown is rendered, so icon shortcodes in a heading (:material-terraform:) are dropped here.
+  - &title_display >-
+    {%- set clean = namespace(words = []) -%}
+    {%- for word in (layout.title or page.meta.get("title", page.title) or "").split() if not (word | length > 2 and word.startswith(":") and word.endswith(":")) -%}
+      {%- set clean.words = clean.words + [word] -%}
+    {%- endfor -%}
+    {%- set title = clean.words | join(" ") -%}
+    {%- if title | length <= 20 and ((title.split() or [""]) | map("length") | max) <= 12 -%}
+      {{ title }}
+    {%- endif -%}
+
+  - &title_text >-
+    {%- set clean = namespace(words = []) -%}
+    {%- for word in (layout.title or page.meta.get("title", page.title) or "").split() if not (word | length > 2 and word.startswith(":") and word.endswith(":")) -%}
+      {%- set clean.words = clean.words + [word] -%}
+    {%- endfor -%}
+    {%- set title = clean.words | join(" ") -%}
+    {%- if not (title | length <= 20 and ((title.split() or [""]) | map("length") | max) <= 12) -%}
+      {{ title }}
+    {%- endif -%}
+
+  - &page_title_with_site_name >-
+    {%- if not page.is_homepage -%}
+      {{ page.meta.get("title", page.title) }} - {{ config.site_name }}
+    {%- else -%}
+      {{ config.site_name }}
+    {%- endif -%}
+
+  - &page_description >-
+    {%- if layout.description -%}
+      {{ layout.description }}
+    {%- else -%}
+      {{ page.meta.get("description", config.site_description) | x }}
+    {%- endif -%}
+
+  # Post tags along the bottom, as "#tag" in leaf green
+  - &page_tags >-
+    {%- for tag in page.meta.get("tags") or [] -%}
+      #{{ tag }}{% if not loop.last %} {% endif %}
+    {%- endfor -%}
+
+# Meta tags, as in Material's default layout
+tags:
+
+  # Open Graph
+  og:type: website
+  og:title: *page_title_with_site_name
+  og:description: *page_description
+  og:image: "{{ image.url }}"
+  og:image:type: "{{ image.type }}"
+  og:image:width: "{{ image.width }}"
+  og:image:height: "{{ image.height }}"
+  og:url: "{{ page.canonical_url }}"
+
+  # Twitter
+  twitter:card: summary_large_image
+  twitter:title: *page_title_with_site_name
+  twitter:description: *page_description
+  twitter:image: "{{ image.url }}"
+
+# -----------------------------------------------------------------------------
+# Specification
+# -----------------------------------------------------------------------------
+
+# 1200 x 630 with a 72px margin; text on the left (x 72 to 760), the glyph-tile logo on the right (x 816 to 1128). Font sizes follow from each layer's height and line count.
+size: { width: 1200, height: 630 }
+layers:
+
+  # Field, survey grid, glow, frame corners, detection box, label tab and accent rule
+  - background:
+      image: *background
+
+  # Brand row: logo, site name in mono, domain on the right
+  - size: { width: 52, height: 56 }
+    offset: { x: 72, y: 60 }
+    background:
+      image: *logo
+
+  - size: { width: 480, height: 26 }
+    offset: { x: 140, y: 75 }
+    typography:
+      content: *site_name
+      align: start center
+      color: "#e9ecd9"
+      font:
+        family: IBM Plex Mono
+        style: SemiBold
+
+  - size: { width: 400, height: 26 }
+    offset: { x: 728, y: 75 }
+    typography:
+      content: *domain
+      align: end center
+      color: "#848c77"
+      font:
+        family: IBM Plex Mono
+        style: Medium
+
+  # The logo as glyph tiles, and the label on its box's tab
+  - size: { width: 288, height: 312 }
+    offset: { x: 828, y: 178 }
+    background:
+      image: *logo_tiles
+
+  - size: { width: 132, height: 20 }
+    offset: { x: 824, y: 143 }
+    typography:
+      content: LIGHTNING 0.99
+      align: start center
+      color: "#10140b"
+      font:
+        family: IBM Plex Mono
+        style: SemiBold
+
+  # Eyebrow in lime mono
+  - size: { width: 688, height: 24 }
+    offset: { x: 72, y: 170 }
+    typography:
+      content: *eyebrow
+      align: start center
+      color: "#d4e85a"
+      font:
+        family: IBM Plex Mono
+        style: SemiBold
+
+  # Title at display size: two lines at about 87px, for short titles
+  - size: { width: 688, height: 206 }
+    offset: { x: 72, y: 206 }
+    typography:
+      content: *title_display
+      align: start top
+      overflow: shrink
+      color: "#e9ecd9"
+      line:
+        amount: 2
+        height: 1.05
+      font:
+        family: Plus Jakarta Sans
+        style: ExtraBold
+
+  # Title at text size: three lines at about 66px; longer titles shrink to fit instead of being cut
+  - size: { width: 688, height: 234 }
+    offset: { x: 72, y: 206 }
+    typography:
+      content: *title_text
+      align: start top
+      overflow: shrink
+      color: "#e9ecd9"
+      line:
+        amount: 3
+        height: 1.1
+      font:
+        family: Plus Jakarta Sans
+        style: ExtraBold
+
+  # Description beside the lime rule, two lines at most
+  - size: { width: 664, height: 68 }
+    offset: { x: 96, y: 476 }
+    typography:
+      content: *page_description
+      align: start top
+      color: "#b3bb9f"
+      line:
+        amount: 2
+        height: 1.5
+      font:
+        family: Plus Jakarta Sans
+        style: Regular
+
+  # Tags along the bottom
+  - size: { width: 688, height: 24 }
+    offset: { x: 72, y: 560 }
+    typography:
+      content: *page_tags
+      align: start center
+      color: "#8fbf3f"
+      font:
+        family: IBM Plex Mono
+        style: Medium

@@ -1,0 +1,538 @@
+/* 404 page (overrides/404.html), in the landing page's language: a framed stage where the "404" is built from ASCII glyph tiles and a detector boxes it. Uses the --ag-* tokens from tokens.css. This file loads on every page, so every selector is scoped to .ag404, or to Material's main area only when it contains .ag404. */
+
+/* ---------------------------------------------------------------- tile palette */
+
+/* The glyph ramp's colours, one pair per brightness level: a tile and the glyph on it. Computed with the landing's own formula (docs/assets/landing/landing.js, buildAtlas): bright tiles carry a dark glyph, like a lit key cap. Levels 0 and 1 are dust and draw no tile. */
+[data-md-color-scheme="slate"] .ag404 {
+  --ag404-l0: transparent; --ag404-g0: #395621;
+  --ag404-l1: transparent; --ag404-g1: #4b6d25;
+  --ag404-l2: rgba(53, 78, 31, 0.19); --ag404-g2: #61872a;
+  --ag404-l3: rgba(66, 98, 35, 0.25); --ag404-g3: #76a12f;
+  --ag404-l4: rgba(88, 124, 40, 0.32); --ag404-g4: #91b838;
+  --ag404-l5: rgba(109, 150, 45, 0.39); --ag404-g5: #accf43;
+  --ag404-l6: rgba(133, 174, 52, 0.47); --ag404-g6: #c5e354;
+  --ag404-l7: rgba(160, 197, 62, 0.54); --ag404-g7: #0d100b;
+  --ag404-l8: rgba(187, 220, 72, 0.62); --ag404-g8: #0d100b;
+  --ag404-l9: rgba(208, 232, 113, 0.71); --ag404-g9: #0d100b;
+  --ag404-l10: rgba(227, 241, 165, 0.79); --ag404-g10: #0d100b;
+  --ag404-l11: rgba(246, 249, 216, 0.88); --ag404-g11: #0d100b;
+}
+
+[data-md-color-scheme="default"] .ag404 {
+  --ag404-l0: transparent; --ag404-g0: #a9b482;
+  --ag404-l1: transparent; --ag404-g1: #94a66a;
+  --ag404-l2: rgba(176, 186, 140, 0.19); --ag404-g2: #7f9651;
+  --ag404-l3: rgba(158, 172, 116, 0.25); --ag404-g3: #698639;
+  --ag404-l4: rgba(136, 156, 92, 0.32); --ag404-g4: #57752e;
+  --ag404-l5: rgba(114, 141, 67, 0.39); --ag404-g5: #456423;
+  --ag404-l6: rgba(94, 124, 50, 0.47); --ag404-g6: #34531a;
+  --ag404-l7: rgba(76, 107, 40, 0.54); --ag404-g7: #f1eee4;
+  --ag404-l8: rgba(58, 90, 30, 0.62); --ag404-g8: #f1eee4;
+  --ag404-l9: rgba(45, 72, 22, 0.71); --ag404-g9: #f1eee4;
+  --ag404-l10: rgba(34, 54, 16, 0.79); --ag404-g10: #f1eee4;
+  --ag404-l11: rgba(22, 36, 10, 0.88); --ag404-g11: #f1eee4;
+}
+
+/* ---------------------------------------------------------------- frame */
+
+/* A faint survey grid across the whole main area, strongest behind the stage, as in the landing hero. isolation keeps it under the content. */
+.md-main:has(.ag404) {
+  position: relative;
+  isolation: isolate;
+}
+
+.md-main:has(.ag404)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(var(--ag-grid) 1px, transparent 1px), linear-gradient(90deg, var(--ag-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center top;
+  -webkit-mask-image: radial-gradient(ellipse 70% 75% at 68% 48%, #000 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse 70% 75% at 68% 48%, #000 25%, transparent 78%);
+}
+
+/* Copy on the left, stage on the right, both centred in the space between the header and the footer */
+.ag404 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  min-height: calc(100svh - 12rem);
+  padding-block: 1.6rem 2rem;
+}
+
+/* ---------------------------------------------------------------- copy */
+
+.ag404 .ag404-eyebrow {
+  margin: 0 0 1.2rem;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1 var(--ag-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ag404 .ag404-eyebrow b {
+  color: var(--ag-accent);
+  font-weight: 600;
+}
+
+.ag404 .ag404-title {
+  margin: 0;
+  color: var(--ag-ink);
+  font-family: var(--ag-font-sans);
+  font-size: clamp(2.1rem, 4.3vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.ag404 .ag404-title em {
+  padding-right: 0.06em;
+  color: var(--ag-accent);
+  font-family: var(--ag-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.ag404 .ag404-lede {
+  max-width: 28rem;
+  margin: 1.3rem 0 0;
+  color: var(--ag-ink-2);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.ag404 .ag404-note {
+  margin: 2.2rem 0 0;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1.6 var(--ag-font-mono);
+  letter-spacing: 0.04em;
+}
+
+.ag404 .ag404-note a {
+  color: var(--ag-ink-2);
+  text-decoration: underline;
+  text-decoration-color: var(--ag-line-strong);
+  text-underline-offset: 3px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.ag404 .ag404-note a:hover,
+.ag404 .ag404-note a:focus-visible {
+  color: var(--ag-ink);
+  text-decoration-color: var(--ag-accent);
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+.ag404 .ag404-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 26px; /* room for each button's drafting lines, so neighbours never touch */
+  margin-top: 1.8rem;
+}
+
+.ag404 .ag404-btn {
+  --sketch: var(--ag-line-strong);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 13px 22px;
+  border: 1px solid var(--ag-line-strong);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--ag-bg) 60%, transparent);
+  color: var(--ag-ink);
+  font: 600 0.78rem/1.25 var(--ag-font-sans);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s var(--ag-ease-out), background-color 0.25s, border-color 0.25s, color 0.25s;
+}
+
+.ag404 .ag404-btn[hidden] {
+  display: none;
+}
+
+/* Drafting lines: each edge runs a few pixels past the corner, like a tidied-up pencil sketch, and reaches further on hover */
+.ag404 .ag404-btn::before,
+.ag404 .ag404-btn::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  transition: inset 0.3s var(--ag-ease-out);
+}
+
+.ag404 .ag404-btn::before {
+  inset: -1px -7px;
+  border-block: 1px solid var(--sketch);
+}
+
+.ag404 .ag404-btn::after {
+  inset: -7px -1px;
+  border-inline: 1px solid var(--sketch);
+}
+
+.ag404 .ag404-btn:hover,
+.ag404 .ag404-btn:focus-visible {
+  border-color: var(--ag-ink-3);
+  color: var(--ag-ink);
+  transform: translateY(-2px);
+}
+
+.ag404 .ag404-btn:hover::before,
+.ag404 .ag404-btn:focus-visible::before {
+  inset: -1px -11px;
+}
+
+.ag404 .ag404-btn:hover::after,
+.ag404 .ag404-btn:focus-visible::after {
+  inset: -11px -1px;
+}
+
+.ag404 .ag404-btn:focus-visible {
+  outline: 2px solid var(--ag-accent);
+  outline-offset: 3px;
+}
+
+.ag404 .ag404-btn svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s var(--ag-ease-out);
+}
+
+.ag404 .ag404-btn--primary {
+  --sketch: var(--ag-accent);
+  border-color: transparent;
+  background: var(--ag-accent);
+  color: var(--ag-accent-ink);
+}
+
+.ag404 .ag404-btn--primary:hover,
+.ag404 .ag404-btn--primary:focus-visible {
+  border-color: transparent;
+  color: var(--ag-accent-ink);
+}
+
+.ag404 .ag404-btn--primary:hover svg {
+  transform: translateX(3px);
+}
+
+/* The search shortcut Material already listens for, shown as a small key */
+.ag404 .ag404-btn kbd {
+  margin-left: 2px;
+  padding: 2px 6px;
+  border: 1px solid var(--ag-line-strong);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--ag-ink-3);
+  font: 500 0.55rem/1.2 var(--ag-font-mono);
+  vertical-align: baseline;
+}
+
+/* ---------------------------------------------------------------- stage */
+
+/* The stage is the art plus its HUD and corner marks; it is also the size container the tiles measure themselves against */
+.ag404 .ag404-stage {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 640px;
+  margin: 40px 0 44px auto;
+  padding: 0;
+  background: radial-gradient(closest-side, var(--ag-glow), transparent);
+  container-type: inline-size;
+}
+
+.ag404 .ag404-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 0 solid var(--ag-accent);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.ag404 .ag404-corner--tl {
+  top: -10px;
+  left: -10px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.ag404 .ag404-corner--tr {
+  top: -10px;
+  right: -10px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.ag404 .ag404-corner--bl {
+  bottom: -10px;
+  left: -10px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.ag404 .ag404-corner--br {
+  right: -10px;
+  bottom: -10px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.ag404 .ag404-hud {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  margin: 0;
+  color: var(--ag-ink-3);
+  font: 500 10.5px/1 var(--ag-font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ag404 .ag404-hud--tl {
+  top: -34px;
+  left: 0;
+  max-width: 62%;
+}
+
+.ag404 .ag404-hud--tr {
+  top: -34px;
+  right: 0;
+}
+
+.ag404 .ag404-hud--bl {
+  bottom: -34px;
+  left: 0;
+}
+
+.ag404 .ag404-sep {
+  opacity: 0.5;
+}
+
+/* The requested path keeps its own case and gives way with an ellipsis when it is long */
+.ag404 .ag404-path {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ag-ink-2);
+  letter-spacing: 0.04em;
+  text-overflow: ellipsis;
+  text-transform: none;
+}
+
+.ag404 .ag404-rec {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: #c4553a;
+  animation: ag404-blink 1.6s steps(1) infinite;
+}
+
+/* ---------------------------------------------------------------- glyph tiles */
+
+/* One square cell per character of the map in 404.html; the glyph is sized from the cell, as in the landing's atlas */
+.ag404 .ag404-art {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  gap: calc(100cqi / var(--cols) * 0.14);
+}
+
+.ag404 .ag404-art i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  font: 600 calc(100cqi / var(--cols) * 0.72)/1 var(--ag-font-mono);
+  font-style: normal;
+  user-select: none;
+}
+
+.ag404 .ag404-art .l0 { background: var(--ag404-l0); color: var(--ag404-g0); }
+.ag404 .ag404-art .l1 { background: var(--ag404-l1); color: var(--ag404-g1); }
+.ag404 .ag404-art .l2 { background: var(--ag404-l2); color: var(--ag404-g2); }
+.ag404 .ag404-art .l3 { background: var(--ag404-l3); color: var(--ag404-g3); }
+.ag404 .ag404-art .l4 { background: var(--ag404-l4); color: var(--ag404-g4); }
+.ag404 .ag404-art .l5 { background: var(--ag404-l5); color: var(--ag404-g5); }
+.ag404 .ag404-art .l6 { background: var(--ag404-l6); color: var(--ag404-g6); }
+.ag404 .ag404-art .l7 { background: var(--ag404-l7); color: var(--ag404-g7); }
+.ag404 .ag404-art .l8 { background: var(--ag404-l8); color: var(--ag404-g8); }
+.ag404 .ag404-art .l9 { background: var(--ag404-l9); color: var(--ag404-g9); }
+.ag404 .ag404-art .l10 { background: var(--ag404-l10); color: var(--ag404-g10); }
+.ag404 .ag404-art .l11 { background: var(--ag404-l11); color: var(--ag404-g11); }
+
+/* ---------------------------------------------------------------- detection boxes */
+
+/* Boxes are placed in tile units (--x, --y, --w, --h on the element); a thin outline, heavier corner brackets (--b long) and a label tab, like the boxes in the landing hero */
+.ag404 .ag404-box {
+  --c: var(--ag-ink);
+  --k: var(--ag-bg);
+  --b: 12px;
+  position: absolute;
+  top: calc(var(--y) / var(--rows) * 100%);
+  left: calc(var(--x) / var(--cols) * 100%);
+  width: calc(var(--w) / var(--cols) * 100%);
+  height: calc(var(--h) / var(--rows) * 100%);
+  border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+  pointer-events: none;
+  animation: ag404-detect 0.45s var(--ag-ease-out) both;
+  animation-delay: calc(0.3s + 1.5s * var(--y) / var(--rows));
+}
+
+.ag404 .ag404-box--primary {
+  --c: var(--ag-accent);
+  --k: var(--ag-accent-ink);
+}
+
+.ag404 .ag404-box--empty {
+  --b: 7px;
+}
+
+.ag404 .ag404-box::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(var(--c), var(--c)) top left / var(--b) 2px, linear-gradient(var(--c), var(--c)) top left / 2px var(--b), linear-gradient(var(--c), var(--c)) top right / var(--b) 2px, linear-gradient(var(--c), var(--c)) top right / 2px var(--b), linear-gradient(var(--c), var(--c)) bottom left / var(--b) 2px, linear-gradient(var(--c), var(--c)) bottom left / 2px var(--b), linear-gradient(var(--c), var(--c)) bottom right / var(--b) 2px, linear-gradient(var(--c), var(--c)) bottom right / 2px var(--b);
+  background-repeat: no-repeat;
+}
+
+.ag404 .ag404-box::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 100%;
+  left: -1px;
+  padding: 4px 6px;
+  background: var(--c);
+  color: var(--k);
+  font: 600 10px/1 var(--ag-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* The scan line sweeps the stage now and then; boxes appear as it reaches their top edge */
+.ag404 .ag404-scan {
+  position: absolute;
+  top: 0;
+  right: -3%;
+  left: -3%;
+  height: 1px;
+  background: var(--ag-accent);
+  opacity: 0;
+  pointer-events: none;
+  animation: ag404-scan 8s cubic-bezier(0.45, 0, 0.55, 1) 0.3s infinite;
+}
+
+.ag404 .ag404-scan::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+  left: 0;
+  height: 44px;
+  background: linear-gradient(transparent, color-mix(in srgb, var(--ag-accent) 16%, transparent));
+}
+
+/* ---------------------------------------------------------------- motion */
+
+@keyframes ag404-scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  3% {
+    opacity: 0.9;
+  }
+  19% {
+    top: 100%;
+    opacity: 0.9;
+  }
+  23%,
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes ag404-detect {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes ag404-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ag404 .ag404-scan {
+    display: none;
+  }
+
+  .ag404 .ag404-box,
+  .ag404 .ag404-rec {
+    animation: none;
+  }
+
+  .ag404 .ag404-btn,
+  .ag404 .ag404-btn::before,
+  .ag404 .ag404-btn::after {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------- small screens */
+
+/* The stage moves above the copy, as on the landing page */
+@media (max-width: 900px) {
+  .ag404 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.6rem;
+    min-height: 0;
+    padding-block: 0.4rem 1.6rem;
+  }
+
+  .ag404 .ag404-stage {
+    order: -1;
+    max-width: 560px;
+    margin: 40px auto 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ag404 .ag404-hud--tr {
+    display: none;
+  }
+
+  .ag404 .ag404-hud--tl {
+    max-width: 100%;
+  }
+
+  .ag404 .ag404-cta {
+    gap: 16px 22px;
+  }
+
+  .ag404 .ag404-btn {
+    padding: 12px 18px;
+  }
+
+  .ag404 .ag404-box::after {
+    padding: 3px 4px;
+    font-size: 8.5px;
+  }
+}

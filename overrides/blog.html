@@ -1,0 +1,72 @@
+{#-
+  Blog views (index, archive, categories) in the style of the landing page's "Latest notes": a header, an index bar, then posts as a grid of note cards (partials/post.html). Based on Material's blog.html.
+-#}
+{% extends "main.html" %}
+
+{#- Views have no headings worth a table of contents, so that column goes to the cards -#}
+{% block site_nav %}
+  {% if page.meta is mapping and "toc" not in (page.meta.hide or []) %}
+    {% set _ = page.meta.update({ "hide": (page.meta.hide or []) + ["toc"] }) %}
+  {% endif %}
+  {{ super() }}
+{% endblock %}
+
+{% block container %}
+  {#- Paginated views share `posts` and `pages` with their first page -#}
+  {% set kind = page.__class__.__name__ %}
+  {% set total = page.posts | length %}
+  {% set pages = page.pages | length if page.pages else 1 %}
+  {% set current = page.pages.index(page) + 1 if page.pages and page in page.pages else 1 %}
+  {#- Archive and category views are generated with just "# <name>", and later pages of a view only get its title; give both a proper header unless the author wrote their own -#}
+  {% set generated = kind in ["Archive", "Category"] and (page.content | striptags | replace("¶", "") | trim) == page.title %}
+  {% set page_no = " / Page " ~ ("%02d" | format(current)) if current > 1 else "" %}
+  <div class="md-content blog-view blog-view--{{ kind | lower }}" data-md-component="content">
+    <div class="md-content__inner">
+      <header class="md-typeset blog-head">
+        {% if generated %}
+          <p class="blog-eyebrow"><strong>03</strong> / Field notes / {{ "Category" if kind == "Category" else "Archive" }}{{ page_no }}</p>
+          <h1>{{ "Notes on" if kind == "Category" else "Written in" }} <em>{{ page.title }}</em></h1>
+          <p class="blog-lede">
+            {%- if kind == "Category" -%}
+              Every note filed under {{ page.title }}, newest first.
+            {%- else -%}
+              Everything I wrote in {{ page.title }}, newest first.
+            {%- endif -%}
+          </p>
+        {% elif kind == "View" and current > 1 %}
+          <p class="blog-eyebrow"><strong>03</strong> / Field notes{{ page_no }}</p>
+          <h1>Older <em>notes.</em></h1>
+          <p class="blog-lede">Page {{ current }} of {{ pages }} of everything I have written, newest first.</p>
+        {% else %}
+          {{ page.content }}
+        {% endif %}
+      </header>
+      <div class="blog-bar">
+        <p class="blog-bar__count">
+          <span class="blog-bar__dot" aria-hidden="true"></span>
+          {{ total }} {{ "note" if total == 1 else "notes" }} indexed
+        </p>
+        <p class="blog-bar__aside">
+          {% if pages > 1 %}
+            <span>Page {{ "%02d" | format(current) }} / {{ "%02d" | format(pages) }}</span>
+          {% endif %}
+          {% if "rss" in config.plugins %}
+            <a class="blog-bar__feed" href="{{ 'feed_rss_created.xml' | url }}">RSS <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          {% endif %}
+        </p>
+      </div>
+      {% if posts %}
+        <ol class="blog-notes">
+          {% for post in posts %}
+            {% include "partials/post.html" %}
+          {% endfor %}
+        </ol>
+      {% endif %}
+      {% if pagination %}
+        {% block pagination %}
+          {% include "partials/pagination.html" %}
+        {% endblock %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,5 +1,10 @@
+# Blog authors. Posts without an `authors:` key fall back to `agfian` in overrides/blog-post.html and overrides/partials/post.html.
 authors:
-  me:
+  agfian: &agfian
     name: M Agfian
     description: AI Engineer
-    avatar: https://github.com/agfianf.png
+    # Site-relative: Material runs avatars and author links through the `url` filter, so they resolve from any page depth
+    avatar: assets/profile.jpeg
+    url: about/
+  # Published posts already say `authors: [me]`; keep that id pointing at the same person
+  me: *agfian

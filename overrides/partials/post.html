@@ -1,0 +1,82 @@
+{#-
+  Excerpt card on blog views, modelled on the landing page's .note card. The title link is stretched over the whole card, so the category and tag links can sit on top of it without nesting links. Based on Material's partials/post.html.
+-#}
+{%- set source = post.post if post.post is defined else post -%}
+{%- set category = post.categories | first -%}
+{#- `loop` does not reach included templates, but `posts` (this page's excerpts) does; compare by identity, since Page.__eq__ needs a title that excerpts lack -#}
+{%- set position = namespace(index = 0) -%}
+{%- for other in (posts or []) -%}
+  {%- if other is sameas post -%}{%- set position.index = loop.index0 -%}{%- endif -%}
+{%- endfor -%}
+{%- set index = position.index -%}
+
+{#- Excerpts without a separator are the whole post, so take the first real paragraph (60+ characters, not an admonition title) as plain text -#}
+{%- set ns = namespace(text = "", first = "") -%}
+{%- for chunk in post.content.split("<p>")[1:] -%}
+  {%- set text = (chunk.split("</p>") | first | striptags | trim) -%}
+  {%- if text and not ns.first -%}{%- set ns.first = text -%}{%- endif -%}
+  {%- if not ns.text and text | length >= 60 -%}{%- set ns.text = text -%}{%- endif -%}
+{%- endfor -%}
+{%- set excerpt = ns.text or ns.first -%}
+
+{#- Tags in front matter order, minus any that repeat a category; links come from the tags plugin when it is enabled -#}
+{%- set tag_ns = namespace(urls = {}, shown = []) -%}
+{%- set tags_plugin = config.plugins.get("material/tags") -%}
+{%- if tags_plugin and tags_plugin.listings and tags_plugin.mappings -%}
+  {%- set mapping = tags_plugin.mappings.get(source) -%}
+  {%- if mapping -%}
+    {%- for ref in tags_plugin.listings.__and__(mapping) -%}
+      {%- set _ = tag_ns.urls.update({ ref.name: ref.url }) -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endif -%}
+{%- set category_names = post.categories | map(attribute = "title") | map("lower") | list -%}
+{%- for tag in (post.meta.tags or []) -%}
+  {%- if tag | lower not in category_names and tag_ns.shown | length < 3 -%}
+    {%- set tag_ns.shown = tag_ns.shown + [tag] -%}
+  {%- endif -%}
+{%- endfor -%}
+
+<li class="blog-notes__item">
+  <article class="blog-note" data-label="{{ category.title if category else 'note' }} {{ '%.2f' | format(0.98 - (index % 12) * 0.03) }}">
+    <p class="blog-note__meta">
+      <time datetime="{{ post.config.date.created }}">
+        {{- post.config.date.created | date -}}
+      </time>
+      {% if post.config.readtime %}
+        <span>{{ post.config.readtime }} min read</span>
+      {% endif %}
+      {% if category %}
+        <a class="blog-note__category" href="{{ category.url | url }}">
+          {{- category.title -}}
+        </a>
+      {% endif %}
+      {% if post.config.pin %}
+        <span class="blog-note__badge">Pinned</span>
+      {% endif %}
+      {% if post.config.draft %}
+        <span class="blog-note__badge blog-note__badge--draft">
+          {{- lang.t("blog.draft") -}}
+        </span>
+      {% endif %}
+    </p>
+    <h2 class="blog-note__title">
+      <a class="blog-note__link" href="{{ post.url | url }}">{{ source.title }}</a>
+    </h2>
+    {% if excerpt %}
+      <p class="blog-note__excerpt">{{ excerpt | truncate(260, false, "…", 0) | e }}</p>
+    {% endif %}
+    {% if tag_ns.shown %}
+      <p class="blog-note__tags">
+        {% for tag in tag_ns.shown %}
+          {% if tag_ns.urls[tag] %}
+            <a class="blog-note__tag" href="{{ tag_ns.urls[tag] | url }}">#{{ tag }}</a>
+          {% else %}
+            <span class="blog-note__tag">#{{ tag }}</span>
+          {% endif %}
+        {% endfor %}
+      </p>
+    {% endif %}
+    <svg class="blog-note__go" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+  </article>
+</li>

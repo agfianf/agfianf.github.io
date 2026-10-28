@@ -1,135 +1,1343 @@
-:root {
-    --color-green-dark: #1B9533; /* Warna hijau gelap */
-    --color-green-light: #55D027; /* Warna hijau muda */
+/* Global look for the blog, matched to the landing page (docs/assets/landing/landing.css): square corners, hairline borders, drafting lines on buttons, mono eyebrows and the earth palette from tokens.css. The blog index, post header and 404 page are styled in blog.css and 404.css. */
+
+/* ---------------------------------------------------------------- base */
+
+/* Material sets the scheme on <body>; this hands it to the root as well, so the page scrollbar follows the theme */
+html:has(> body[data-md-color-scheme="slate"]) {
+  color-scheme: dark;
 }
 
-/* Warna link umum */
-a {
-    color: var(--color-green-dark); /* Warna hijau gelap */
+html:has(> body[data-md-color-scheme="default"]) {
+  color-scheme: light;
 }
 
-a:hover {
-    color: var(--color-green-light); /* Warna hijau muda saat hover */
+::selection {
+  background-color: color-mix(in srgb, var(--ag-accent) 30%, transparent);
 }
 
-/* Warna link di konten MkDocs */
-.md-typeset a {
-    color: var(--color-green-dark); /* Warna hijau gelap */
+/* Survey grid behind the top of every page, fading out before the reading starts, like the landing hero */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: -1;
+  height: 32rem;
+  pointer-events: none;
+  background-image: linear-gradient(var(--ag-grid) 1px, transparent 1px), linear-gradient(90deg, var(--ag-grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(#000, transparent);
+  mask-image: linear-gradient(#000, transparent);
 }
 
-.md-typeset a:hover {
-    color: var(--color-green-light); /* Warna hijau muda saat hover */
+.md-progress {
+  background: var(--ag-accent);
 }
 
+/* ---------------------------------------------------------------- header */
 
-/* Warna link di TOC */
+/* Translucent page colour with a blur, as on the landing nav. The blur sits on a pseudo-element because backdrop-filter on the header itself would trap the fixed-position search panel inside it. */
+.md-header {
+  background-color: transparent;
+  color: var(--ag-ink);
+  box-shadow: 0 1px 0 transparent;
+  transition: box-shadow 0.3s, transform 0.25s cubic-bezier(0.1, 0.7, 0.1, 1);
+}
+
+.md-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: color-mix(in srgb, var(--ag-bg) 74%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  transition: background-color 0.35s;
+}
+
+/* Material adds this once the page scrolls under the header; a hairline instead of a shadow */
+.md-header--shadow {
+  box-shadow: 0 1px 0 var(--ag-line);
+}
+
+.md-header__button {
+  color: var(--ag-ink-2);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.md-header__button:hover {
+  opacity: 1;
+  background-color: var(--ag-chip);
+  color: var(--ag-ink);
+}
+
+.md-header__button.md-logo {
+  padding: 0.2rem;
+}
+
+.md-header__button.md-logo:hover {
+  background-color: transparent;
+}
+
+/* The logo file has wide margins; cropping it square makes the bolt read at header size */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  width: 1.6rem;
+  height: 1.6rem;
+  object-fit: cover;
+}
+
+[dir="ltr"] .md-header__title {
+  margin-left: 0.5rem;
+}
+
+.md-header__title {
+  font-size: 0.8rem;
+  letter-spacing: -0.01em;
+}
+
+.md-header__topic:first-child {
+  font-weight: 700;
+}
+
+.md-header__topic + .md-header__topic {
+  color: var(--ag-ink-2);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- tabs */
+
+.md-tabs {
+  background-color: transparent;
+  color: var(--ag-ink-2);
+  box-shadow: inset 0 -1px 0 var(--ag-line);
+}
+
+.md-tabs__item {
+  position: relative;
+  padding-inline: 0.7rem;
+}
+
+.md-tabs__item:first-child {
+  padding-left: 0.6rem;
+}
+
+/* The active tab is marked with an accent rule sitting on the bar's hairline; hovering shows a quieter one */
+.md-tabs__item::after {
+  content: "";
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0;
+  left: 0.7rem;
+  height: 2px;
+  background-color: transparent;
+  transition: background-color 0.2s;
+}
+
+.md-tabs__item:first-child::after {
+  left: 0.6rem;
+}
+
+.md-tabs__item:hover::after {
+  background-color: var(--ag-line-strong);
+}
+
+.md-tabs__item--active::after,
+.md-tabs__item--active:hover::after {
+  background-color: var(--ag-accent);
+}
+
+.md-tabs[hidden] .md-tabs__item::after {
+  opacity: 0;
+}
+
+.md-tabs__link {
+  margin-top: 0.75rem;
+  color: var(--ag-ink-2);
+  font-size: 0.7rem;
+  font-weight: 500;
+  opacity: 1;
+  transition: transform 0.4s cubic-bezier(0.1, 0.7, 0.1, 1), opacity 0.25s, color 0.2s;
+}
+
+.md-tabs__link:hover,
+.md-tabs__link:focus {
+  color: var(--ag-ink);
+}
+
+.md-tabs__item--active .md-tabs__link {
+  color: var(--ag-ink);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- search */
+
+.md-search__input::placeholder {
+  color: var(--ag-ink-3);
+}
+
+.md-search__scrollwrap {
+  background-color: var(--ag-bg-raise);
+}
+
+.md-search-result__meta {
+  background-color: var(--ag-chip);
+  color: var(--ag-ink-3);
+  font-family: var(--ag-font-mono);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.md-search-result__item {
+  box-shadow: 0 -1px var(--ag-line);
+}
+
+/* Results get the accent marker of an active nav item when hovered or reached with the keyboard */
+.md-search-result__link:hover,
+.md-search-result__link:focus {
+  background-color: var(--ag-chip);
+  box-shadow: inset 2px 0 0 var(--ag-accent);
+}
+
+.md-search-result__icon {
+  color: var(--ag-ink-3);
+}
+
+.md-search-result .md-typeset {
+  color: var(--ag-ink-2);
+}
+
+.md-search-result .md-typeset h1 {
+  color: var(--ag-ink);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.md-search-result .md-typeset h2 {
+  color: var(--ag-ink);
+}
+
+.md-search-result mark {
+  color: var(--ag-accent);
+  text-decoration-color: color-mix(in srgb, var(--ag-accent) 50%, transparent);
+  text-underline-offset: 0.2em;
+}
+
+.md-search-result__more > summary > div {
+  color: var(--md-typeset-a-color);
+  font-family: var(--ag-font-mono);
+  font-size: 0.58rem;
+}
+
+.md-search-result__more > summary:hover > div,
+.md-search-result__more > summary:focus > div {
+  background-color: var(--ag-chip);
+}
+
+.md-search-result__more[open] > summary {
+  background-color: var(--ag-bg-raise);
+}
+
+@media screen and (max-width: 59.984375em) {
+  .md-search__form {
+    background-color: var(--ag-bg);
+    box-shadow: inset 0 -1px 0 var(--ag-line);
+  }
+
+  .md-search__scrollwrap {
+    background-color: var(--ag-bg);
+  }
+
+  .md-search__overlay {
+    background-color: var(--ag-bg);
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-search__form,
+  .md-search__form:hover {
+    border-radius: 0;
+    background-color: var(--ag-chip);
+    box-shadow: inset 0 0 0 1px var(--ag-line);
+    transition: box-shadow 0.2s, background-color 0.25s;
+  }
+
+  .md-search__form:hover {
+    box-shadow: inset 0 0 0 1px var(--ag-line-strong);
+  }
+
+  .md-search__input + .md-search__icon {
+    color: var(--ag-ink-3);
+  }
+
+  /* The "/" key Material already listens for, shown as a small key cap while the box is closed */
+  .md-search__form::after {
+    content: "/";
+    position: absolute;
+    top: 50%;
+    right: 0.45rem;
+    padding: 0.15rem 0.35rem;
+    border: 1px solid var(--ag-line-strong);
+    color: var(--ag-ink-3);
+    font: 500 0.55rem/1 var(--ag-font-mono);
+    pointer-events: none;
+    transform: translateY(-50%);
+    transition: opacity 0.2s;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    border-radius: 0;
+    background-color: var(--ag-bg-raise);
+    box-shadow: inset 0 0 0 1px var(--ag-line-strong);
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form::after {
+    opacity: 0;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__output {
+    border-radius: 0;
+    box-shadow: 0 0 0 1px var(--ag-line-strong), var(--ag-shadow);
+  }
+
+  .md-search__overlay {
+    background-color: color-mix(in srgb, var(--ag-bg-sunk) 72%, transparent);
+  }
+}
+
+/* ---------------------------------------------------------------- sidebars */
+
+.md-sidebar__scrollwrap {
+  scrollbar-color: var(--ag-line-strong) transparent;
+}
+
 .md-nav__link {
-    color: var(--color-green-dark); /* Warna hijau gelap */
+  color: var(--ag-ink-2);
 }
 
-.md-nav__link:hover {
-    color: var(--color-green-light); /* Warna hijau muda saat hover */
+.md-nav__link[for]:hover,
+.md-nav__link[for]:focus,
+.md-nav__link[href]:hover,
+.md-nav__link[href]:focus {
+  color: var(--ag-ink);
 }
 
-/* Warna link di sidebar */
-.md-nav__item .md-nav__link {
-    color: var(--color-green-dark); /* Warna hijau gelap */
-    
+.md-nav__item .md-nav__link--active,
+.md-nav__item .md-nav__link--active code {
+  color: var(--ag-ink);
 }
 
-.md-nav__item .md-nav__link:hover {
-    color: var(--color-green-light) !important; /* Warna hijau muda saat hover */
+.md-nav__link--passed {
+  color: var(--ag-ink-3);
 }
 
-/* Warna tag */
-.md-tags {
-    color: var(--color-green-dark); /* Warna hijau gelap */
-    background-color: rgba(27, 149, 51, 0.0); /* Background transparan */
-    border-color: var(--color-green-dark); /* Border warna hijau */
+/* Table of contents: a hairline rail per level, the section you are reading marked on it in the accent */
+@media screen and (min-width: 60em) {
+  .md-nav--secondary .md-nav__title {
+    padding-bottom: 0.5rem;
+    color: var(--ag-ink-3);
+    font: 500 0.55rem/1.6 var(--ag-font-mono);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .md-nav--secondary .md-nav__title::before {
+    content: "";
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin: 0 0.6em 0.15em 0;
+    background-color: var(--ag-accent);
+    vertical-align: middle;
+  }
+
+  .md-sidebar--secondary .md-nav--secondary > .md-nav__list {
+    margin-left: 0.6rem;
+    padding-left: 0;
+    border-left: 1px solid var(--ag-line);
+  }
+
+  .md-sidebar--secondary .md-nav--secondary .md-nav .md-nav__list {
+    margin-left: 0.7rem;
+    padding: 0;
+    border-left: 1px solid var(--ag-line);
+  }
+
+  /* Material pulls nested lists up by the bottom padding they no longer have here */
+  .md-sidebar--secondary .md-nav--secondary .md-nav {
+    margin-bottom: 0;
+  }
+
+  .md-sidebar--secondary .md-nav__link {
+    position: relative;
+    margin-top: 0;
+    padding: 0.28rem 0 0.28rem 0.7rem;
+    transition: color 0.2s;
+  }
+
+  .md-sidebar--secondary .md-nav__link--active::before {
+    content: "";
+    position: absolute;
+    top: 0.28rem;
+    bottom: 0.28rem;
+    left: -1px;
+    width: 2px;
+    background-color: var(--ag-accent);
+  }
 }
 
-.md-tags .md-tag:hover {
-    color: var(--color-green-dark) !important; /* Warna hijau gelap */
-    background-color: rgba(27, 149, 51, 0.2) !important; /* Background transparan */
-    border-color: var(--color-green-light) !important; /* Border warna hijau muda saat hover */
+/* Left navigation on wide screens: section names as mono eyebrows, the current page marked like the table of contents */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-nav__item--section > .md-nav__link {
+    color: var(--ag-ink-3);
+    font: 500 0.55rem/1.6 var(--ag-font-mono);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .md-sidebar--primary .md-nav__link {
+    position: relative;
+  }
+
+  .md-sidebar--primary .md-nav__link--active {
+    font-weight: 600;
+  }
+
+  .md-sidebar--primary .md-nav__link--active::before {
+    content: "";
+    position: absolute;
+    top: 0.1em;
+    bottom: 0.1em;
+    left: -0.6rem;
+    width: 2px;
+    background-color: var(--ag-accent);
+  }
 }
 
-/* Timeline Blog catergory details Post */
-.md-meta__item a.md-meta__link {
-    color: var(--color-green-dark); /* Warna hijau gelap untuk link */
-    text-decoration: none; /* Menghilangkan garis bawah pada link */
+/* The drawer on narrower screens keeps Material's layout in the site's colours */
+@media screen and (max-width: 76.234375em) {
+  .md-nav--primary .md-nav__title {
+    background-color: var(--ag-chip);
+    color: var(--ag-ink-2);
+  }
+
+  .md-nav--primary .md-nav__title[for="__drawer"] {
+    background-color: var(--ag-bg-raise);
+    color: var(--ag-ink);
+    box-shadow: inset 0 -1px 0 var(--ag-line);
+  }
+
+  .md-nav--primary .md-nav__item {
+    border-top-color: var(--ag-line);
+  }
+
+  .md-nav--primary .md-nav__item--active > .md-nav__link {
+    color: var(--ag-ink);
+  }
+
+  .md-nav--primary .md-nav__link--active {
+    box-shadow: inset 2px 0 0 var(--ag-accent);
+  }
 }
 
-.md-meta__item a.md-meta__link:hover {
-    color: var(--color-green-light); /* Warna hijau muda saat hover */
-    text-decoration: underline; /* (Opsional) Tambahkan garis bawah saat hover */
+.md-overlay {
+  background-color: color-mix(in srgb, var(--ag-bg-sunk) 70%, transparent);
 }
 
+/* ---------------------------------------------------------------- typography */
 
-/* sidebar catergory hover in */
-.md-ellipsis a {
-    color: var(--color-green-dark); /* Warna hijau gelap untuk link */
-    text-decoration: none; /* Menghilangkan garis bawah pada link */
+.md-typeset {
+  line-height: 1.72;
 }
 
-.md-ellipsis a:hover {
-    color: var(--color-green-light) !important; /* Warna hijau muda saat hover */
-    text-decoration: underline; /* (Opsional) Tambahkan garis bawah saat hover */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4 {
+  color: var(--ag-ink);
 }
 
-/* Warna link di footer */
+.md-typeset h1 {
+  margin: 0 0 1em;
+  font-size: clamp(1.8em, 1.2em + 1.6vw, 2.35em);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.md-typeset h2 {
+  margin: 2.2em 0 0.75em;
+  font-size: 1.5em;
+  font-weight: 800;
+  line-height: 1.22;
+  letter-spacing: -0.03em;
+}
+
+/* Top-level sections open with a hairline and a short accent tick, like the landing's section rules */
+.md-content__inner > h2 {
+  padding-top: 1.1em;
+  background-image: linear-gradient(var(--ag-accent), var(--ag-accent)), linear-gradient(var(--ag-line), var(--ag-line));
+  background-position: 0 0, 0 0;
+  background-repeat: no-repeat;
+  background-size: 1.6rem 2px, 100% 1px;
+}
+
+.md-typeset h3 {
+  margin: 1.9em 0 0.6em;
+  font-size: 1.22em;
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -0.02em;
+}
+
+.md-typeset h2 + h3 {
+  margin-top: 0.9em;
+}
+
+.md-typeset h4 {
+  margin: 1.6em 0 0.5em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* h5 and h6 read as eyebrows */
+.md-typeset h5,
+.md-typeset h6 {
+  color: var(--ag-ink-3);
+  font-family: var(--ag-font-mono);
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* An emphasised word in a big heading becomes the landing's serif accent */
+.md-typeset h1 em,
+.md-typeset h2 em {
+  padding-right: 0.06em;
+  color: var(--ag-accent);
+  font-family: var(--ag-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.md-typeset .headerlink {
+  color: var(--ag-ink-3);
+  font-family: var(--ag-font-mono);
+  font-weight: 400;
+}
+
+.md-typeset strong {
+  color: var(--ag-ink);
+}
+
+.md-typeset a strong {
+  color: inherit;
+}
+
+/* Prose links in the content column: leaf green with a quiet underline that firms up on hover; classed links (tags, buttons, lightbox images) are left alone */
+.md-content__inner a:not([class]) {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentcolor 38%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.md-content__inner a:not([class]):hover,
+.md-content__inner a:not([class]):focus-visible {
+  text-decoration-color: currentcolor;
+}
+
+.md-typeset a.focus-visible,
+.md-typeset a:focus-visible {
+  outline: 2px solid var(--ag-accent);
+  outline-offset: 3px;
+}
+
+.md-typeset ul {
+  list-style-type: square;
+}
+
+.md-typeset ul ul {
+  list-style-type: "– ";
+}
+
+.md-typeset ul ul ul {
+  list-style-type: square;
+}
+
+.md-typeset li::marker {
+  color: var(--ag-ink-3);
+}
+
+.md-typeset ol > li::marker {
+  font-family: var(--ag-font-mono);
+  font-size: 0.86em;
+}
+
+.md-typeset dt {
+  color: var(--ag-ink);
+  font-weight: 700;
+}
+
+[dir="ltr"] .md-typeset blockquote {
+  padding-left: 1rem;
+  border-left: 2px solid var(--ag-leaf);
+}
+
+.md-typeset blockquote {
+  color: var(--ag-ink-2);
+}
+
+/* A dimension line: a hairline with a short tick at each end */
+.md-typeset hr {
+  position: relative;
+  height: 1px;
+  margin: 2.4em 0;
+  overflow: visible;
+  border: 0;
+  background-color: var(--ag-line-strong);
+}
+
+.md-typeset hr::before,
+.md-typeset hr::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background-color: var(--ag-line-strong);
+}
+
+.md-typeset hr::before {
+  left: 0;
+}
+
+.md-typeset hr::after {
+  right: 0;
+}
+
+.md-typeset mark {
+  padding: 0 0.15em;
+  border-radius: 0;
+  color: inherit;
+}
+
+.md-typeset kbd {
+  padding: 0 0.5em;
+  border: 1px solid var(--ag-line-strong);
+  border-bottom-width: 2px;
+  border-radius: 0;
+  background-color: var(--ag-bg-raise);
+  box-shadow: none;
+  color: var(--ag-ink);
+  font-family: var(--ag-font-mono);
+  font-weight: 500;
+}
+
+.md-typeset abbr[title] {
+  border-bottom: 1px dotted var(--ag-ink-3);
+  text-decoration: none;
+}
+
+.md-typeset img {
+  border-radius: 0;
+}
+
+/* Pictures in posts sit in a detached hairline frame, like a plate in a drawing */
+.md-typeset .glightbox img,
+.md-typeset figure img {
+  outline: 1px solid var(--ag-line);
+  outline-offset: 4px;
+}
+
+.md-typeset figcaption {
+  max-width: none;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1.6 var(--ag-font-mono);
+  font-style: normal;
+  letter-spacing: 0.04em;
+}
+
+.md-typeset .footnote {
+  color: var(--ag-ink-2);
+  font-size: 0.7rem;
+}
+
+.md-typeset .footnote-ref {
+  font-family: var(--ag-font-mono);
+  font-weight: 600;
+}
+
+.md-typeset .footnote-ref::before {
+  content: "[";
+}
+
+.md-typeset .footnote-ref::after {
+  content: "]";
+}
+
+/* Page dates and contributors under the content, set like the landing's mono meta */
+.md-source-file__fact {
+  color: var(--ag-ink-3);
+  font-family: var(--ag-font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+}
+
+/* ---------------------------------------------------------------- code */
+
+.md-typeset code,
+.md-typeset pre > code {
+  border-radius: 0;
+}
+
+/* Inline code: a hairline box on a faint chip */
+.md-typeset :not(pre) > code {
+  padding: 0.08em 0.35em;
+  background-color: var(--ag-chip);
+  box-shadow: inset 0 0 0 1px var(--ag-line);
+  font-size: 0.84em;
+}
+
+.md-typeset a > code {
+  color: inherit;
+}
+
+.md-typeset pre > code {
+  padding: 0.95em 1.2em;
+  border: 1px solid var(--ag-line);
+  box-shadow: none;
+  scrollbar-color: var(--ag-line-strong) transparent;
+}
+
+/* File name bar: mono, with a short accent tab on its left edge */
+.md-typeset .highlight span.filename {
+  padding: 0.6em 1.2em;
+  border: 1px solid var(--ag-line);
+  border-radius: 0;
+  box-shadow: inset 2px 0 0 var(--ag-accent);
+  color: var(--ag-ink-2);
+  font-family: var(--ag-font-mono);
+  font-weight: 500;
+}
+
+.md-typeset .highlight span.filename + pre > code {
+  border-top: 0;
+}
+
+/* With line numbers, the whole table carries the frame */
+.md-typeset .highlighttable {
+  border: 1px solid var(--ag-line);
+}
+
+.md-typeset .highlighttable pre > code,
+.md-typeset .highlighttable span.filename {
+  border: 0;
+}
+
+.md-typeset .highlighttable th.filename span.filename {
+  border-bottom: 1px solid var(--ag-line);
+}
+
+.highlighttable .linenos {
+  border-radius: 0;
+}
+
+/* Line-number anchors are bare links; keep the prose underline off them */
+.md-typeset .highlight a {
+  text-decoration: none;
+}
+
+.highlighttable .linenodiv {
+  box-shadow: inset -1px 0 var(--ag-line);
+}
+
+.highlighttable .linenodiv pre,
+.highlight [data-linenos]::before {
+  color: var(--ag-ink-3);
+}
+
+.md-code__nav {
+  border-radius: 0;
+}
+
+.md-code__button {
+  color: var(--ag-ink-3);
+}
+
+.md-code__button:hover,
+.md-code__button.focus-visible {
+  color: var(--ag-accent);
+}
+
+.md-clipboard {
+  border-radius: 0;
+  color: var(--ag-ink-3);
+}
+
+/* Annotation markers and task boxes as squares instead of circles */
+:root {
+  --md-annotation-bg-icon: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M3 3h18v18H3z'/></svg>");
+  --md-annotation-icon: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M3 3h18v18H3zm8 4v4H7v2h4v4h2v-4h4v-2h-4V7z'/></svg>");
+  --md-tasklist-icon: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M3 3h18v18H3zm2 2v14h14V5z'/></svg>");
+  --md-tasklist-icon--checked: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill-rule='evenodd' d='M3 3h18v18H3zm14.3 5.3-1.4-1.4-5.4 5.4-2.4-2.4-1.4 1.4 3.8 3.8z'/></svg>");
+}
+
+.md-annotation__index::after {
+  background-color: var(--ag-ink-3);
+}
+
+.md-tooltip {
+  border-radius: 0;
+  background-color: var(--ag-bg-raise);
+  box-shadow: 0 0 0 1px var(--ag-line-strong), var(--ag-shadow);
+}
+
+/* ---------------------------------------------------------------- admonitions */
+
+/* One colour per type, toned to the earth palette; warning, failure and danger stay warm and clearly apart */
+[data-md-color-scheme="slate"] {
+  --adm-note: #8aabba;
+  --adm-abstract: #a3ad97;
+  --adm-info: #7fb7a8;
+  --adm-tip: var(--ag-accent);
+  --adm-success: var(--ag-leaf);
+  --adm-question: #c9b06b;
+  --adm-warning: #e3a33f;
+  --adm-failure: #e2805e;
+  --adm-danger: #ec5a4f;
+  --adm-bug: #d47f9c;
+  --adm-example: #a996c9;
+  --adm-quote: var(--ag-ink-3);
+}
+
+[data-md-color-scheme="default"] {
+  --adm-note: #3d6577;
+  --adm-abstract: #5b6650;
+  --adm-info: #2f6f62;
+  --adm-tip: #5f7a10;
+  --adm-success: var(--ag-accent);
+  --adm-question: #8a6b1c;
+  --adm-warning: #a8640c;
+  --adm-failure: #b0482a;
+  --adm-danger: #b3261e;
+  --adm-bug: #a23d64;
+  --adm-example: #6a4f96;
+  --adm-quote: var(--ag-ink-3);
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  --adm: var(--adm-note);
+  margin: 1.75em 0;
+  padding: 0 0.9rem;
+  border-radius: 0;
+  background-color: var(--md-admonition-bg-color);
+  font-size: 0.72rem;
+  line-height: 1.68;
+}
+
+.md-typeset .admonition.note, .md-typeset details.note { --adm: var(--adm-note); }
+.md-typeset .admonition.abstract, .md-typeset details.abstract { --adm: var(--adm-abstract); }
+.md-typeset .admonition.info, .md-typeset details.info { --adm: var(--adm-info); }
+.md-typeset .admonition.tip, .md-typeset details.tip { --adm: var(--adm-tip); }
+.md-typeset .admonition.success, .md-typeset details.success { --adm: var(--adm-success); }
+.md-typeset .admonition.question, .md-typeset details.question { --adm: var(--adm-question); }
+.md-typeset .admonition.warning, .md-typeset details.warning { --adm: var(--adm-warning); }
+.md-typeset .admonition.failure, .md-typeset details.failure { --adm: var(--adm-failure); }
+.md-typeset .admonition.danger, .md-typeset details.danger { --adm: var(--adm-danger); }
+.md-typeset .admonition.bug, .md-typeset details.bug { --adm: var(--adm-bug); }
+.md-typeset .admonition.example, .md-typeset details.example { --adm: var(--adm-example); }
+.md-typeset .admonition.quote, .md-typeset details.quote { --adm: var(--adm-quote); }
+
+/* The rules below carry colour for every type at once. The leading :root lifts them to the weight of Material's per-type rules (.md-typeset .admonition.tip and friends), so they win by coming later. */
+:root .md-typeset :is(.admonition, details) {
+  border: 1px solid var(--ag-line);
+  border-left: 2px solid var(--adm);
+  box-shadow: none;
+}
+
+:root .md-typeset :is(.admonition, details):focus-within {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--adm) 16%, transparent);
+}
+
+:root .md-typeset :is(.admonition, details) > :is(.admonition-title, summary) {
+  margin: 0 -0.9rem;
+  padding: 0.5rem 2rem 0.5rem 2.15rem;
+  border-bottom: 1px solid var(--ag-line);
+  border-radius: 0;
+  background-color: color-mix(in srgb, var(--adm) 7%, transparent);
+  color: var(--ag-ink);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+:root .md-typeset :is(.admonition, details) > :is(.admonition-title, summary):last-child,
+:root .md-typeset details:not([open]) > summary {
+  border-bottom: 0;
+}
+
+:root .md-typeset :is(.admonition, details) > :is(.admonition-title, summary)::before {
+  top: 0.62rem;
+  left: 0.8rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  background-color: var(--adm);
+}
+
+:root .md-typeset :is(.admonition, details) > summary::after {
+  top: 0.6rem;
+  right: 0.6rem;
+  color: var(--ag-ink-3);
+}
+
+:root .md-typeset :is(.admonition, details) > summary:hover::after {
+  color: var(--ag-ink);
+}
+
+/* Body copy keeps clear of the title row */
+.md-typeset .admonition > :is(.admonition-title, summary) + *,
+.md-typeset details > summary + * {
+  margin-top: 0.8rem;
+}
+
+/* ---------------------------------------------------------------- tables */
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--ag-line-strong);
+  border-radius: 0;
+  background-color: transparent;
+  font-size: 0.7rem;
+}
+
+.md-typeset table:not([class]) th {
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--ag-line-strong);
+  background-color: var(--ag-chip);
+  color: var(--ag-ink-2);
+  font-family: var(--ag-font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.md-typeset table:not([class]) td {
+  padding: 0.6rem 0.9rem;
+  border-top: 1px solid var(--ag-line);
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+  background-color: var(--ag-chip);
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------- content tabs */
+
+.md-typeset .tabbed-set {
+  border-radius: 0;
+}
+
+.md-typeset .tabbed-labels {
+  box-shadow: inset 0 -1px 0 var(--ag-line);
+}
+
+.md-typeset .tabbed-labels > label {
+  padding: 0.8em 1.15em 0.7em;
+  border-radius: 0;
+  color: var(--ag-ink-3);
+  font-size: 0.66rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+
+.md-typeset .tabbed-labels > label:hover {
+  color: var(--ag-ink);
+}
+
+/* Linked labels (content.tabs.link) are anchors; they should not pick up the prose underline */
+.md-typeset .tabbed-labels > label > a {
+  text-decoration: none;
+}
+
+.js .md-typeset .tabbed-labels::before {
+  background: var(--ag-accent);
+}
+
+/* Code that opens a tab hangs from the labels' hairline instead of drawing a second line */
+.md-typeset .tabbed-block > .highlight:first-child > pre > code,
+.md-typeset .tabbed-block > .highlight:first-child > span.filename,
+.md-typeset .tabbed-block > .highlight:first-child > .highlighttable {
+  border-top: 0;
+}
+
+.md-typeset .tabbed-button {
+  border-radius: 0;
+}
+
+/* ---------------------------------------------------------------- task lists */
+
+.md-typeset .task-list-indicator::before {
+  background-color: var(--ag-ink-3);
+}
+
+.md-typeset [type="checkbox"]:checked + .task-list-indicator::before {
+  background-color: var(--ag-leaf);
+}
+
+/* ---------------------------------------------------------------- buttons */
+
+/* Same as the landing's .btn: square, with drafting lines whose edges overshoot the corners and reach further on hover */
+.md-typeset .md-button {
+  --sketch: var(--ag-line-strong);
+  position: relative;
+  margin: 0.5rem 1.3rem 0.5rem 0; /* room for each button's drafting lines, so neighbours never touch */
+  padding: 0.65em 1.3em;
+  border: 1px solid var(--ag-line-strong);
+  border-radius: 0;
+  background-color: color-mix(in srgb, var(--ag-bg) 60%, transparent);
+  color: var(--ag-ink);
+  font-weight: 600;
+  transition: transform 0.25s var(--ag-ease-out), background-color 0.25s, border-color 0.25s, color 0.25s;
+}
+
+.md-typeset .md-button::before,
+.md-typeset .md-button::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  transition: inset 0.3s var(--ag-ease-out);
+}
+
+.md-typeset .md-button::before {
+  inset: -1px -7px;
+  border-block: 1px solid var(--sketch);
+}
+
+.md-typeset .md-button::after {
+  inset: -7px -1px;
+  border-inline: 1px solid var(--sketch);
+}
+
+.md-typeset .md-button:hover,
+.md-typeset .md-button:focus {
+  border-color: var(--ag-ink-3);
+  background-color: color-mix(in srgb, var(--ag-bg) 60%, transparent);
+  color: var(--ag-ink);
+  transform: translateY(-2px);
+}
+
+.md-typeset .md-button:hover::before,
+.md-typeset .md-button:focus::before {
+  inset: -1px -11px;
+}
+
+.md-typeset .md-button:hover::after,
+.md-typeset .md-button:focus::after {
+  inset: -11px -1px;
+}
+
+.md-typeset .md-button--primary,
+.md-typeset .md-button--primary:hover,
+.md-typeset .md-button--primary:focus {
+  --sketch: var(--ag-accent);
+  border-color: var(--ag-accent);
+  background-color: var(--ag-accent);
+  color: var(--ag-accent-ink);
+}
+
+/* ---------------------------------------------------------------- tags */
+
+.md-typeset .md-tag {
+  padding: 0.3em 0.75em;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--ag-line-strong);
+  color: var(--ag-ink-2);
+  font-family: var(--ag-font-mono);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.md-typeset .md-tag[href] {
+  transition: color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.md-typeset .md-tag[href]:hover,
+.md-typeset .md-tag[href]:focus {
+  background-color: var(--ag-chip);
+  box-shadow: inset 0 0 0 1px var(--ag-accent);
+  color: var(--ag-ink);
+}
+
+.md-typeset .md-tag-icon::before {
+  background-color: var(--ag-ink-3);
+}
+
+.md-typeset .md-tag-icon[href]:hover::before,
+.md-typeset .md-tag-icon[href]:focus::before {
+  background-color: var(--ag-accent);
+}
+
+/* ---------------------------------------------------------------- back to top */
+
+.md-top {
+  padding: 0.45rem 0.8rem;
+  border-radius: 0;
+  background-color: color-mix(in srgb, var(--ag-bg-raise) 88%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 0 1px var(--ag-line-strong), var(--ag-shadow);
+  color: var(--ag-ink-2);
+  font: 500 0.55rem/1 var(--ag-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.md-top svg {
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.35em;
+  vertical-align: -0.2em;
+}
+
+.md-top::before,
+.md-top::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  transition: inset 0.3s var(--ag-ease-out);
+}
+
+.md-top::before {
+  inset: 0 -6px;
+  border-block: 1px solid var(--ag-line-strong);
+}
+
+.md-top::after {
+  inset: -6px 0;
+  border-inline: 1px solid var(--ag-line-strong);
+}
+
+.md-top:hover,
+.md-top:focus {
+  background-color: var(--ag-accent);
+  box-shadow: 0 0 0 1px var(--ag-accent), var(--ag-shadow);
+  color: var(--ag-accent-ink);
+}
+
+.md-top:hover::before,
+.md-top:focus::before {
+  inset: 0 -10px;
+}
+
+.md-top:hover::after,
+.md-top:focus::after {
+  inset: -10px 0;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.md-footer {
+  box-shadow: inset 0 1px 0 var(--ag-line);
+}
+
 .md-footer__link {
-    color: var(--color-green-dark); /* Warna hijau gelap */
+  transition: opacity 0.25s;
 }
 
-.md-footer__link:hover {
-    color: var(--color-green-light); /* Warna hijau muda saat hover */
+.md-footer__link:hover,
+.md-footer__link:focus {
+  opacity: 1;
 }
 
+.md-footer__direction {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: var(--ag-ink-3);
+  font: 500 0.55rem/1 var(--ag-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 1;
+}
 
+.md-footer__title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
 
-/* resume - section */
+.md-footer__button {
+  color: var(--ag-ink-3);
+  transition: color 0.25s, transform 0.25s var(--ag-ease-out);
+}
 
-.job-company-location {
-    display: flex;
-    justify-content: space-between;
+/* Previous and next as two framed cards that get "detected" on hover, like the landing's note cards */
+@media screen and (min-width: 45em) {
+  .md-footer__inner {
+    gap: 1.2rem;
+    padding: 1.6rem 0.8rem 1.2rem;
+  }
+
+  .md-footer__link {
+    position: relative;
+    flex: 0 1 calc(50% - 0.6rem);
     align-items: center;
-    margin-top: 0px; /* Memberikan sedikit jarak antar baris */
+    min-width: 0;
+    margin: 0;
+    padding: 0.7rem 0.4rem;
+    overflow: visible;
+    border: 1px solid var(--ag-line);
+    background-color: var(--ag-bg-raise);
+    transition: transform 0.3s var(--ag-ease-out), border-color 0.3s;
+  }
+
+  .md-footer__link::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(var(--ag-accent), var(--ag-accent)) top left / 14px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) top left / 2px 14px, linear-gradient(var(--ag-accent), var(--ag-accent)) top right / 14px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) top right / 2px 14px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom left / 14px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom left / 2px 14px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom right / 14px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom right / 2px 14px;
+    background-repeat: no-repeat;
+    transition: opacity 0.25s, inset 0.3s var(--ag-ease-out);
+  }
+
+  .md-footer__link:hover,
+  .md-footer__link:focus-visible {
+    border-color: var(--ag-line-strong);
+    transform: translateY(-2px);
+  }
+
+  .md-footer__link:hover::before,
+  .md-footer__link:focus-visible::before {
+    inset: -6px;
+    opacity: 1;
+  }
+
+  .md-footer__title {
+    margin-bottom: 0;
+    padding: 0 0.6rem;
+  }
+
+  .md-footer__link:hover .md-footer__button {
+    color: var(--ag-accent);
+  }
+
+  .md-footer__link--prev:hover .md-footer__button {
+    transform: translateX(-3px);
+  }
+
+  .md-footer__link--next:hover .md-footer__button {
+    transform: translateX(3px);
+  }
 }
 
-.job-company-location .c-name {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: var(--color-green-dark); /* Warna mencolok, bisa ganti sesuai selera */
-    margin: 0; /* Mengurangi jarak atas dan bawah */
-    text-decoration: none; /* Menghapus garis bawah link */
-
-}
-.job-company-location .c-loc {
-    color: #9e9e9e; /* Warna abu-abu */
-    font-weight: 500;
-    margin: 0; /* Mengurangi jarak atas dan bawah */
+.md-footer-meta {
+  box-shadow: inset 0 1px 0 var(--ag-line);
 }
 
+.md-copyright {
+  color: var(--ag-ink-3);
+  font-family: var(--ag-font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.04em;
+}
+
+.md-copyright__highlight {
+  color: var(--ag-ink-2);
+}
+
+html .md-footer-meta.md-typeset a.md-social__link {
+  color: var(--ag-ink-3);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+html .md-footer-meta.md-typeset a.md-social__link:hover,
+html .md-footer-meta.md-typeset a.md-social__link:focus {
+  background-color: var(--ag-chip);
+  color: var(--ag-ink);
+}
+
+/* ---------------------------------------------------------------- comments */
+
+/* The giscus heading reads as an eyebrow, the way a code comment introduces a block */
+.md-typeset h2#__comments {
+  margin-top: 3em;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1 var(--ag-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.md-typeset h2#__comments::before {
+  content: "//";
+  margin-right: 0.8em;
+  color: var(--ag-accent);
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------- about page */
+
+/* Company and role rows in the experience entries (docs/about.md) */
+.job-company-location,
 .job-title-date {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0px; /* Memberikan sedikit jarak antar baris */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.2rem 1rem;
+  margin: 0;
+}
+
+.md-typeset .job-company-location .c-name {
+  margin: 0;
+  color: var(--ag-ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.md-typeset .job-company-location .c-name:hover {
+  color: var(--md-accent-fg-color);
+}
+
+.job-company-location .c-loc,
+.job-title-date .date {
+  margin: 0;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1.6 var(--ag-font-mono);
+  letter-spacing: 0.04em;
 }
 
 .job-title-date .title {
-    color: var(--color-green-dark);
-    font-weight: 500;
-    margin: 0; /* Mengurangi jarak */
-    font-style: italic; /* Membuat semua teks di dalam .job-title-date jadi italic */
+  margin: 0;
+  color: var(--md-typeset-a-color);
+  font-style: italic;
+  font-weight: 500;
 }
 
-.job-title-date .date {
-    color: #9e9e9e;
-    font-weight: 400;
-    margin: 0; /* Mengurangi jarak */
-    
+/* ---------------------------------------------------------------- small screens */
 
+/* Material runs code blocks edge to edge on phones; drop the side hairlines there so nothing doubles up against the screen edge */
+@media screen and (max-width: 44.984375em) {
+  .md-content__inner > .highlight > pre > code,
+  .md-content__inner > .highlight > span.filename,
+  .md-content__inner > .highlight > .highlighttable {
+    border-right: 0;
+    border-left: 0;
+  }
+
+  .md-typeset .admonition,
+  .md-typeset details {
+    font-size: 0.74rem;
+  }
 }
-

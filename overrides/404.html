@@ -1,0 +1,130 @@
+{#-
+  404 page, in the landing page's language: the missing path goes through the same "detector" as the hero portrait and comes back with a confident NOT FOUND and a page confidence of zero. Styles live in docs/stylesheets/404.css, every selector scoped to .ag404.
+
+  The 404 is served at whatever path was requested, so every link is built from base_url, which MkDocs sets to the site root for this template: "blog/" | url always resolves to /blog/, at any depth.
+-#}
+{% extends "main.html" %}
+
+{#- A real title instead of the bare site name, and keep the page out of search indexes; super() keeps whatever main.html adds to the head -#}
+{% block htmltitle %}
+  <title>Page not found - {{ config.site_name }}</title>
+{% endblock %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta name="robots" content="noindex">
+{% endblock %}
+
+{#- Material's sidebars, both marked hidden: on desktop the page gets the full width, while the primary sidebar still works as the drawer on small screens -#}
+{% block site_nav %}
+  {% if nav %}
+    <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner">
+          {% include "partials/nav.html" %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  {% if "toc.integrate" not in (config.theme.features or []) %}
+    <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner">
+          {% include "partials/toc.html" %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {#-
+    The "404" as ASCII glyph tiles, pre-rendered at build time. Each character is a brightness level (0-9, a, b) taken from Plus Jakarta Sans ExtraBold sampled onto a 46 x 26 grid, lit from the top left; "." is an empty cell, 0 and 1 are faint dust. A level picks both the glyph from the landing page's ramp and the tile colour. The zero's counter is left empty on purpose: that is where the page should have been.
+  -#}
+  {%- set ramp = ".-~=+*xS%#8@" -%}
+  {%- set art = [
+    "0.....................0.......................",
+    ".........................................0...1",
+    "............0.................................",
+    "..........................1..............1...0",
+    ".....1.............0..0..0..............0.....",
+    "..........444........5664............444.0....",
+    ".........6bbb5.....49aaaa94.........8a98......",
+    "........3abbb5....4aaaaaaaa4.......69998......",
+    ".....1..9bbbb5....9aa8448aa8......499998......",
+    ".....0.7bbabb5..05aa9....9aa4.....999998......",
+    "......4bb78ba5...7aa6....6aa6....79949980.....",
+    "..1...ab9.8aa5...8aa4....4aa8...59953998......",
+    ".....8bb4.8aa5...9aa3....4aa8..3998.3998......",
+    "....5bb7..8aa5...9aa3....4aa8..8993.3998......",
+    "...0aba6659aa754.8aa4....4aa8.599755699855....",
+    "...3bbaaaaaaaaa7.7aa6....6a96.6999999999993...",
+    "...3baaaaaaaaaa7.4aa9....9994.6999999999993...",
+    "..0.3333338aa53...8aa8448998...33333499833..1.",
+    "..........8aa5....49aaa99993........3998......",
+    "..........8aa50....48a99983.........3998......",
+    "........1.344........45541.0...0.....443......",
+    "...1.....0...0.........................1.1.0..",
+    ".................0..00..............0.........",
+    ".........................0....................",
+    ".................1....................0.......",
+    "...0..0........0....0................0........"
+  ] -%}
+
+  <section class="ag404" aria-labelledby="ag404-title">
+    <div class="ag404-copy">
+      <p class="ag404-eyebrow"><b>404</b> / Page not found</p>
+      <h1 class="ag404-title" id="ag404-title">This page didn't make it to <em>production.</em></h1>
+      <p class="ag404-lede">The link may be stale, the post may have moved, or it never left the notebook. Everything that did ship is on the blog, and search can find the rest.</p>
+      <div class="ag404-cta">
+        <a class="ag404-btn ag404-btn--primary" href="{{ base_url }}">Take me home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="ag404-btn" href="{{ 'blog/' | url }}">Read the blog</a>
+        <button class="ag404-btn" type="button" data-ag404-search hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>Search <kbd aria-hidden="true">/</kbd></button>
+      </div>
+      <p class="ag404-note">Followed a broken link on this site? <a href="mailto:agfianfd@gmail.com?subject=Broken%20link" data-ag404-report>Let me know</a> and I'll fix it.</p>
+    </div>
+
+    <figure class="ag404-stage">
+      <span class="ag404-corner ag404-corner--tl"></span><span class="ag404-corner ag404-corner--tr"></span><span class="ag404-corner ag404-corner--bl"></span><span class="ag404-corner ag404-corner--br"></span>
+      <div class="ag404-hud ag404-hud--tl" aria-hidden="true"><span class="ag404-rec"></span>cam_01 <span class="ag404-sep">▸</span> <span class="ag404-path" data-ag404-path>/unknown/</span></div>
+      <div class="ag404-hud ag404-hud--tr" aria-hidden="true">0 pages <span class="ag404-sep">·</span> 1 anomaly</div>
+      <div class="ag404-art" role="img" aria-label="The number 404 drawn in ASCII glyph tiles. A detection box labelled NOT FOUND 0.99 surrounds it, and a second box inside the zero, labelled PAGE 0.00, is empty." style="--cols: 46; --rows: 26">
+        {%- for row in art -%}
+          {%- for ch in row -%}
+            {%- if ch == "." -%}
+              <i></i>
+            {%- else -%}
+              {%- set n = ch | int(base = 16) -%}
+              <i class="l{{ n }}">{{ ramp[n] }}</i>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+        <span class="ag404-scan"></span>
+        <span class="ag404-box ag404-box--primary" style="--x: 2; --y: 4; --w: 42; --h: 18" data-label="not found 0.99"></span>
+        <span class="ag404-box ag404-box--empty" style="--x: 21; --y: 9; --w: 4; --h: 8" data-label="page 0.00"></span>
+      </div>
+      <figcaption class="ag404-hud ag404-hud--bl" aria-hidden="true">scan complete <span class="ag404-sep">·</span> nothing to ship here</figcaption>
+    </figure>
+  </section>
+
+  <script>
+    // Show the requested path in the HUD, put it in the report email, and turn its words into a search: /blog/kubernets-ingres/ becomes "kubernets ingres"
+    (function () {
+      var path = location.pathname;
+      try { path = decodeURI(path); } catch (e) {}
+      document.querySelectorAll("[data-ag404-path]").forEach(function (el) { el.textContent = path; });
+      var report = document.querySelector("[data-ag404-report]");
+      if (report) report.href += encodeURIComponent(": " + path);
+      var terms = path.split(/[\/\s._-]+/).filter(function (w) { return w && !/^\d+$/.test(w) && !/^(blog|posts?|index|html?)$/i.test(w); }).join(" ");
+      var button = document.querySelector("[data-ag404-search]");
+      var input = document.querySelector(".md-search__input");
+      if (!button || !input) return;
+      button.hidden = false;
+      button.addEventListener("click", function () {
+        // Focusing Material's search field opens the overlay and runs the query in it
+        if (terms && !input.value) input.value = terms;
+        input.focus();
+      });
+    })();
+  </script>
+{% endblock %}

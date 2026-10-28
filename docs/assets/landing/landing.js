@@ -4,7 +4,6 @@
 
   const root = document.documentElement;
   const motionQuery = matchMedia('(prefers-reduced-motion: reduce)');
-  const lightQuery = matchMedia('(prefers-color-scheme: light)');
   const narrowQuery = matchMedia('(max-width: 900px)');
   const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
   const isDark = () => root.dataset.theme !== 'light';
@@ -12,21 +11,12 @@
   /* ------------------------------------------------------------------ theme */
 
   // Material keeps the palette under "<site root>.__palette"; writing the same record keeps the blog in sync.
+  // The index follows the palette order in mkdocs.yml, where dark comes first and is the default.
   const PALETTE_KEY = new URL('.', location).pathname + '.__palette';
   const PALETTES = {
-    light: { index: 0, color: { media: '(prefers-color-scheme: light)', scheme: 'default', primary: 'white', accent: 'grey' } },
-    dark: { index: 1, color: { media: '(prefers-color-scheme: dark)', scheme: 'slate', primary: 'black', accent: 'white' } },
+    dark: { index: 0, color: { media: '', scheme: 'slate', primary: 'custom', accent: 'custom' } },
+    light: { index: 1, color: { media: '', scheme: 'default', primary: 'custom', accent: 'custom' } },
   };
-
-  function storedTheme() {
-    try {
-      const palette = JSON.parse(localStorage.getItem(PALETTE_KEY));
-      if (palette && palette.color) return palette.color.scheme === 'slate' ? 'dark' : 'light';
-    } catch {
-      // storage can be blocked; fall back to the system preference
-    }
-    return null;
-  }
 
   function setTheme(theme, persist) {
     root.dataset.theme = theme;
@@ -44,9 +34,6 @@
   function initTheme() {
     setTheme(isDark() ? 'dark' : 'light', false);
     document.getElementById('theme-toggle').addEventListener('click', () => setTheme(isDark() ? 'light' : 'dark', true));
-    lightQuery.addEventListener('change', (e) => {
-      if (!storedTheme()) setTheme(e.matches ? 'light' : 'dark', false);
-    });
   }
 
   /* ------------------------------------------------------------------ page chrome */

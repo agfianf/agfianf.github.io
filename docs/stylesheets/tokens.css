@@ -1,0 +1,161 @@
+/* Design tokens shared by the blog and the landing page (docs/assets/landing/landing.css): soil, moss, leaf and the lime of the logo's bolt. Dark ("slate") is the default scheme. Other stylesheets use the --ag-* names; this file also maps them onto Material's own variables. */
+
+:root {
+  --ag-font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ag-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ag-font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --ag-ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+[data-md-color-scheme="slate"] {
+  --ag-bg: #0d100b;
+  --ag-bg-raise: #141810;
+  --ag-bg-sunk: #090b07;
+  --ag-ink: #e9ecd9;
+  --ag-ink-2: #b3bb9f;
+  --ag-ink-3: #848c77;
+  --ag-line: rgba(233, 236, 217, 0.09);
+  --ag-line-strong: rgba(233, 236, 217, 0.2);
+  --ag-grid: rgba(233, 236, 217, 0.045);
+  --ag-leaf: #8fbf3f;
+  --ag-accent: #d4e85a;
+  --ag-accent-ink: #10140b;
+  --ag-soil: #c49a6c;
+  --ag-glow: rgba(168, 204, 63, 0.13);
+  --ag-chip: rgba(233, 236, 217, 0.06);
+  --ag-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.7);
+
+  --md-hue: 85;
+  --md-default-bg-color: var(--ag-bg);
+  --md-default-bg-color--light: rgba(13, 16, 11, 0.54);
+  --md-default-bg-color--lighter: rgba(13, 16, 11, 0.26);
+  --md-default-bg-color--lightest: rgba(13, 16, 11, 0.07);
+  --md-default-fg-color: rgba(233, 236, 217, 0.86);
+  --md-default-fg-color--light: rgba(233, 236, 217, 0.58);
+  --md-default-fg-color--lighter: rgba(233, 236, 217, 0.3);
+  --md-default-fg-color--lightest: rgba(233, 236, 217, 0.1);
+  --md-primary-fg-color: var(--ag-bg);
+  --md-primary-fg-color--light: var(--ag-bg-raise);
+  --md-primary-fg-color--dark: var(--ag-bg-sunk);
+  --md-primary-bg-color: var(--ag-ink);
+  --md-primary-bg-color--light: var(--ag-ink-2);
+  --md-accent-fg-color: var(--ag-accent);
+  --md-accent-fg-color--transparent: rgba(212, 232, 90, 0.1);
+  --md-accent-bg-color: var(--ag-accent-ink);
+  --md-accent-bg-color--light: rgba(16, 20, 11, 0.7);
+  --md-typeset-color: var(--md-default-fg-color);
+  --md-typeset-a-color: var(--ag-leaf);
+  --md-typeset-mark-color: rgba(212, 232, 90, 0.22);
+  --md-typeset-del-color: rgba(228, 118, 106, 0.16);
+  --md-typeset-ins-color: rgba(143, 191, 63, 0.16);
+  --md-typeset-kbd-color: var(--ag-bg-raise);
+  --md-typeset-kbd-accent-color: var(--ag-line-strong);
+  --md-typeset-kbd-border-color: var(--ag-line-strong);
+  --md-typeset-table-color: var(--ag-line);
+  --md-typeset-table-color--light: var(--ag-chip);
+  --md-admonition-fg-color: var(--md-default-fg-color);
+  --md-admonition-bg-color: var(--ag-bg-raise);
+  --md-footer-fg-color: var(--ag-ink);
+  --md-footer-fg-color--light: var(--ag-ink-2);
+  --md-footer-fg-color--lighter: var(--ag-ink-3);
+  --md-footer-bg-color: var(--ag-bg);
+  --md-footer-bg-color--dark: var(--ag-bg);
+  --md-shadow-z1: 0 4px 12px -6px rgba(0, 0, 0, 0.5);
+  --md-shadow-z2: 0 12px 32px -16px rgba(0, 0, 0, 0.65);
+  --md-shadow-z3: var(--ag-shadow);
+
+  /* Code: soil, sand, moss and terracotta on a raised near-black, with the lime kept for highlighted lines */
+  --md-code-bg-color: var(--ag-bg-raise);
+  --md-code-bg-color--light: rgba(20, 24, 16, 0.9);
+  --md-code-bg-color--lighter: rgba(20, 24, 16, 0.6);
+  --md-code-fg-color: #d6dbc4;
+  --md-code-hl-color: var(--ag-accent);
+  --md-code-hl-color--light: rgba(212, 232, 90, 0.08);
+  --md-code-hl-keyword-color: #a8c95e;
+  --md-code-hl-string-color: #d9b277;
+  --md-code-hl-number-color: #e5966a;
+  --md-code-hl-function-color: #86bfae;
+  --md-code-hl-constant-color: #d69aa0;
+  --md-code-hl-special-color: #e57f6d;
+  --md-code-hl-variable-color: #c9a67c;
+  --md-code-hl-name-color: var(--md-code-fg-color);
+  --md-code-hl-operator-color: #aab295;
+  --md-code-hl-punctuation-color: #8f977f;
+  --md-code-hl-comment-color: #7f876f;
+  --md-code-hl-generic-color: #a9b096;
+}
+
+[data-md-color-scheme="default"] {
+  --ag-bg: #f1eee4;
+  --ag-bg-raise: #f8f6ef;
+  --ag-bg-sunk: #e6e2d4;
+  --ag-ink: #1b2015;
+  --ag-ink-2: #464e3c;
+  --ag-ink-3: #676e5d;
+  --ag-line: rgba(27, 32, 21, 0.1);
+  --ag-line-strong: rgba(27, 32, 21, 0.24);
+  --ag-grid: rgba(27, 32, 21, 0.05);
+  --ag-leaf: #4f7a1d;
+  --ag-accent: #3f6a14;
+  --ag-accent-ink: #f6f4ec;
+  --ag-soil: #8a5f36;
+  --ag-glow: rgba(79, 122, 29, 0.12);
+  --ag-chip: rgba(27, 32, 21, 0.055);
+  --ag-shadow: 0 24px 60px -30px rgba(52, 44, 20, 0.35);
+
+  --md-default-bg-color: var(--ag-bg);
+  --md-default-fg-color: rgba(27, 32, 21, 0.88);
+  --md-default-fg-color--light: rgba(27, 32, 21, 0.6);
+  --md-default-fg-color--lighter: rgba(27, 32, 21, 0.32);
+  --md-default-fg-color--lightest: rgba(27, 32, 21, 0.08);
+  --md-primary-fg-color: var(--ag-bg);
+  --md-primary-fg-color--light: var(--ag-bg-raise);
+  --md-primary-fg-color--dark: var(--ag-bg-sunk);
+  --md-primary-bg-color: var(--ag-ink);
+  --md-primary-bg-color--light: var(--ag-ink-2);
+  --md-accent-fg-color: var(--ag-accent);
+  --md-accent-fg-color--transparent: rgba(63, 106, 20, 0.1);
+  --md-accent-bg-color: var(--ag-accent-ink);
+  --md-accent-bg-color--light: rgba(246, 244, 236, 0.7);
+  --md-typeset-color: var(--md-default-fg-color);
+  /* The leaf green is a touch light for body-size links on cream, so links use the deeper moss */
+  --md-typeset-a-color: var(--ag-accent);
+  --md-typeset-mark-color: rgba(200, 224, 72, 0.5);
+  --md-typeset-del-color: rgba(176, 72, 42, 0.14);
+  --md-typeset-ins-color: rgba(79, 122, 29, 0.14);
+  --md-typeset-kbd-color: var(--ag-bg-raise);
+  --md-typeset-kbd-accent-color: var(--ag-line-strong);
+  --md-typeset-kbd-border-color: var(--ag-line-strong);
+  --md-typeset-table-color: var(--ag-line);
+  --md-typeset-table-color--light: var(--ag-chip);
+  --md-admonition-fg-color: var(--md-default-fg-color);
+  --md-admonition-bg-color: var(--ag-bg-raise);
+  --md-footer-fg-color: var(--ag-ink);
+  --md-footer-fg-color--light: var(--ag-ink-2);
+  --md-footer-fg-color--lighter: var(--ag-ink-3);
+  --md-footer-bg-color: var(--ag-bg);
+  --md-footer-bg-color--dark: var(--ag-bg);
+  --md-shadow-z1: 0 4px 12px -6px rgba(52, 44, 20, 0.18);
+  --md-shadow-z2: 0 12px 32px -16px rgba(52, 44, 20, 0.28);
+  --md-shadow-z3: var(--ag-shadow);
+
+  /* Code: the same families as dark, deepened until each one reads on the sunk cream */
+  --md-code-bg-color: var(--ag-bg-sunk);
+  --md-code-bg-color--light: rgba(230, 226, 212, 0.9);
+  --md-code-bg-color--lighter: rgba(230, 226, 212, 0.6);
+  --md-code-fg-color: #2c3323;
+  --md-code-hl-color: var(--ag-accent);
+  --md-code-hl-color--light: rgba(79, 122, 29, 0.1);
+  --md-code-hl-keyword-color: #3d6614;
+  --md-code-hl-string-color: #7f531a;
+  --md-code-hl-number-color: #a1431d;
+  --md-code-hl-function-color: #1d5f54;
+  --md-code-hl-constant-color: #8a3a58;
+  --md-code-hl-special-color: #a0342a;
+  --md-code-hl-variable-color: #6f4a22;
+  --md-code-hl-name-color: var(--md-code-fg-color);
+  --md-code-hl-operator-color: #4d5443;
+  --md-code-hl-punctuation-color: #596050;
+  --md-code-hl-comment-color: #5e6452;
+  --md-code-hl-generic-color: #4d5443;
+}

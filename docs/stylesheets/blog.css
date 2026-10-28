@@ -1,0 +1,727 @@
+/* Blog index, post cards and post header. Uses the --ag-* tokens from tokens.css. The look follows the landing page's "Latest notes" section (docs/assets/landing/landing.css): hairlines, square corners, mono meta and computer-vision brackets on hover. Material's root font size is 20px, so 0.6rem here is 12px. */
+
+/* ---------------------------------------------------------------- blog header */
+
+/* Index, archive and category views: eyebrow, a big heading with a serif accent, one line of copy and topic chips */
+/* The survey grid behind it comes from the global theme (body::before in extra.css) */
+.blog-view .blog-head {
+  margin: 0 0 2rem;
+}
+
+.blog-view .blog-head .blog-eyebrow {
+  margin: 0 0 0.9rem;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1 var(--ag-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.blog-view .blog-eyebrow strong {
+  color: var(--ag-accent);
+  font-weight: 600;
+}
+
+.blog-view .blog-head h1 {
+  margin: 0;
+  color: var(--ag-ink);
+  font-family: var(--ag-font-sans);
+  font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+}
+
+.blog-view .blog-head h1 em {
+  padding-right: 0.06em;
+  color: var(--ag-accent);
+  font-family: var(--ag-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* The permalink makes no sense on a page header */
+.blog-view .blog-head .headerlink {
+  display: none;
+}
+
+.blog-view .blog-head .blog-lede {
+  max-width: 32rem;
+  margin: 1rem 0 0;
+  color: var(--ag-ink-2);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.blog-view .blog-topics {
+  margin: 1.4rem 0 0;
+}
+
+.blog-view .blog-topics > p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+.md-typeset .blog-topic {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--ag-line-strong);
+  color: var(--ag-ink-2);
+  font: 500 0.6rem/1 var(--ag-font-mono);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.md-typeset .blog-topic::before {
+  content: "#";
+  margin-right: 0.15rem;
+  color: var(--ag-ink-3);
+}
+
+.md-typeset .blog-topic:hover,
+.md-typeset .blog-topic:focus-visible {
+  border-color: var(--ag-accent);
+  background: var(--ag-chip);
+  color: var(--ag-ink);
+}
+
+/* "All tags" reads as a link, not another chip */
+.md-typeset .blog-topic--all {
+  border-color: transparent;
+  color: var(--ag-ink-3);
+}
+
+.md-typeset .blog-topic--all::before {
+  content: none;
+}
+
+.md-typeset .blog-topic--all::after {
+  content: "→";
+  margin-left: 0.35rem;
+  transition: transform 0.25s var(--ag-ease-out);
+}
+
+.md-typeset .blog-topic--all:hover::after {
+  transform: translateX(3px);
+}
+
+/* ---------------------------------------------------------------- index bar */
+
+/* A HUD-like strip above the cards: how many notes, which page, and the feed */
+.blog-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.2rem;
+  margin: 0 0 2.2rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--ag-line-strong);
+  color: var(--ag-ink-3);
+  font: 500 0.575rem/1 var(--ag-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.blog-bar p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.2rem;
+  margin: 0;
+}
+
+.blog-bar__dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  background: var(--ag-leaf);
+}
+
+.blog-bar__dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--ag-leaf);
+  animation: blog-ping 2.6s var(--ag-ease-out) infinite;
+}
+
+.blog-bar a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--ag-ink-2);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.blog-bar a:hover,
+.blog-bar a:focus-visible {
+  color: var(--ag-accent);
+}
+
+.blog-bar svg,
+.blog-note__go {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.blog-bar svg {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+
+/* ---------------------------------------------------------------- note cards */
+
+.blog-notes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.blog-notes__item {
+  display: flex;
+  margin: 0;
+}
+
+/* The landing's .note: a raised panel with a hairline border */
+.blog-note {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.2rem 1.2rem 1.1rem;
+  border: 1px solid var(--ag-line);
+  background: var(--ag-bg-raise);
+  transition: transform 0.3s var(--ag-ease-out), border-color 0.3s, background-color 0.35s;
+}
+
+/* On hover a card gets "detected": corner brackets and a label tab with its category and a confidence score */
+.blog-note::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(var(--ag-accent), var(--ag-accent)) top left / 18px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) top left / 2px 18px, linear-gradient(var(--ag-accent), var(--ag-accent)) top right / 18px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) top right / 2px 18px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom left / 18px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom left / 2px 18px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom right / 18px 2px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom right / 2px 18px;
+  background-repeat: no-repeat;
+  transition: opacity 0.25s, inset 0.3s var(--ag-ease-out);
+}
+
+.blog-note::after {
+  content: attr(data-label);
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  z-index: 2;
+  padding: 4px 7px;
+  background: var(--ag-accent);
+  color: var(--ag-accent-ink);
+  font: 600 10px/1 var(--ag-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(calc(-100% + 4px));
+  transition: opacity 0.25s, transform 0.3s var(--ag-ease-out);
+}
+
+.blog-note:hover,
+.blog-note:focus-within {
+  border-color: var(--ag-line-strong);
+  transform: translateY(-3px);
+}
+
+.blog-note:hover::before,
+.blog-note:focus-within::before {
+  inset: -7px;
+  opacity: 1;
+}
+
+.blog-note:hover::after,
+.blog-note:focus-within::after {
+  opacity: 1;
+  transform: translateY(-100%);
+}
+
+.blog-note__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.5rem;
+  margin: 0 1.6rem 0.7rem 0;
+  color: var(--ag-ink-3);
+  font: 500 0.575rem/1.3 var(--ag-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Separators trail each item, so a wrapped line ends with "/" instead of starting with one */
+.blog-note__meta > :not(:last-child)::after {
+  content: "/";
+  margin-left: 0.5rem;
+  color: var(--ag-ink-3);
+  opacity: 0.55;
+}
+
+/* Category and tag links sit above the stretched title link */
+.blog-note__meta a,
+.blog-note__tags a {
+  position: relative;
+  z-index: 1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.blog-note__meta a {
+  color: var(--ag-soil);
+}
+
+.blog-note__meta a:hover,
+.blog-note__meta a:focus-visible {
+  color: var(--ag-accent);
+}
+
+.blog-note__badge {
+  color: var(--ag-ink-2);
+}
+
+.blog-note__badge--draft {
+  color: var(--ag-soil);
+}
+
+.blog-note__title {
+  margin: 0;
+  color: var(--ag-ink);
+  font: 700 0.9rem/1.35 var(--ag-font-sans);
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+}
+
+.blog-note__title a {
+  color: inherit;
+  text-decoration: none;
+  outline: none;
+}
+
+/* The title link covers the whole card, so the card is one big target */
+.blog-note__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.blog-note__excerpt {
+  display: -webkit-box;
+  margin: 0.55rem 0 0;
+  overflow: hidden;
+  color: var(--ag-ink-2);
+  font-size: 0.74rem;
+  line-height: 1.6;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.blog-note__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.6rem;
+  margin: auto 0 0;
+  padding-top: 0.9rem;
+  font: 500 0.575rem/1.4 var(--ag-font-mono);
+}
+
+.blog-note__tags a,
+.blog-note__tags span {
+  color: var(--ag-leaf);
+}
+
+.blog-note__tags a:hover,
+.blog-note__tags a:focus-visible {
+  color: var(--ag-accent);
+}
+
+.blog-note__go {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  color: var(--ag-ink-3);
+  transition: transform 0.3s var(--ag-ease-out), color 0.3s;
+}
+
+.blog-note:hover .blog-note__go {
+  color: var(--ag-accent);
+  transform: translate(2px, -2px);
+}
+
+/* ---------------------------------------------------------------- pagination */
+
+/* Square page boxes; the current page is filled and gets the landing buttons' drafting lines */
+.blog-view .md-pagination {
+  justify-content: flex-start;
+  gap: 0.6rem;
+  margin: 2.6rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--ag-line);
+  font: 500 0.65rem/1 var(--ag-font-mono);
+}
+
+.blog-view .md-pagination > * {
+  position: relative;
+  min-width: 1.9rem;
+  height: 1.9rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--ag-line-strong);
+  border-radius: 0;
+  color: var(--ag-ink-2);
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.blog-view .md-pagination__link:hover,
+.blog-view .md-pagination__link:focus-visible {
+  border-color: var(--ag-accent);
+  background: var(--ag-chip);
+  color: var(--ag-ink);
+}
+
+.blog-view .md-pagination__link svg,
+.blog-view .md-pagination__link:hover svg,
+.blog-view .md-pagination__link:focus svg {
+  width: 0.9rem;
+  color: currentColor;
+}
+
+.blog-view .md-pagination__current {
+  border-color: var(--ag-accent);
+  background: var(--ag-accent);
+  color: var(--ag-accent-ink);
+  font-weight: 600;
+}
+
+.blog-view .md-pagination__current::before,
+.blog-view .md-pagination__current::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+.blog-view .md-pagination__current::before {
+  inset: -1px -6px;
+  border-block: 1px solid var(--ag-accent);
+}
+
+.blog-view .md-pagination__current::after {
+  inset: -6px -1px;
+  border-inline: 1px solid var(--ag-accent);
+}
+
+.blog-view .md-pagination__dots {
+  border-color: transparent;
+}
+
+/* ---------------------------------------------------------------- blog sidebar */
+
+/* The theme already sets the section labels in mono and marks the current view; on blog views Archive and Categories also get a hairline above, so they read as two panels */
+@media screen and (min-width: 76.25em) {
+  .md-main__inner:has(> .blog-view) .md-nav--primary .md-nav__item--section > label.md-nav__link {
+    margin-top: 1.2rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--ag-line);
+  }
+
+  .md-main__inner:has(> .blog-view) .md-nav--primary .md-nav__item--section .md-nav__item > a.md-nav__link:not(.md-nav__link--active) {
+    color: var(--ag-ink-2);
+  }
+
+  .md-main__inner:has(> .blog-view) .md-nav--primary .md-nav__item--section .md-nav__item > a.md-nav__link:not(.md-nav__link--active):hover {
+    color: var(--ag-ink);
+  }
+}
+
+/* ---------------------------------------------------------------- post byline */
+
+/* Under the title of a post: who wrote it, when, how long it takes and where it is filed */
+.md-typeset h1:has(+ .post-byline) {
+  margin-bottom: 1rem;
+}
+
+.md-typeset .post-byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+  margin: 0 0 0.9rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--ag-line-strong);
+  border-bottom: 1px solid var(--ag-line);
+}
+
+.md-typeset .post-byline__author {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ag-ink);
+  font: 600 0.7rem/1.2 var(--ag-font-sans);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.md-typeset a.post-byline__author:hover,
+.md-typeset a.post-byline__author:focus-visible {
+  color: var(--ag-accent);
+}
+
+/* A square avatar with small accent brackets, like a detected face in the landing hero */
+.post-byline__face {
+  position: relative;
+  display: block;
+  flex: none;
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.md-typeset .post-byline__face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-byline__face::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background: linear-gradient(var(--ag-accent), var(--ag-accent)) top left / 7px 1.5px, linear-gradient(var(--ag-accent), var(--ag-accent)) top left / 1.5px 7px, linear-gradient(var(--ag-accent), var(--ag-accent)) top right / 7px 1.5px, linear-gradient(var(--ag-accent), var(--ag-accent)) top right / 1.5px 7px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom left / 7px 1.5px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom left / 1.5px 7px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom right / 7px 1.5px, linear-gradient(var(--ag-accent), var(--ag-accent)) bottom right / 1.5px 7px;
+  background-repeat: no-repeat;
+  transition: inset 0.3s var(--ag-ease-out);
+}
+
+.post-byline__author:hover .post-byline__face::before {
+  inset: -6px;
+}
+
+.md-typeset .post-byline__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  margin: 0;
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1.4 var(--ag-font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.post-byline__author + .post-byline__meta {
+  padding-left: 1.2rem;
+  border-left: 1px solid var(--ag-line);
+}
+
+.post-byline__meta > :not(:last-child)::after {
+  content: "/";
+  margin-left: 0.6rem;
+  color: var(--ag-ink-3);
+  opacity: 0.55;
+}
+
+.md-typeset .post-byline__meta a {
+  color: var(--ag-soil);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.md-typeset .post-byline__meta a:hover,
+.md-typeset .post-byline__meta a:focus-visible {
+  color: var(--ag-accent);
+}
+
+.md-typeset .post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.8rem;
+  margin: 0 0 1.8rem;
+  font: 500 0.6rem/1.4 var(--ag-font-mono);
+}
+
+.md-typeset .post-tags a,
+.md-typeset .post-tags span {
+  color: var(--ag-leaf);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.md-typeset .post-tags a:hover,
+.md-typeset .post-tags a:focus-visible {
+  color: var(--ag-accent);
+}
+
+/* ---------------------------------------------------------------- post sidebar */
+
+.md-sidebar--post .md-post__back .md-nav__link {
+  gap: 0.4rem;
+  color: var(--ag-ink-2);
+  font: 500 0.575rem/1 var(--ag-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.md-sidebar--post .md-post__back .md-nav__link:hover,
+.md-sidebar--post .md-post__back .md-nav__link:focus-visible {
+  color: var(--ag-accent);
+}
+
+.md-sidebar--post .md-post__back .md-nav__link svg {
+  width: 0.8rem;
+  transition: transform 0.25s var(--ag-ease-out);
+}
+
+.md-sidebar--post .md-post__back .md-nav__link:hover svg {
+  transform: translateX(-3px);
+}
+
+/* "More in <category>": a short reading list, dates in mono */
+.post-related {
+  margin: 0 0.6rem 1.2rem;
+}
+
+.post-related__title {
+  margin: 0 0 0.6rem;
+  color: var(--ag-ink-3);
+  font: 500 0.55rem/1.4 var(--ag-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.post-related__title a {
+  color: var(--ag-accent);
+  text-decoration: none;
+}
+
+.post-related__title a:hover {
+  text-decoration: underline;
+}
+
+.post-related__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ag-line);
+}
+
+.post-related__list li {
+  margin: 0;
+  border-bottom: 1px solid var(--ag-line);
+}
+
+.post-related__list a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 0 0.6rem 0.5rem;
+  border-left: 2px solid transparent;
+  color: var(--ag-ink-2);
+  font-size: 0.65rem;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+}
+
+.post-related__list a:hover,
+.post-related__list a:focus-visible {
+  border-left-color: var(--ag-accent);
+  background: var(--ag-chip);
+  color: var(--ag-ink);
+}
+
+.post-related__list time {
+  color: var(--ag-ink-3);
+  font: 500 0.5rem/1 var(--ag-font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------------- small screens */
+
+/* Below 1220px Material puts the post sidebar under the article, so the reading list becomes a "read next" block */
+@media screen and (max-width: 76.234375em) {
+  .post-related {
+    margin: 0 0.8rem 2rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--ag-line-strong);
+  }
+
+  .post-related__list a {
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 44.984375em) {
+  .blog-view .blog-head {
+    margin-bottom: 1.6rem;
+  }
+
+  .blog-note {
+    padding: 1.1rem 1rem 1rem;
+  }
+
+  .blog-bar {
+    margin-bottom: 2rem;
+  }
+
+  /* The byline wraps: author on one line, meta on the next, without the divider */
+  .post-byline__author + .post-byline__meta {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* ---------------------------------------------------------------- motion */
+
+@keyframes blog-ping {
+  from {
+    opacity: 0.9;
+    transform: scale(0.6);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-bar__dot::after {
+    animation: none;
+  }
+
+  .blog-note,
+  .blog-note::before,
+  .blog-note::after,
+  .blog-note__go {
+    transition: none;
+  }
+
+  .blog-note:hover,
+  .blog-note:focus-within {
+    transform: none;
+  }
+}

@@ -18,7 +18,7 @@
   <link rel="icon" type="image/png" href="assets/logo-sq.png">
   <link rel="alternate" type="application/rss+xml" title="RSS feed" href="feed_rss_created.xml">
   <script>
-    // Apply the saved theme before first paint. Material stores it as "<site root>.__palette", so the blog and this page share one choice.
+    // Apply the saved theme before first paint, dark unless the visitor picked light. Material stores it as "<site root>.__palette", so the blog and this page share one choice.
     (function () {
       var root = document.documentElement, theme = null;
       root.classList.add('js');
@@ -26,7 +26,7 @@
         var palette = JSON.parse(localStorage.getItem(new URL('.', location).pathname + '.__palette'));
         if (palette && palette.color) theme = palette.color.scheme === 'slate' ? 'dark' : 'light';
       } catch (e) {}
-      root.dataset.theme = theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      root.dataset.theme = theme || 'dark';
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
