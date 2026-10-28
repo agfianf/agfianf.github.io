@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-04-13
     updated: 2025-04-13
+description: Self-host GitLab and a runner on GCP with Terraform, then build a pipeline that tests a FastAPI app, pushes it to Docker Hub and deploys it over SSH.
 categories:
     - devops
 tags:
@@ -23,7 +24,7 @@ comments: true
 
 # Hands-On Gitlab CI/CD
 
-Hi there! Today, I will demonstrate a hands-on implementation of GitLab CI/CD. {==This might be a bit **overkill** as I will also install a GitLab server==}. First, i will to **install self-hosted gitlab server**. Second, i will **create simple fastapi-app** and that deployed instance here. All instances will be deployed on GCP and will be managed using Terraform. Last, i will **create CI/CD pipeline** to deploy fastapi-app to GCP using gitlab ci/cd.
+Hi there! Today, I will demonstrate a hands-on implementation of GitLab CI/CD. {==This might be a bit **overkill** as I will also install a GitLab server==}. First, I will to **install self-hosted gitlab server**. Second, I will **create simple fastapi-app** and that deployed instance here. All instances will be deployed on GCP and will be managed using Terraform. Last, I will **create CI/CD pipeline** to deploy fastapi-app to GCP using gitlab ci/cd.
 
 <!-- more -->
 
@@ -119,7 +120,7 @@ In this section, I will install self-hosted GitLab CI/CD. I will use GCP as the 
 - 1x VPC network
 - 1x subnet
 - 1x firewall rule (allowing port 80, 22, and 2222)
-- 1x static IP address: so i could find my gitlab server easily
+- 1x static IP address: so I could find my gitlab server easily
 
 The code for terraform can be found [:fontawesome-brands-square-github: provisioning gitlab-server](https://github.com/agfianf/terraform-tutorial/tree/main/projects/003-self-hosted-gitlab).
 
@@ -491,7 +492,7 @@ There are 3 stages in this pipeline:
 - **test:**
     
     Test it will be **triggered when there is a merge request or tags** with the name of `v*.*.*`.
-    this stage will run by installing the depedency using `uv sync` and run the test using `make test`
+    this stage will run by installing the dependency using `uv sync` and run the test using `make test`
 
 - **build:**  
     

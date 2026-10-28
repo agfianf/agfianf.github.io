@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-02-25
     updated: 2025-02-25
+description: Set up two Ubuntu VMs with passwordless SSH in both directions, then use cron and scp to copy a file from one server to the other every 5 minutes.
 categories:
     - devops
 tags:
@@ -20,7 +21,7 @@ comments: true
 
 # Task 4: Linux and Unix Administration 2
 
-In i will setup 2 servers and configure passwordless SSH between them. Then, I will create a cron job to automate file transfer between the servers.
+In this post I set up 2 servers and configure passwordless SSH between them. Then, I will create a cron job to automate file transfer between the servers.
 
 <!-- more -->
 
@@ -36,7 +37,7 @@ In i will setup 2 servers and configure passwordless SSH between them. Then, I w
 
 ## Step 1: Setup Two Servers
 
-Since i am using MacOS i will use [UTM](https://mac.getutm.app/) to set up my virtual machine. I will use Ubuntu 24.04 LTS as my server. For details my server setup:
+Since I am using MacOS I will use [UTM](https://mac.getutm.app/) to set up my virtual machine. I will use Ubuntu 24.04 LTS as my server. For details my server setup:
 
 |                 | Server 1         | Server 2         |
 |-----------------|------------------|------------------|
@@ -50,7 +51,7 @@ Since i am using MacOS i will use [UTM](https://mac.getutm.app/) to set up my vi
     
     ![bukti-server](../../../assets/devops/project-4/001-setup-server.png)
 
-    left side is server1 and right side is server2. Both server successfully setup and i can access both server using SSH.
+    left side is server1 and right side is server2. Both server successfully setup and I can access both server using SSH.
 
 ## Step 2: Configure Passwordless SSH
 
@@ -169,7 +170,7 @@ Add this line:
 - Check log cron using `grep CRON /var/log/syslog | tail -5`. It will show the last 5 cron jobs.
 
 
-??? quote "Full Crontab Configurate"
+??? quote "Full Crontab Configuration"
 
     ```bash
     */1 * * * * echo "Hello World! Waktu: $(date)" >> /home/u24-1/server1.txt

@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-03-02
     updated: 2025-03-02
+description: Run a to-do app with Docker Compose, with a Rust actix-web API, PostgreSQL on a persistent volume and a static frontend on one bridge network.
 categories:
     - devops
 tags:
@@ -25,7 +26,7 @@ comments: true
 In this section, we will learn how to use Docker Compose to manage multi-container applications (frontend, backend, database).
 
 <!-- more -->
-???+ info "Project Challange"
+???+ info "Project Challenge"
 
     **Deskripsi:**
     Sebuah startup ingin membangun aplikasi berbasis web dengan arsitektur berikut:
@@ -46,7 +47,7 @@ In this section, we will learn how to use Docker Compose to manage multi-contain
 
 !!! warning "Notes"
 
-    Ada beberapa hal yang saya **ganti** dari project challange ini namun tanpa mengurangi esensi dari project ini. Yaitu:
+    Ada beberapa hal yang saya **ganti** dari project challenge ini namun tanpa mengurangi esensi dari project ini. Yaitu:
 
     1. Frontend: Saya menggunakan **html+css+js** sederhana untuk frontend yang akan berinteraksi dengan RestAPI.
     2. Backend: Saya menggunakan **Rust** sebagai backendnya. Saya menggunakan **actix-web** sebagai frameworknya dan projectnya mengenai todo app sederhana.
@@ -67,7 +68,7 @@ _source: my own_
 
 ## 1. Docker Compose Explanation
 
-Here, i will just explain the **docker-compose.yml** file that i created for this project. We have 3 services in this docker-compose file:
+Here, I will just explain the **docker-compose.yml** file that I created for this project. We have 3 services in this docker-compose file:
 
 1. **PostgreSQL**: The database service.
 2. **App**: The backend service.
@@ -277,7 +278,7 @@ cd todo-app-rust
 docker-compose up -d --build
 ```
 
-- Access the frontend at [http://localhost:8081](http://localhost:8081)
+- Access the frontend at `http://localhost:8081`
 
 !!! info "Notes"
 

@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-02-24
     updated: 2025-02-24
+description: Instrument a FastAPI app with RED metrics (rate, errors, duration) using prometheus-client middleware and expose them on /metrics for Prometheus.
 categories:
     - fastapi
 tags:
@@ -512,7 +513,7 @@ After we implement RED metrics via middleware, we need to integrate it to FastAP
 #### ⤷ Sample Output `GET /metrics`
 
 
-Every time we call `GET /metrics`, we will receive an structur text format output like this:
+Every time we call `GET /metrics`, we will receive a structured text format output like this:
 
 ```bash
 # HELP <metric_name> <description>

@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-03-03
     updated: 2025-03-03
+description: Monitor a server's CPU and memory with Node Exporter, Prometheus and Grafana, build a custom or imported dashboard, and send alerts to Discord.
 categories:
     - devops
 tags:
@@ -27,7 +28,7 @@ In this guide, we’ll explore how to monitor cpu and memory usage on a server u
 
 <!-- more -->
 
-!!! info "Project Challange"
+!!! info "Project Challenge"
 
     Buat 1 Monitoring CPU & Memory Usage Menggunakan tools Grafana untuk visualisasi dan Prometheus sebagai collector. Gunakan Node Exporter sebagai exposer.
 
@@ -55,7 +56,7 @@ Before we dive into the setup, let’s establish what metrics we want to monitor
 
 - Memory
 
-    for memory explanation, i just write about that in [Monitoring Server Memory Usage with Prometheus Node Exporter](008-project-nodeexporter.md). Please read that first.
+    for memory explanation, I just write about that in [Monitoring Server Memory Usage with Prometheus Node Exporter](008-project-nodeexporter.md). Please read that first.
 
 - CPU
 
@@ -75,7 +76,7 @@ Here’s a summary of the setup:
 | Server   | Role          | IP Address     | Description                       |
 |----------|---------------|----------------|-----------------------------------|
 | Server 1 | Prometheus    | localhost:9090 | Collects and stores metrics       |
-| Server 1 | Grafana       | localhost:3000 | Vizualises metrics                |
+| Server 1 | Grafana       | localhost:3000 | Visualises metrics                |
 | Server 2 | Node Exporter | 10.8.0.10      | Exposes memory and system metrics |
 
 ### 2.1 Install Node Exporter on Server 2
@@ -137,7 +138,7 @@ We’ll install Node Exporter on Server 2 using Docker Compose for its simplicit
 
 ### 2.2 Install Prometheus and Grafana on Server 1
 
-We’ll install Prometheus on Server 1 using Docker Compose (i love you docker compose) for its simplicity and ease of management.
+We’ll install Prometheus on Server 1 using Docker Compose (I love you docker compose) for its simplicity and ease of management.
 
 === "Structure repository"
     
@@ -306,7 +307,7 @@ Please access grafana on `http://localhost:3000` and login with username = `admi
 
 #### 3.2.1 Create Custom Dashboard
 
-Create a custom dashboard for monitoring cpu and memory usage. Why we need this? becuase sometime we need to create a custom dashboard for our needs. For example, in this case, we need to monitor cpu and memory usage.
+Create a custom dashboard for monitoring cpu and memory usage. Why we need this? because sometime we need to create a custom dashboard for our needs. For example, in this case, we need to monitor cpu and memory usage.
 
 ??? abstract "Step Create Custom Dashboard"
 
@@ -316,10 +317,10 @@ Create a custom dashboard for monitoring cpu and memory usage. Why we need this?
     2. Create a new dashboard by clicking on the "New" button and selecting "New Dashboard".
     ![add-datasource](../../../assets/devops/project-12/add-dashboard.png){ width=500 }
     
-    3. Add  by clicking on "Add" -> "Vizualization".
+    3. Add  by clicking on "Add" -> "Visualization".
     ![add-datasource](../../../assets/devops/project-12/add-chart-dashboard.png){ width=500 }
 
-    4. Here i add new panel for "CPU core usage". So much configuration here, but you can just follow the image. I use Horizontal bar gauge for this panel. With setting like this:
+    4. Here I add new panel for "CPU core usage". So much configuration here, but you can just follow the image. I use Horizontal bar gauge for this panel. With setting like this:
     ![add-datasource](../../../assets/devops/project-12/edit-dashboard.png){ width=600 }
 
     5. This is the result:
@@ -804,14 +805,14 @@ if you want to use my template, you can use this json below. Copy this json and 
     ```
 
 #### 3.2.2 Create Dashboard by Import
-or, alternatively, you can use others dashboard from grafana.com. Here we can use [https://grafana.com/grafana/dashboards/1860-node-exporter-full/](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) for vizualization full node exporter.
+or, alternatively, you can use others dashboard from grafana.com. Here we can use [https://grafana.com/grafana/dashboards/1860-node-exporter-full/](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) for visualization full node exporter.
 
 ??? abstract "Step Create Dashboard by Import"
 
-    1. Go to grafana dashboard sites and choose the dashboard you want to use. In this case, i choose [https://grafana.com/grafana/dashboards/1860-node-exporter-full/](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). **Copy ID** from the dashboard.
+    1. Go to grafana dashboard sites and choose the dashboard you want to use. In this case, I choose [https://grafana.com/grafana/dashboards/1860-node-exporter-full/](https://grafana.com/grafana/dashboards/1860-node-exporter-full/). **Copy ID** from the dashboard.
     ![add-datasource](../../../assets/devops/project-12/import-dashboard.png){ width=600 }
 
-    2. After you copy the ID, go to your grafana Dashboad and click on the "New"  and choose "Import".
+    2. After you copy the ID, go to your grafana Dashboard and click on the "New"  and choose "Import".
     ![add-datasource](../../../assets/devops/project-12/import-dashboard-2.png){ width=600 }
 
     3. Paste the ID you copied before and click "Load".
@@ -867,14 +868,14 @@ This demonstrates how Grafana evaluates the alert rules: it compares real-time m
     1. When condition rule `IS_ABOVE = 81`, the alert will be in `normal` state because actual mem usage is 80.5%
     ![add-datasource](../../../assets/devops/project-12/alert-10.png){ width=600 }
 
-    2. When i change the condition rule from `IS_ABOVE = 81` to `IS_ABOVE = 80`, the alert will be in `firing` state because actual mem usage is 80.5%
+    2. When I change the condition rule from `IS_ABOVE = 81` to `IS_ABOVE = 80`, the alert will be in `firing` state because actual mem usage is 80.5%
     ![add-datasource](../../../assets/devops/project-12/alert-11.png){ width=600 }
     ![add-datasource](../../../assets/devops/project-12/alert-12.png){ width=600 }
 
-    3. Here sample message that i got in discord from the alert grafana.
+    3. Here sample message that I got in discord from the alert grafana.
     ![add-datasource](../../../assets/devops/project-12/dc-result.png){ width=600 }
 
 
 ## 4. Conclusion
 
-However, i cannot cover all of the features in this project, but i hope this project can help you to understand how to use prometheus and grafana for monitoring your server. Thanks for reading!
+However, I cannot cover all of the features in this project, but I hope this project can help you to understand how to use prometheus and grafana for monitoring your server. Thanks for reading!

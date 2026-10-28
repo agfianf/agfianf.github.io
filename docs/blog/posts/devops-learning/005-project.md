@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-02-27
     updated: 2025-02-27
+description: A Bash script that copies the .log files from /var/log into a timestamped backup folder, zips it, reports the space saved, and runs from cron.
 categories:
     - devops
 tags:
@@ -24,7 +25,7 @@ In this session, I will create a shell script to backup log files from `/var/log
 
 <!-- more -->
 
-!!! info "Project Challange"
+!!! info "Project Challenge"
 
     **Deskripsi:**
 
@@ -57,7 +58,7 @@ In this session, I will create a shell script to backup log files from `/var/log
 
 ### 1. Check list-file logfile in `/var/log`
 
-Frist, check list file `*.log` in `/var/log` using this commmand: 
+First, check list file `*.log` in `/var/log` using this command: 
 
 - `ls /var/log/*.log`. 
 

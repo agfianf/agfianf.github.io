@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-03-08
     updated: 2025-03-08
+description: Use Ansible from a control node on GCP to install NGINX on two managed VMs with an inventory and a playbook, then install Docker from Ansible Galaxy.
 categories:
     - devops
 tags:
@@ -24,7 +25,7 @@ I will do hands-on Ansible with this project.
 
 <!-- more -->
 
-!!! info "Project Challange"
+!!! info "Project Challenge"
 
     1. Siapkan 3 server untuk ansible di virtualbox, 1 Control Node dan 2 Managed Node
     2. Install Ansible di Control Node
@@ -60,7 +61,7 @@ Successfully ssh into 3 VM instances in GCP.
 | **OS** | Ubuntu 24.04 LTS | Ubuntu 24.04 LTS | Ubuntu 24.04 LTS |
 | **Network** | Allow HTTP | Allow HTTP | Allow HTTP |
 
-### Setup Powerless SSH
+### Setup Passwordless SSH
 
 **Generate SSH Key on Master Node:**  
 
@@ -407,4 +408,4 @@ Learning Ansible is a great way to automate tasks and manage configurations. You
 
 ## Conclusion
 
-In this project, i learned how to set up Ansible, create an inventory file and playbook, and run the playbook to install Nginx on multiple servers. I also learned about Ansible Galaxy and how to use it to install Docker.
+In this project, I learned how to set up Ansible, create an inventory file and playbook, and run the playbook to install Nginx on multiple servers. I also learned about Ansible Galaxy and how to use it to install Docker.

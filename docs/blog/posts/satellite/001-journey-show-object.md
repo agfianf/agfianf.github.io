@@ -5,6 +5,7 @@ authors:
 date: 
     created: 2025-03-04
     updated: 2025-03-04
+description: How I got 700,000 satellite-derived polygons onto a web map by moving from GeoJSON to vector tiles, packed as PMTiles and served by Martin.
 categories:
     - satellite
 tags:
@@ -25,7 +26,7 @@ As an AI Engineer, I worked on object instance segmentation for satellite imager
 ## The Initial Problem: Bloated GeoJSON
 Initially, I used HTML, JavaScript, and Leaflet to display the data. This worked fine for small-scale datasets, but when the data grew to 700,000 polygons (GeoJSON files ballooning to 350-500 MB), the browser slowed to a crawl. Loading times were long, rendering stuttered—even on localhost, my laptop’s performance tanked. This approach was clearly not scalable.
 
-![Ilustrasi GeoJSON 350-500 MB di browser](../../../assets/satellite/001-optimize-show/geojson-to-browser.png)
+![Illustration of a 350-500 MB GeoJSON file loaded in the browser](../../../assets/satellite/001-optimize-show/geojson-to-browser.png)
 ///caption
 GeoJSON 350-500 MB in the browser: poor performance
 ///
@@ -39,7 +40,7 @@ I tried **Marker Clustering** with `Leaflet.markercluster`, grouping nearby poly
 After the solution above failed, I didn’t want to jump straight into finding another fix. Instead, I wanted to understand the fundamentals of how digital map technology works. Imagine a digital map as a stack of transparent sheets that can be rearranged at any time. Each sheet is a layer carrying different information, stacked together to create an interactive map. Here are its key components:
 
 
-| Component       | Deskripsi                                    | Contoh                                                                                |
+| Component       | Description                                  | Example                                                                               |
 |:---------------|:---------------------------------------------|:--------------------------------------------------------------------------------------|
 | Base Map Layer | The foundational layer of the map            | Road tiles from OpenStreetMap, satellite imagery from Google Maps                     |
 | Feature Layers | Additional layers with specific data         | Polygons of regions, road lines, POI points (with properties like name or population) |
@@ -48,27 +49,27 @@ After the solution above failed, I didn’t want to jump straight into finding a
 
 Web maps use tiles—small data chunks pieced together like a puzzle:
 
-1. **Raster Tiles:** Gambar statis (JPEG/PNG), cepat tapi besar.  
-2. **Vector Tiles:** Data vektor, ringan dan fleksibel.
+1. **Raster Tiles:** Static images (JPEG/PNG): fast but heavy.  
+2. **Vector Tiles:** Vector data: light and flexible.
 
 ## Learning from the Best
-!!! question "Pertanyaan"
+!!! question "Question"
     
     How do Google Maps or OpenStreetMap handle massive datasets?
 
-![Prinsip Vector Tiling](../../../assets/satellite/001-optimize-show/vector-tiling-principle.png)
+![Vector tiling principle](../../../assets/satellite/001-optimize-show/vector-tiling-principle.png)
 ///caption
-Ilustrasi prinsip vector tiling
+Illustration of the vector tiling principle
 ///
 
 The answer: **vector tiles**. Data is split into tiles, **loaded based on the visible area and zoom level**. I proposed this approach to the team.
 
 ![Vector Tiles](../../../assets/satellite//001-optimize-show/serving-tiles.png)
 ///caption
-Ilustrate vector tiles serving
+Illustration of vector tile serving
 ///
 
-## Vector Tiles dan PMTiles
+## Vector Tiles and PMTiles
 ### GeoJSON vs Vector Tiles
 
 | Feature               | GeoJSON                            | Vector Tiles                                                |
@@ -87,13 +88,13 @@ Ilustrate vector tiles serving
 
 Have 2 Options here:
 
-1. **PostGIS ST_AsMVT:** *Tiles* real-time dari query.
-2. **PMTiles:** *Pre-generate tiles* jadi file statis (via Tippecanoe).  
+1. **PostGIS ST_AsMVT:** *Tiles* generated in real time from a query.
+2. **PMTiles:** *Pre-generate tiles* into a static file (via Tippecanoe).  
 
 
 | Aspect       | PostGIS ST_AsMVT                  | PMTiles                    |
 |:-------------|:----------------------------------|:---------------------------|
-| Output Type  | Vector Tiles (*PBF*)              | *Vector Tiles* statis File |
+| Output Type  | Vector Tiles (*PBF*)              | Static *Vector Tiles* file |
 | Speed        | Depends on query and size of data | Fast, pre-rendered         |
 | Data Updates | Always *up-to-date*               | Requires regeneration      |
 | Server Load  | High                              | Low                        |
@@ -104,7 +105,7 @@ Although I went with PMTiles, I also considered MBTiles. Both store vector tiles
 
 PMTiles are like a ZIP file, packing many vector tiles into a single file optimized for cloud access. MBTiles store vector tiles (or raster) in an SQLite database table, offering flexibility but with added overhead.
 
-| Fitur    | PMTiles                                            | MBTiles                                                                         |
+| Feature  | PMTiles                                            | MBTiles                                                                         |
 |:---------|:---------------------------------------------------|:--------------------------------------------------------------------------------|
 | Server   | Serverless, can be read remotely over              | Typically requires a server for online use, accessed on disk for offline use    |
 | Format   | Single-file archive format optimized for the cloud | SQLite-based database, typically stored locally or on a server                  |
@@ -112,7 +113,7 @@ PMTiles are like a ZIP file, packing many vector tiles into a single file optimi
 
 ![PMTiles Viewer](../../../assets/satellite/001-optimize-show/PMTileseViewer.png)
 ///caption
-PMTiles Viewer. This is a demo of PMTiles loaded my data, can easyly to navigate
+PMTiles Viewer. This is a demo of PMTiles loaded with my data, easy to navigate
 ///
 
 !!! success "PMTiles"
@@ -134,10 +135,10 @@ I had multiple PMTiles since our data included various object types (e.g., regio
 
 In the end, I chose Martin—a fast, lightweight Rust-based tile server. Why Martin?
 
-- **[Support Caching:](https://maplibre.org/martin/run-with-cli.html?highlight=caching#command-line-interface)** Martin supports caching to improve performance.
+- **[Support Caching:](https://maplibre.org/martin/run-with-cli/)** Martin supports caching to improve performance.
 - **High Performance:** Blazing fast with a low memory footprint, perfect for large datasets like our 700,000 polygons.
 - **PostGIS Integration:** Can act as a hybrid—serving static PMTiles and real-time PostGIS data if needed later.
-- **Simple Endppoint:** [Composite Sources](https://maplibre.org/martin/sources-composite.html) -> One endpoint for multiple PMTiles, simplifying data consumption.
+- **Simple Endpoint:** [Composite Sources](https://maplibre.org/martin/sources-composite/) -> One endpoint for multiple PMTiles, simplifying data consumption.
 - **Authentication:** However, martin doesn’t support authentication out of the box. We had to implement a reverse proxy with Nginx to handle this.
 
 Example with consume with Leaflet:

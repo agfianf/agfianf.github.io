@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-04-22
     updated: 2025-04-22
+description: Deploy a FastAPI image from Docker Hub to a Minikube cluster with a Deployment and a ClusterIP Service, then reach it with kubectl port-forward.
 categories:
     - devops
 tags:
@@ -22,7 +23,7 @@ comments: true
 # Hands-on FastAPI Simple Deployment with Kubernetes
 
 
-Hi! back to my blog, today i will show you how to deploy a simple FastAPI that already pushed to Docker Hub and run it on Kubernetes. So let's get started!
+Hi! back to my blog, today I will show you how to deploy a simple FastAPI that already pushed to Docker Hub and run it on Kubernetes. So let's get started!
 
 <!-- more -->
 
@@ -42,7 +43,7 @@ This flow demonstrates how port-forwarding enables local access to the FastAPI a
 
 ## Prerequisites
 
-I am using MacOS and using `OrbStack` as my docker engine, you can use Docker Desktop or any other docker engine that you prefer. After that, i will install these tools:
+I am using MacOS and using `OrbStack` as my docker engine, you can use Docker Desktop or any other docker engine that you prefer. After that, I will install these tools:
 
 ### Installation
 #### `minikube`
@@ -71,9 +72,9 @@ for example, if you have multiple Kubernetes clusters (e.g., a development clust
 
 ### Application
 
-I have a simple FastAPI application that i will deploy to Kubernetes. The application is a simple REST API that returns a greeting message. You can find the code in this [:fontawesome-brands-square-github: fastapi-todo-demo](https://github.com/agfianf/fastapi-todo-demo)
+I have a simple FastAPI application that I will deploy to Kubernetes. The application is a simple REST API that returns a greeting message. You can find the code in this [:fontawesome-brands-square-github: fastapi-todo-demo](https://github.com/agfianf/fastapi-todo-demo)
 
-and i have pushed the image to Docker Hub with the name `syinx/fastapi-todo-demo:v0.0.23`. You can see here [fastapi-todo-demo](https://hub.docker.com/repository/docker/syinx/fastapi-todo-demo/general)
+and I have pushed the image to Docker Hub with the name `syinx/fastapi-todo-demo:v0.0.23`. You can see here [fastapi-todo-demo](https://hub.docker.com/r/syinx/fastapi-todo-demo)
 
 
 ## Create a Kubernetes Cluster
@@ -323,7 +324,7 @@ spec:
 
 ### Alternative
 
-or, you can combine both YAMLs into a single file (`fastapi-todo-demo.yaml`) and apply them together. **Here i will use this to continue the tutorial.**
+or, you can combine both YAMLs into a single file (`fastapi-todo-demo.yaml`) and apply them together. **Here I will use this to continue the tutorial.**
 
 ```yaml title="fastapi-todo-demo.yaml" linenums="1"
 apiVersion: apps/v1
@@ -470,7 +471,7 @@ minikube stop -p demo-cluster
 
 ## Conclusion
 
-in this blog post, i have shown you how to deploy a simple FastAPI application to Kubernetes using `minikube`. I have also shown you how to create a deployment object and a service object to expose the application. You can use this as a starting point for deploying your own applications to Kubernetes.
+in this blog post, I have shown you how to deploy a simple FastAPI application to Kubernetes using `minikube`. I have also shown you how to create a deployment object and a service object to expose the application. You can use this as a starting point for deploying your own applications to Kubernetes.
 
 !!! question
 

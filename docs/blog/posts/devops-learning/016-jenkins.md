@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-03-25
     updated: 2025-03-25
+description: Install a Jenkins controller and agent on GCP VMs with Terraform startup scripts, connect the agent over WebSocket, and run a disk-space check job.
 categories:
     - devops
 tags:
@@ -25,7 +26,7 @@ comments: true
 
 Hi!
 
-Today i will hands-on jenkins from installation using terraform to implementation create one job. I will show how to install Jenkins on GCP using Terraform and create a simple job. This post is part of my DevOps learning journey. I will share my experience and knowledge about DevOps tools and practices. :fist: 😃
+Today I will hands-on jenkins from installation using terraform to implementation create one job. I will show how to install Jenkins on GCP using Terraform and create a simple job. This post is part of my DevOps learning journey. I will share my experience and knowledge about DevOps tools and practices. :fist: 😃
 
 
 <!-- more -->
@@ -52,22 +53,22 @@ We will create 2 VMs on GCP using Terraform:
 
 ## {==Create VM Instances on GCP==}
 
-I have created a VM on GCP using Terraform. Howeever, i will not go into details of Terraform in this post. You can refer to my code [:fontawesome-brands-square-github: repository](https://github.com/agfianf/terraform-tutorial/tree/main/projects/002-provisioning-jenkins) for the Terraform code.
+I have created a VM on GCP using Terraform. However, I will not go into details of Terraform in this post. You can refer to my code [:fontawesome-brands-square-github: repository](https://github.com/agfianf/terraform-tutorial/tree/main/projects/002-provisioning-jenkins) for the Terraform code.
 
-![](../../../assets/devops/project-16/jenkins-vm.png)
-![](../../../assets/devops/project-16/jenkins-network.png)
+![GCP VM instances list with jenkins-agent and jenkins-controller running](../../../assets/devops/project-16/jenkins-vm.png)
+![Firewall rules of vpc-jenkins-project allowing SSH, HTTP and port 8080](../../../assets/devops/project-16/jenkins-network.png)
 
 
 ## {==Install Jenkins via Terraform on GCP==}
 
-At this stage, i will first install the Jenkins Controller. After the VM instance is successfully created, the startup script we defined in Terraform will be executed automatically. We'll use this startup script to install Jenkins and its dependencies. Here's the startup script that installs Jenkins:
+At this stage, I will first install the Jenkins Controller. After the VM instance is successfully created, the startup script we defined in Terraform will be executed automatically. We'll use this startup script to install Jenkins and its dependencies. Here's the startup script that installs Jenkins:
 
 
 ??? quote "startup_controller.sh"
     
     This script will be executed on the Jenkins Controller VM. It will install Jenkins and its dependencies. The script mainly does the following:
 
-    - Install Pre-requeste Java 21: [Java Support Policy](https://www.jenkins.io/doc/book/platform-information/support-policy-java/)
+    - Install Prerequisite Java 21: [Java Support Policy](https://www.jenkins.io/doc/book/platform-information/support-policy-java/)
     - Install Docker
     - Install Jenkins
     - Add jenkins user to docker group and restart jenkins service
@@ -127,20 +128,20 @@ At this stage, i will first install the Jenkins Controller. After the VM instanc
     4. Restart Jenkins service after adding jenkins user to docker group.
 
 After executing you can see the status of jenkins using `systemctl status jenkins` command. The result as image below:
-![](../../../assets/devops/project-16/jenkins-controller-running.png)
+![systemctl status jenkins showing the Jenkins service active and running on the controller](../../../assets/devops/project-16/jenkins-controller-running.png)
 
 !!! warning "Not create agent instance at the same time"
 
     Here, we **can't** running terraform to directly create instance for controller and agent **at the same time**. This is because the agent will need to connect to the controller using `name-agent` and `secret` that need to be setup first on Controller. So we need to create the controller instance first and then create the agent instance.
 
-    My way, is comment the agent instance in the terraform code and run terraform apply. After the controller instance is created, i will uncomment the agent instance and run terraform apply again with take name agent and secret that already created in the controller instance. This will create the agent instance and connect it to the controller instance. This is the bash script to create agent instance on controller:
+    My way, is comment the agent instance in the terraform code and run terraform apply. After the controller instance is created, I will uncomment the agent instance and run terraform apply again with take name agent and secret that already created in the controller instance. This will create the agent instance and connect it to the controller instance. This is the bash script to create agent instance on controller:
 
 
     ??? quote "startup_agent.sh"
         
         This script will be executed on the Jenkins Agent VM. It will install Java 21 and other dependencies. The script mainly does the following:
 
-        - Install Pre-requeste Java 21: [Java Support Policy](https://www.jenkins.io/doc/book/platform-information/support-policy-java/)
+        - Install Prerequisite Java 21: [Java Support Policy](https://www.jenkins.io/doc/book/platform-information/support-policy-java/)
         - Install Git
         - Install wget
         - Install curl
@@ -224,30 +225,30 @@ http://<EXTERNAL_IP>:8080
     sudo cat /var/lib/jenkins/secrets/initialAdminPassword
     ```
 
-    ![](../../../assets/devops/project-16/jenkins-unlock-admin.png)
-    ![](../../../assets/devops/project-16/jenkins-unlock-pwd.png)
+    ![Unlock Jenkins screen asking for the initial admin password](../../../assets/devops/project-16/jenkins-unlock-admin.png)
+    ![Reading the initial admin password with sudo cat on the controller](../../../assets/devops/project-16/jenkins-unlock-pwd.png)
 
 **2. Install Suggested Plugins**
 
 - After unlocking Jenkins, you will see the following screen. You can install the suggested plugins or select the plugins you want to install. For this tutorial, we will install the suggested plugins.
 
-    ![](../../../assets/devops/project-16/jenkins-started.png)
-    ![](../../../assets/devops/project-16/jenkings-getting-started-plugins.png)
+    ![Customize Jenkins screen with the Install suggested plugins option](../../../assets/devops/project-16/jenkins-started.png)
+    ![Jenkins Getting Started screen installing the suggested plugins](../../../assets/devops/project-16/jenkings-getting-started-plugins.png)
 
 **3. Create First Admin User**
 
 - After installing the plugins, you will see the following screen. You can create your first admin user or skip this step. For this tutorial, we will create a first admin user.
 
-    ![](../../../assets/devops/project-16/jenkins-first-admin-user.png)
+    ![Create First Admin User form](../../../assets/devops/project-16/jenkins-first-admin-user.png)
 
 **4. Instance Configuration**
 
 - After creating the first admin user, you will see the following screen. You can configure the instance name and URL. For this tutorial, we will use the default settings.
 
-    ![](../../../assets/devops/project-16/jenkins-configuration.png)
+    ![Instance Configuration screen with the Jenkins URL](../../../assets/devops/project-16/jenkins-configuration.png)
 
 Good! Now we have successfully installed Jenkins on GCP using Terraform.
-![](../../../assets/devops/project-16/jenkins-started-2.png)
+![Jenkins dashboard showing the Welcome to Jenkins page after setup](../../../assets/devops/project-16/jenkins-started-2.png)
 
 ### 2. Setup Agent
 
@@ -288,7 +289,7 @@ In this process I installed 2 plugins:
 
 **1. Create a Pipeline Job**
 
-- After installing the plugins, you will see the following screen. You can create a new job by clicking on the "New Item" button. Here i fill the form by selecting "Pipeline" and enter the name of the job. For this tutorial, we will create a job called `check-disk`.
+- After installing the plugins, you will see the following screen. You can create a new job by clicking on the "New Item" button. Here I fill the form by selecting "Pipeline" and enter the name of the job. For this tutorial, we will create a job called `check-disk`.
     ![Jenkins WebSocket Agent Plugin](../../../assets/devops/project-16/jenkins-job-1.png)
 
 **2. Create a script to check disk space**
@@ -341,7 +342,7 @@ In this process I installed 2 plugins:
 
 ## {==Conclusion==}
 
-Today i learned how to:
+Today I learned how to:
 
 - install Jenkins Controller and Jenkins Agent on GCP using Terraform
 - install Jenkins plugins to enhance Jenkins functionality

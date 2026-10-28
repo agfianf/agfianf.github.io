@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-02-22
     updated: 2025-02-22
+description: Linux admin homework. Create users and a group, lock a shared folder to it with chmod 070, then install NGINX and verify it with curl, netstat and ps.
 categories:
     - devops
 tags:
@@ -34,7 +35,7 @@ Berikut adalah task yang harus diselesaikan pada sesi 3: **Linux and Unix Admini
     # output: u24-1
     ```
 
-    from here i execute the command as `u24-1` as one of the member `sudoers`.
+    from here I execute the command as `u24-1` as one of the member `sudoers`.
 
 - Buat 3 pengguna baru bernama `user1`, `user2`, dan `user3`
     
@@ -91,31 +92,31 @@ ls -ld /home/shared/sesi_3
 
 ???+ tip "Result of the project A"
 
-    ![bukti-1](../../../assets/devops/project-3/bukti-1.png){ width="500" }
+    ![Permission denied for u24-1, which is not in devteam, when opening sesi_3](../../../assets/devops/project-3/bukti-1.png){ width="500" }
 
     `u24-1` is not part of `devteam` cannot access the folder
 
     ---
 
-    ![bukti-user-1](../../../assets/devops/project-3/bukti-user-1.png){ width="500" }
+    ![user1 opening sesi_3 and creating a file in it](../../../assets/devops/project-3/bukti-user-1.png){ width="500" }
 
     `user1` login and try to access and create file in the folder
 
     ---
 
-    ![bukti-user-2](../../../assets/devops/project-3/bukti-user-2.png){ width="500" }
+    ![user2 creating a file in sesi_3 next to the file from user1](../../../assets/devops/project-3/bukti-user-2.png){ width="500" }
 
     `user2` login and try to access and create file in the folder. as you can see there is file from `user1` and `user2`. Nice!
 
     ---
     
-    ![bukti-user-3](../../../assets/devops/project-3/bukti-user-3.png){ width="500" }
+    ![Permission denied for user3, which is not in devteam, when opening sesi_3](../../../assets/devops/project-3/bukti-user-3.png){ width="500" }
 
     `user3` is not part of `devteam` cannot access the folder. Apalagi buat file. so sad.
     
     ---
 
-    ![bukti-root](../../../assets/devops/project-3/bukti-root.png){ width="500" }
+    ![root still reading, writing and executing in sesi_3 despite the owner having no permissions](../../../assets/devops/project-3/bukti-root.png){ width="500" }
 
     `root` is not part of `devteam` and **we configure owner has no permission** (no rwx) to that folder **but** can access still read, write, and execute the folder. this is the power of `root` (super user) :fire::fire::fire:
 
@@ -132,7 +133,7 @@ Project ini melakukan konfigurasi dan instalasi NGINX. Lakukan verifikasi bahwa 
 
     **`curl http://localhost`**
 
-    ![bukti-b1](../../../assets/devops/project-3/project-b-1.png){ width="500" }
+    ![curl http://localhost returning the NGINX welcome page](../../../assets/devops/project-3/project-b-1.png){ width="500" }
 
     Pada saat melakukan `curl http://localhost` (pada port:80) kita mendapatkan output dari NGINX seperti diatas yang merupakan isi dari file `/usr/share/nginx/html/index.html`
 
@@ -142,7 +143,7 @@ Project ini melakukan konfigurasi dan instalasi NGINX. Lakukan verifikasi bahwa 
 
     Perintah ini akan menampilkan semua port yang sedang digunakan oleh aplikasi yang berjalan pada server kita.
 
-    ![bukti-b2](../../../assets/devops/project-3/project-b-2.png){ width="500" }
+    ![netstat -tuln showing NGINX listening on port 80 for IPv4 and IPv6](../../../assets/devops/project-3/project-b-2.png){ width="500" }
     
     ```bash
     Proto Recv-Q Send-Q Local Address           Foreign Address         State
@@ -161,7 +162,7 @@ Project ini melakukan konfigurasi dan instalasi NGINX. Lakukan verifikasi bahwa 
 
     `ps aux` adalah perintah untuk menampilkan semua proses yang sedang berjalan pada server kita. Pada saat melakukan `ps aux | grep nginx` kita mendapatkan informasi bahwa NGINX sudah berjalan dengan baik dengan 2 proses yaitu `master` dan `worker` process.
 
-    ![bukti-b3](../../../assets/devops/project-3/project-b-3.png){ width="500" }
+    ![ps aux output showing the NGINX master and worker processes](../../../assets/devops/project-3/project-b-3.png){ width="500" }
 
     ```bash
     root        9297  0.0  0.1  10508  3096 ?        Ss   08:13   0:00 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;

@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-03-02
     updated: 2025-03-03
+description: Run Node Exporter and Prometheus with Docker Compose to read a server's total, available, free and used memory, and why available beats free.
 categories:
     - devops
 tags:
@@ -24,7 +25,7 @@ comments: true
 In this guide, we’ll explore how to monitor memory usage on a server using Prometheus and Node Exporter.
 <!-- more -->
 
-!!! info "Project Challange"
+!!! info "Project Challenge"
 
     Install node exporter and prometheus on your server and monitor the memory usage.
 
@@ -141,7 +142,7 @@ We’ll install Node Exporter on Server 2 using Docker Compose for its simplicit
 
 ### 2.2 Install Prometheus on Server 1
 
-We’ll install Prometheus on Server 1 using Docker Compose (i love you docker compose) for its simplicity and ease of management.
+We’ll install Prometheus on Server 1 using Docker Compose (I love you docker compose) for its simplicity and ease of management.
 
 === "Structure repository"
     

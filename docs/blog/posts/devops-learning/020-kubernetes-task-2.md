@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-05-02
     updated: 2025-05-02
+description: Autoscale a FastAPI service on Minikube with the Horizontal Pod Autoscaler on CPU usage, load-tested with Locust.
 categories:
     - devops
 tags:
@@ -28,14 +29,14 @@ Hi! Today we will learn how to do auto-scaling with Kubernetes. We will use a Fa
 
 **Overview Architecture**
 
-![overview-kubernetes](../../../assets/devops/project-20/01-overview.png)
+![Architecture of the FastAPI Deployment, LoadBalancer Service and HPA on Minikube, load-tested with Locust](../../../assets/devops/project-20/01-overview.png)
 
 In this project, we have 1 fastapi application and we will deploy it to Kubernetes with deployment object. Then, we create loadbalancer service to expose the application. to access that in local we need to tunnel the service using `minikube tunnel`. After we deploy the application, we will create a Horizontal Pod Autoscaler (HPA) to scale the application based on CPU usage. We will use `locust` to generate load to the application and see how the HPA works.
 
 
 **Overview FastAPI Application**
 
-![overview-kubernetes](../../../assets/devops/project-20/01-FASTAPI.png)
+![Swagger UI of the Todo API v0.0.24 with system, performance and todos endpoints](../../../assets/devops/project-20/01-FASTAPI.png)
 ```python title="FastAPI one of Endpoint" linenums="1"
 ...
 @app.get("/performance/cpu", tags=["performance"])
@@ -54,9 +55,9 @@ This endpoint will use to test the CPU usage. This code will generate random num
 ## Resources
 
 
-- [:fontawesome-brands-square-github: fastapi-todo-demo](https://github.com/agfianf/fastapi-todo-demo) | [:simple-docker: syinx/fastapi-todo-demo](https://hub.docker.com/repository/docker/syinx/fastapi-todo-demo/general)
+- [:fontawesome-brands-square-github: fastapi-todo-demo](https://github.com/agfianf/fastapi-todo-demo) | [:simple-docker: syinx/fastapi-todo-demo](https://hub.docker.com/r/syinx/fastapi-todo-demo)
     
-    this repo contains the FastAPI application that we will use in this project. We shiped the image to Docker Hub with the name `syinx/fastapi-todo-demo:v0.0.24`. You can pull the image from Docker Hub and run it locally.
+    this repo contains the FastAPI application that we will use in this project. We shipped the image to Docker Hub with the name `syinx/fastapi-todo-demo:v0.0.24`. You can pull the image from Docker Hub and run it locally.
 
 - [:fontawesome-brands-square-github: fastapi-kubernetes/003-hpa-deployment](https://github.com/agfianf/fastapi-kubernetes/tree/main/003-hpa-deployment)
     
@@ -65,7 +66,7 @@ This endpoint will use to test the CPU usage. This code will generate random num
 ## Setup Kubernetes on Local Machine
 
 ### Active Minikube
-First, we need to start minikube and choose our profile and namespace. This is the command to start i use for this section:
+First, we need to start minikube and choose our profile and namespace. This is the command to start I use for this section:
 ```bash title="list commands minikube" linenums="1"
 # 01-start-minikube:
 minikube start
@@ -88,12 +89,12 @@ kubectl config view --minify --output 'jsonpath={..namespace}'
 
 This is following screenshot result of the commands above:
 
-![overview-kubernetes](../../../assets/devops/project-20/02-minikube-start.png)
+![Terminal output of starting Minikube and switching to the demo-cluster profile](../../../assets/devops/project-20/02-minikube-start.png)
 ///caption
 we can see we set the profile to `demo-cluster` and set the namespace to `demo`. We see profile list there are 3 profiles: (`demo-cluster`, `ha-cluster`, `minikube`). Then **Active Profile** is sign with `*` and **Active Kubecontext** with `*`.
 ///
 
-![overview-kubernetes](../../../assets/devops/project-20/03-set-namespace.png)
+![kubens setting the active namespace to demo](../../../assets/devops/project-20/03-set-namespace.png)
 ///caption
 namespace use is `demo`
 ///
@@ -128,9 +129,9 @@ kubectl top nodes
 
 You will see the output like this:
 
-![overview-kubernetes](../../../assets/devops/project-20/05-check-metrics.png)
+![metrics-server pod running and kubectl top nodes showing CPU and memory usage](../../../assets/devops/project-20/05-check-metrics.png)
 ///caption
-The picture show that **metrics-server is running** and we can see the nodes of the cluser usage for  `CPU (cores): 211m (2% utilization)` and `Memory (bytes): 696Mi (8% utilization)`.
+The picture show that **metrics-server is running** and we can see the nodes of the cluster usage for  `CPU (cores): 211m (2% utilization)` and `Memory (bytes): 696Mi (8% utilization)`.
 ///
 
 ???+ warning "If that solution not work, try this"
@@ -328,16 +329,16 @@ kubectl top nodes
 
 The output will look like this:
 
-![overview-kubernetes](../../../assets/devops/project-20/04-check-deployment-hpa.png)
-![overview-kubernetes](../../../assets/devops/project-20/06-hpa-check-again.png)
+![kubectl output with two running pods, the HPA target still unknown, the LoadBalancer service and top usage](../../../assets/devops/project-20/04-check-deployment-hpa.png)
+![kubectl get hpa now showing cpu 2% against the 30% target](../../../assets/devops/project-20/06-hpa-check-again.png)
 
 ## Tunneling the Service
 To access the service, we need to tunnel the service using `minikube tunnel`. This will create a load balancer in the cloud provider and assign a public IP address to it. The command and result can see below (in screenshot):
 
 1. Tunnelling the service
-![overview-kubernetes](../../../assets/devops/project-20/07-tunneling.png)
+![minikube tunnel running for fastapi-todo-service](../../../assets/devops/project-20/07-tunneling.png)
 2. curl the service via localhost:
-![overview-kubernetes](../../../assets/devops/project-20/08-test-deploy.png)
+![curl to the service on localhost:8123 returning a response](../../../assets/devops/project-20/08-test-deploy.png)
 
 ## Test Auto Scaling
 The service already running and we can access the service via `localhost:8123`. Now we can test the auto scaling using `locust`. We will use `locust` to generate load to the application and see how the HPA works. We will use `locust` to generate load to the application and see how the HPA works. We will use `locust` to generate load to the application and see how the HPA works.
@@ -388,16 +389,16 @@ Here my setup for watching the HPA. I have 4-5 terminal windows:
 2. `Terminal 2`: watching the hpa and update every 1 second
 3. `Terminal 3`: tunneling the service
 4. `Terminal 4`: running locust
-5. `Terminal 5`: watching kubctl top pods and update every 1 second
+5. `Terminal 5`: watching kubectl top pods and update every 1 second
 
 Here the screenshot of the setup:
-![overview-kubernetes](../../../assets/devops/project-20/09-setup-watching-hpa.png)
+![Five terminal panes watching pods, the HPA, pod usage, the tunnel and Locust](../../../assets/devops/project-20/09-setup-watching-hpa.png)
 ///caption
 this is the setup for watching the HPA. Sorry for the background!
 ///
 
 
-This is live demo of demo i upload to my youtube channel. You can watch the video below:
+This is live demo of demo I upload to my youtube channel. You can watch the video below:
 
 <p style="text-align:center">
   <iframe width="640" height="380" src="https://www.youtube.com/embed/GC9pNG4daGQ?si=EDun35zS_Ft43O1F" title="Video FastAPI X Kubernetes AutoScaling" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -409,24 +410,24 @@ For short, this is the timeline of the video:
 - 1:44 pods already scale up
 - 3:45 pods already scale down
 
-![overview-kubernetes](../../../assets/devops/project-20/10-locust-test-live.gif)
+![Animated recording of the Locust load test scaling pods up and down](../../../assets/devops/project-20/10-locust-test-live.gif)
 ///caption
 just in case the video not work, this is the gif of the video.
 ///
 
 **Scale Up**
-![overview-kubernetes](../../../assets/devops/project-20/11-scaleup.png)
+![HPA scaled up to 6 replicas at 110% CPU against the 30% target during the Locust test](../../../assets/devops/project-20/11-scaleup.png)
 
 **Scale Down**
-![overview-kubernetes](../../../assets/devops/project-20/11-scaling-down.png)
+![HPA scaling the pods back down after the load test ends](../../../assets/devops/project-20/11-scaling-down.png)
 
 
 
 ## Stop the Application
 Alright! We already test the auto scaling and we can stop the application. We can stop the application by running this command:
 
-![overview-kubernetes](../../../assets/devops/project-20/12-stop-deploy.png)
-![overview-kubernetes](../../../assets/devops/project-20/13-stop-minikube.png)
+![make 14-stop-deploy deleting the HPA, Deployment and Service](../../../assets/devops/project-20/12-stop-deploy.png)
+![Stopping the Minikube cluster](../../../assets/devops/project-20/13-stop-minikube.png)
 
 ## Conclusion
 In this project, we have learned how to deploy FastAPI application to Kubernetes and how to use HPA to scale the application based on CPU usage. We also learned how to use `locust` to generate load to the application and see how the HPA works. This is a simple project but it is very useful for learning Kubernetes and HPA.

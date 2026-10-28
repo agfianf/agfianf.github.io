@@ -6,6 +6,7 @@ authors:
 date: 
     created: 2025-03-09
     updated: 2025-03-10
+description: Provision a GCP VM running NGINX with Terraform, including the VPC, subnet and firewall rules, through init, plan, apply and destroy, then scale it to 3.
 categories:
     - devops
 tags:
@@ -234,7 +235,7 @@ resource "xxx" "xxx" {
 
 This file contains the provider configuration for Terraform:
 
-- First, `terraform` block specifies the required version of Terraform and the required providers. Here, i am using the Google provider.
+- First, `terraform` block specifies the required version of Terraform and the required providers. Here, I am using the Google provider.
 - Second, `provider` block specifies the configuration for the Google provider. This includes the project ID, region, zone, and credentials file for accessing GCP.
 
 ???+ quote "providers.tf"
@@ -436,7 +437,7 @@ This file contains the output configuration for the Terraform execution. This ou
     ```
 
 
-## Excecute Terraform
+## Execute Terraform
 
 ### Initialize Terraform
 ```bash
@@ -534,7 +535,7 @@ terraform validate
 
 ???+ success "Success"
 
-    Here i show that the instance is created successfully. You can see the VM instance in the GCP console. You can access the VM instance using SSH and check if Nginx is running.
+    Here I show that the instance is created successfully. You can see the VM instance in the GCP console. You can access the VM instance using SSH and check if Nginx is running.
     ![List of VM Instances](../../../assets/devops/pro-15-terraform/result-1-1.png)
     ![List of VM Instances](../../../assets/devops/pro-15-terraform/result-1-2.png)
     ![List of VM Instances](../../../assets/devops/pro-15-terraform/result-1-3.png)
