@@ -250,7 +250,7 @@ after installing GitLab server, and got root password:
 
     Then, register the GitLab runner using the token that you got from the GitLab UI. You can use the following command to register the GitLab runner:
     ```bash title="Register GitLab Runner" linenums="1"
-    gitlab-runner register  --url http://35.198.250.23  --token glrt-t3_9Eszsx1d-wxea45gpTtc
+    gitlab-runner register  --url http://35.198.250.23  --token <your-runner-token>
     ```
     
     Then, we check the configuration of the GitLab runner. You can use the following command to check the configuration:
@@ -268,7 +268,7 @@ after installing GitLab server, and got root password:
     name = "gitlab-server"
     url = "http://35.198.250.23"
     id = 1
-    token = "glrt-t3_9Eszsx1d-wxea45gpTtc"
+    token = "glrt-xxxxxxxxxxxxxxxxxxxx"  # redacted
     token_obtained_at = 2025-04-14T03:47:50Z
     token_expires_at = 0001-01-01T00:00:00Z
     executor = "docker"
