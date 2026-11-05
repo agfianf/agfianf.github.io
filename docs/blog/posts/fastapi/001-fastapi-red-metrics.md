@@ -65,25 +65,11 @@ Prometheus and Grafana are two popular open-source tools used for monitoring and
 - **Prometheus**: A time series database that scrapes the result of `/metrics` endpoint every 15 seconds (default, yeah you can configure it but will come with some trade off).
 - **Grafana**: A visualization tool that queries Prometheus and displays the metrics on a dashboard. You can build type of graph/chart you want.
 
-```mermaid
-sequenceDiagram
-    participant App as Application<br><br>GET /metrics
-    participant Prom as Prometheus
-    participant Graf as Grafana
-
-    Note over App,Graf: Maximum Latency: ~15-45 seconds from new metric to dashboard
-    
-    loop Every Scrape (15s)
-        App->>Prom: Expose metrics
-        Note over App,Prom: Prometheus scrapes <br>/metrics every 15s
-    end
-    
-    loop Every dashboard refresh (5-30s)
-        Graf->>Prom: Request update
-        Prom->>Graf: Return data
-        Note over Prom,Graf: Dashboard refresh interval set in<br>Grafana UI: Dashboard Settings > Time Options
-    end
-```
+![The FastAPI app exposes GET /metrics, Prometheus scrapes it every 15 s, and Grafana queries Prometheus on each dashboard refresh every 5 to 30 s, so a new metric reaches the dashboard in about 15 to 45 s.](../../../assets/diagrams/fastapi-red-flow-dark.svg#only-dark)
+![The FastAPI app exposes GET /metrics, Prometheus scrapes it every 15 s, and Grafana queries Prometheus on each dashboard refresh every 5 to 30 s, so a new metric reaches the dashboard in about 15 to 45 s.](../../../assets/diagrams/fastapi-red-flow-light.svg#only-light)
+///caption
+Prometheus pulls from the app; Grafana pulls from Prometheus.
+///
 
 
 For short, the service expose endpoint `GET /metrics` and prometheus side will have configuration to scrape the endpoint every 15 seconds, and then grafana will query the prometheus every 5-30 seconds and you can see the metrics on the grafana dashboard. So the latency is around 15-45 seconds from new metric to dashboard.
@@ -93,38 +79,11 @@ For more details what inside the prometheus and grafana, please see the sequence
 ??? abstract "More Details"
     ### Sequence Diagram
 
-    ```mermaid
-    sequenceDiagram
-        participant App as Application<br><br>GET /metrics
-        participant Scr as Prometheus<br><br>Scraper
-        participant TSDB as Prometheus<br><br>TimeSeriesDB
-        participant PE as Prometheus<br><br>PromQL Engine
-        participant DS as Grafana<br><br>Datasource
-        participant QP as Grafana<br><br>Query Panel
-        participant U as Grafana<br><br>Dashboard
-
-        Note over App,U: Maximum Latency: ~15-45 seconds from new metric to dashboard
-        
-        loop Every Scrape (15s)
-            App->>Scr: Expose metrics
-            Note over App,Scr: Prometheus scrapes <br>/metrics every 15s
-            Note over App,Scr: Config:<br>prometheus.yml (scrape_interval)
-            
-            Scr->>TSDB: Store metrics
-            Note over Scr,TSDB: Stores as time series<br> with timestamps & labels
-        end
-        
-        loop Every dashboard refresh (5-30s)
-            QP->>DS: Request update
-            DS->>PE: Send PromQL query
-            PE->>TSDB: Fetch data
-            TSDB-->>PE: Return time series
-            PE-->>DS: Return processed data
-            DS-->>QP: Return formatted data
-            QP-->>U: Update visualization
-            Note over QP,U: Dashboard refresh interval set in<br>Grafana UI: Dashboard Settings > Time Options
-        end
-    ```
+    ![Inside Prometheus the scraper pulls GET /metrics and stores samples in the TSDB every 15 s; inside Grafana each dashboard refresh goes from the query panel through the datasource to the PromQL engine, which fetches the time series from the TSDB.](../../../assets/diagrams/fastapi-red-flow-detail-dark.svg#only-dark)
+    ![Inside Prometheus the scraper pulls GET /metrics and stores samples in the TSDB every 15 s; inside Grafana each dashboard refresh goes from the query panel through the datasource to the PromQL engine, which fetches the time series from the TSDB.](../../../assets/diagrams/fastapi-red-flow-detail-light.svg#only-light)
+    ///caption
+    The same two loops, split into the parts of Prometheus and Grafana.
+    ///
 
 ## How to Implement RED Metrics on FastAPI?
 
@@ -157,7 +116,11 @@ uvicorn==0.34.0
     ??? example "Example Case"
         - For example case measure the duration of requests. We can set of buckets to measure the duration of requests and can set for example:
 
-        ![Histogram](../../../assets/instrumentation-RED/cum-histogram.png){ width="300" align="right"}
+        ![Stacked columns of a cumulative histogram for requests A to E: the up to 1 s bucket holds 1, up to 2 s holds 3, up to 5 s holds 4 and up to 10 s holds 5, each including the requests of the buckets before it.](../../../assets/diagrams/fastapi-red-cumulative-histogram-dark.svg#only-dark){ width="420" }
+        ![Stacked columns of a cumulative histogram for requests A to E: the up to 1 s bucket holds 1, up to 2 s holds 3, up to 5 s holds 4 and up to 10 s holds 5, each including the requests of the buckets before it.](../../../assets/diagrams/fastapi-red-cumulative-histogram-light.svg#only-light){ width="420" }
+        ///caption
+        Each bucket keeps the requests of the smaller buckets and adds its own.
+        ///
 
         - The buckets set like this:
 

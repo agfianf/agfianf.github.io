@@ -60,10 +60,10 @@ In this section, we will learn how to use Docker Compose to manage multi-contain
 
 ## 0. Architecture
 
-![architecture](../../../assets/devops/project-7/architecture-task-7.png)
+![Docker Compose on my laptop: the browser loads the frontend and calls the app API, the app queries postgres on app-network, and frontend and postgres bind-mount folders from the host](../../../assets/diagrams/007-docker-compose-dark.svg#only-dark)
+![Docker Compose on my laptop: the browser loads the frontend and calls the app API, the app queries postgres on app-network, and frontend and postgres bind-mount folders from the host](../../../assets/diagrams/007-docker-compose-light.svg#only-light)
 ///caption
-architecture of the project.
-_source: my own_
+Architecture of the project: three containers on one Docker network. _source: my own_
 ///
 
 ## 1. Docker Compose Explanation

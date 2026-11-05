@@ -28,7 +28,11 @@ Hi! back to my blog, today I will show you how to deploy a simple FastAPI that a
 <!-- more -->
 
 ## Overview
-![Overview](../../../assets/devops/project-19/overview-task.png)
+![The browser reaches the ClusterIP fastapi-todo-service through kubectl port-forward 8080:80, curlpod calls it from inside the demo namespace, and the Service sends traffic to the Deployment's FastAPI pod on port 8000.](../../../assets/diagrams/019-k8s-clusterip-dark.svg#only-dark)
+![The browser reaches the ClusterIP fastapi-todo-service through kubectl port-forward 8080:80, curlpod calls it from inside the demo namespace, and the Service sends traffic to the Deployment's FastAPI pod on port 8000.](../../../assets/diagrams/019-k8s-clusterip-light.svg#only-light)
+///caption
+Two ways into a ClusterIP Service: a pod inside the cluster, or port-forward from your machine.
+///
 
 The diagram illustrates the flow of a request to access a FastAPI application deployed in a Kubernetes cluster using Minikube:
 

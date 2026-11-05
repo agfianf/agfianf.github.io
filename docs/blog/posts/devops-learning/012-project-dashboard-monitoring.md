@@ -43,12 +43,13 @@ In this guide, we’ll explore how to monitor cpu and memory usage on a server u
 
 ## Architecture Overview
 
-![architecture](../../../assets/devops/project-12/architecture-1.png)
+![Grafana and Prometheus on Server 1; Prometheus scrapes node-exporter on Server 2 every 15 seconds, and Grafana sends alerts to Discord](../../../assets/diagrams/012-monitoring-dark.svg#only-dark)
+![Grafana and Prometheus on Server 1; Prometheus scrapes node-exporter on Server 2 every 15 seconds, and Grafana sends alerts to Discord](../../../assets/diagrams/012-monitoring-light.svg#only-light)
 ///caption
-source: my own
+Two servers: Server 1 stores and shows the metrics, Server 2 only exposes them.
 ///
 
-In this architecture, Server 2 will have Node Exporter installed to expose usage metrics from that server. Server 1, on the other hand, will host Prometheus as the database and Grafana as the visualization and alerting tool. Prometheus on Server 1 will scrape data from Server 2’s Node Exporter every 15 seconds. The collected data will be stored in Prometheus, and Grafana will then scrape this data from Prometheus every 15 seconds to update its visualizations. If predefined conditions are met based on the alert rules, Grafana will send notifications to Discord accordingly.
+In this architecture, Server 2 runs Node Exporter, which exposes the server's usage metrics at `/metrics`. Server 1 hosts Prometheus as the database and Grafana as the visualization and alerting tool. Prometheus on Server 1 scrapes Server 2's Node Exporter every 15 seconds and stores the samples. Grafana does not scrape anything itself: each dashboard refresh sends a PromQL query to Prometheus. When an alert rule's condition is met, Grafana sends a notification to Discord through a webhook.
 
 ## 1. Know What Metrics you want to Monitor
 

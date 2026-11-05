@@ -57,25 +57,11 @@ Since I am using MacOS I will use [UTM](https://mac.getutm.app/) to set up my vi
 
 ### Workflow
 
-```mermaid
-sequenceDiagram
-    participant S1 as Server 1
-    participant S2 as Server 2
-    
-    S1->>S1: ssh-keygen -t rsa
-    Note over S1: Generates:<br>~/.ssh/id_rsa (private)<br>~/.ssh/id_rsa.pub (public)
-    
-    S1->>S2: ssh-copy-id u24-2@192.168.64.8
-    Note over S2: Adds Server 1's public key to<br>~/.ssh/authorized_keys
-    
-    S1->>S2: ssh u24-2@192.168.64.8
-    Note over S1,S2: Passwordless SSH successful
-    
-    S2->>S2: ssh-keygen -t rsa
-    S2->>S1: ssh-copy-id u24-1@192.168.64.9
-    S2->>S1: ssh u24-1@192.168.64.9
-    Note over S1,S2: Bidirectional passwordless SSH
-```
+![Each server makes its own key pair with ssh-keygen; ssh-copy-id puts Server 1's id_rsa.pub into Server 2's authorized_keys and Server 2's id_rsa.pub into Server 1's, while each private key stays on its own server.](../../../assets/diagrams/004-passwordless-ssh-dark.svg#only-dark)
+![Each server makes its own key pair with ssh-keygen; ssh-copy-id puts Server 1's id_rsa.pub into Server 2's authorized_keys and Server 2's id_rsa.pub into Server 1's, while each private key stays on its own server.](../../../assets/diagrams/004-passwordless-ssh-light.svg#only-light)
+///caption
+Only the public key travels: each one lands in the other server's authorized_keys.
+///
 
 ### On Server 1
 

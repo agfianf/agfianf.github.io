@@ -157,7 +157,9 @@ plugins:
       pagination: true
       pagination_per_page: 12
       pagination_format: "$link_previous ~2~ $link_next"
-  - glightbox
+  # auto_themed keeps a diagram's dark/light twin (#only-dark, #only-light) out of the lightbox for the other scheme
+  - glightbox:
+      auto_themed: true
   # Social cards need Cairo; enabled in CI (GitHub Actions sets CI=true) to keep local serve fast
   - social:
       enabled: !ENV [CI, false]

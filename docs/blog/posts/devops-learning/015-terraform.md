@@ -36,7 +36,11 @@ Hi! I will hands on Terraform to create **a** VM on GCP or **multiple** VM insta
 
 ## Overview
 
-![overview](../../../assets/devops/pro-15-terraform/overview.png)
+![Terraform creates VM instances in the vpc-wakanda VPC on GCP, behind firewall rules that allow HTTP and SSH from the user](../../../assets/diagrams/015-terraform-gcp-dark.svg#only-dark)
+![Terraform creates VM instances in the vpc-wakanda VPC on GCP, behind firewall rules that allow HTTP and SSH from the user](../../../assets/diagrams/015-terraform-gcp-light.svg#only-light)
+///caption
+What Terraform builds on GCP. Reference and inspired by StackSimplify.
+///
 
 Terraform will create a VM instance on GCP. The VM instance will be created in a VPC network with a firewall rule to allow HTTP and SSH access. The VM instance will have a startup script that installs Nginx and starts the service.
 

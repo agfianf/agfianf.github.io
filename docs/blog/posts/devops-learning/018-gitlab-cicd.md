@@ -30,7 +30,12 @@ Hi there! Today, I will demonstrate a hands-on implementation of GitLab CI/CD. {
 
 
 ## {==Introduction==}
-![Infrastructure Overview](../../../assets/devops/project-18/infra-architecture.png)
+![Pushing a version tag to GitLab runs the pipeline on gitlab-runner, which pushes the image to Docker Hub and deploys it over SSH to the FastAPI VM](../../../assets/diagrams/018-gitlab-cicd-dark.svg#only-dark)
+![Pushing a version tag to GitLab runs the pipeline on gitlab-runner, which pushes the image to Docker Hub and deploys it over SSH to the FastAPI VM](../../../assets/diagrams/018-gitlab-cicd-light.svg#only-light)
+///caption
+Two VPCs: GitLab and its runner in one, the FastAPI deployment target in the other.
+///
+
 The diagram illustrates two separate infrastructures: one for a GitLab server (`vpc-gitlab`) and another for a FastAPI server (`vpc-fastapi`). Both setups are hosted in virtual private clouds (VPCs) with Docker containers, firewalls, and specific port mappings for external access. Here's a breakdown of each:
 
 ### 1. **GitLab Infrastructure (`vpc-gitlab`)**

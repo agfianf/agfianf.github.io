@@ -40,7 +40,11 @@ Jenkins is one of the most popular open-source automation servers. Mostly used f
 
 ## {==Overview Project==}
 
-![Jenkins Overview](../../../assets/devops/project-16/jenkins-overview.png)
+![The browser reaches jenkins-controller on port 8080 through the VPC firewall, and jenkins-agent connects to the controller over WebSocket](../../../assets/diagrams/016-jenkins-dark.svg#only-dark)
+![The browser reaches jenkins-controller on port 8080 through the VPC firewall, and jenkins-agent connects to the controller over WebSocket](../../../assets/diagrams/016-jenkins-light.svg#only-light)
+///caption
+Jenkins controller and agent as two VMs in one VPC.
+///
 
 In the overview above, you can see we're using 2 VM instances: Jenkins Controller and Jenkins Agent. Typically, you could use just 1 VM instance for both Jenkins Controller and Agent. However, we're using 2 separate instances to make our setup more scalable and flexible. This approach allows us to easily add or remove agents as needed based on our workload requirements.
 

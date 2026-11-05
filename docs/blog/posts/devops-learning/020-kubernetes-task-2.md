@@ -29,7 +29,11 @@ Hi! Today we will learn how to do auto-scaling with Kubernetes. We will use a Fa
 
 **Overview Architecture**
 
-![Architecture of the FastAPI Deployment, LoadBalancer Service and HPA on Minikube, load-tested with Locust](../../../assets/devops/project-20/01-overview.png)
+![Locust reaches the LoadBalancer fastapi-todo-service through minikube tunnel; the HPA scales the Deployment's pods between 2 and 10 on a 30% CPU target, fed by metrics-server.](../../../assets/diagrams/020-k8s-hpa-dark.svg#only-dark)
+![Locust reaches the LoadBalancer fastapi-todo-service through minikube tunnel; the HPA scales the Deployment's pods between 2 and 10 on a 30% CPU target, fed by metrics-server.](../../../assets/diagrams/020-k8s-hpa-light.svg#only-light)
+///caption
+The HPA watches pod CPU through metrics-server and resizes the Deployment between 2 and 10 pods.
+///
 
 In this project, we have 1 fastapi application and we will deploy it to Kubernetes with deployment object. Then, we create loadbalancer service to expose the application. to access that in local we need to tunnel the service using `minikube tunnel`. After we deploy the application, we will create a Horizontal Pod Autoscaler (HPA) to scale the application based on CPU usage. We will use `locust` to generate load to the application and see how the HPA works.
 

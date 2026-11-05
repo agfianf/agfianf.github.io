@@ -37,7 +37,11 @@ I will do hands-on Ansible with this project.
 
 ## Overview
 
-![overview](../../../assets/devops/project-14/overview.png)
+![Ansible on master-node reads the inventory and pushes the nginx playbook over SSH to server-1 and server-2](../../../assets/diagrams/014-ansible-dark.svg#only-dark)
+![Ansible on master-node reads the inventory and pushes the nginx playbook over SSH to server-1 and server-2](../../../assets/diagrams/014-ansible-light.svg#only-light)
+///caption
+One control node, two managed nodes, one playbook pushed over SSH.
+///
 
 I have `master-node` here as control node and `server-1` and `server-2` as managed node. Master node will be used to install Ansible and run the playbook. `server-1` and `server-2` will be used to setup nginx.
 
