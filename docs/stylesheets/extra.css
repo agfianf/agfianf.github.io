@@ -901,6 +901,22 @@ body::before {
   box-shadow: 0 0 0 1px var(--ag-line-strong), var(--ag-shadow);
 }
 
+/* Material puts an annotation popup's top-left corner on the centre of its marker, so the rotated × sits on the popup. Here the popup opens just below the marker, its left edge a little before it, so the × stays clear and clickable. --ag-annotation-dx/dy come from site.js and undo the shift that titled code blocks cause. */
+.md-annotation .md-tooltip {
+  --md-tooltip-width: 18rem;
+  /* Material's own clamp, with the left nudge inside it so a popup near the screen edge keeps its 0.8rem gutter */
+  left: clamp(0.8rem + var(--md-tooltip-0, 0rem), var(--md-tooltip-x) - 0.6rem, 100vw - 0.8rem + var(--md-tooltip-0, 0rem) - var(--md-tooltip-width));
+  margin-top: 0.8rem;
+  translate: var(--ag-annotation-dx, 0px) var(--ag-annotation-dy, 0px);
+}
+
+/* .md-typeset's 0.75rem would otherwise win over Material's tooltip size, since both rules have the same weight */
+.md-tooltip__inner.md-typeset {
+  padding: 0.6rem 0.75rem;
+  font-size: 0.62rem;
+  line-height: 1.6;
+}
+
 /* ---------------------------------------------------------------- admonitions */
 
 /* One colour per type, toned to the earth palette; warning, failure and danger stay warm and clearly apart */
