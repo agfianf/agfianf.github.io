@@ -1478,6 +1478,88 @@ html .md-footer-meta.md-typeset a.md-social__link:focus {
 
 /* ---------------------------------------------------------------- about page */
 
+/* "What I work with": six cursors sort a pile of tool chips into their rows (site.js, javascripts/swarm.js). The wrapper hosts the cursor layer. */
+.ag-swarm {
+  position: relative;
+}
+
+/* site.js wraps each chip with its comma in a box, so it can be moved and tilted (transforms skip plain inline elements) and never breaks across lines */
+.ag-swarm .swarm-chip {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* While sorting, the commas between chips wait in the empty rows and come back once every chip is home */
+.ag-swarm:not(.is-sorting) td:last-child {
+  transition: color 0.5s;
+}
+
+.ag-swarm.is-sorting td:last-child {
+  color: transparent;
+}
+
+/* The area a chip is being carried to, in the carrier's colour */
+.md-typeset .ag-swarm td.swarm-target,
+.md-typeset .ag-swarm td.swarm-target strong {
+  color: var(--pick);
+}
+
+.ag-swarm td:first-child,
+.ag-swarm td:first-child strong {
+  transition: color 0.25s;
+}
+
+/* Replay, shown once the build is done: a quiet mono button on the right, level with the heading */
+.md-typeset .ag-swarm .swarm-replay {
+  position: absolute;
+  top: -0.3rem;
+  right: 0;
+  z-index: 3;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--ag-line-strong);
+  background: var(--ag-bg);
+  color: var(--ag-ink-3);
+  font: 500 0.6rem/1 var(--ag-font-mono);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transform: translateY(-100%);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.md-typeset .ag-swarm .swarm-replay:hover,
+.md-typeset .ag-swarm .swarm-replay:focus-visible {
+  border-color: var(--ag-accent);
+  color: var(--ag-accent);
+}
+
+.md-typeset .ag-swarm .swarm-replay[hidden] {
+  display: none;
+}
+
+/* The section heading hugs its text, so the resize handle "cv" drags sits on the words */
+.md-typeset .swarm-title {
+  width: fit-content;
+}
+
+/* Until site.js has piled the chips up and shrunk the heading, keep the finished look out of sight, so it never flashes first; if the script never runs, everything shows anyway */
+@media (prefers-reduced-motion: no-preference) {
+  .ag-swarm:not(.is-ready) td code {
+    opacity: 0;
+    animation: ag-swarm-show 0s 2s forwards;
+  }
+
+  .md-typeset h2:has(+ .ag-swarm:not(.is-ready)) {
+    opacity: 0;
+    animation: ag-swarm-show 0s 2s forwards;
+  }
+}
+
+@keyframes ag-swarm-show {
+  to {
+    opacity: 1;
+  }
+}
+
 /* Company and role rows in the experience entries (docs/about.md) */
 .job-company-location,
 .job-title-date {

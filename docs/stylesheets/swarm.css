@@ -1,0 +1,150 @@
+/* Multiplayer cursors (javascripts/swarm.js), shared by the landing page's contact card and the About page's tool table. Colours come from the page's own tokens: the blog's --ag-* names, or the landing page's shorter ones. */
+
+.swarm {
+  --swarm-paper: var(--ag-bg, var(--bg));
+  --swarm-mono: var(--ag-font-mono, var(--font-mono));
+  --swarm-accent: var(--ag-accent, var(--accent));
+  --swarm-accent-ink: var(--ag-accent-ink, var(--accent-ink));
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.swarm-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: transform;
+}
+
+.swarm.is-on .swarm-cursor {
+  opacity: 1;
+}
+
+/* A cursor on its way out */
+.swarm.is-on .swarm-cursor.is-gone {
+  opacity: 0;
+}
+
+.swarm-cursor svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  overflow: visible;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+  transform-origin: var(--hot, 2px) var(--hot, 2px);
+  transition: transform 0.12s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.swarm-cursor path {
+  fill: var(--c);
+  stroke: var(--swarm-paper);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.swarm-cursor.is-down svg {
+  transform: scale(0.82);
+}
+
+/* Name tag: the cursor's colour behind page-background text, which reads in both themes */
+.swarm-cursor b {
+  position: absolute;
+  top: 15px;
+  left: 13px;
+  padding: 3px 6px 4px;
+  background: var(--c);
+  color: var(--swarm-paper);
+  font: 600 10px/1 var(--swarm-mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* A live size readout beside a resizing cursor */
+.swarm-readout {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  padding: 3px 6px 4px;
+  border: 1px solid var(--c);
+  background: var(--swarm-paper);
+  color: var(--c);
+  font: 600 10px/1 var(--swarm-mono);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Snap guide: a dashed line where the carried piece is about to land; --y runs down the page, --x runs across */
+.swarm-guide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.swarm-guide--y {
+  bottom: 0;
+  border-left: 1px dashed var(--c);
+}
+
+.swarm-guide--x {
+  right: 0;
+  border-top: 1px dashed var(--c);
+}
+
+.swarm-guide.is-on {
+  opacity: 0.75;
+}
+
+/* The piece a cursor is carrying: a dashed selection in that cursor's colour, above the pieces it passes over */
+.swarm-picked {
+  position: relative;
+  z-index: 1;
+  outline: 1px dashed var(--pick);
+  outline-offset: 5px;
+}
+
+/* A detection box a cursor drags out: dashed with a size readout while dragging, then solid with a label, like the hero's bounding boxes. The label sits beside the box; .is-tight hangs it under the box's right end instead. */
+.swarm-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1.5px dashed var(--swarm-accent);
+  background: color-mix(in srgb, var(--swarm-accent) 5%, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.swarm-box.is-on {
+  opacity: 1;
+}
+
+.swarm-box.is-done {
+  border-style: solid;
+}
+
+.swarm-box span {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+  padding: 4px 7px;
+  background: var(--swarm-accent);
+  color: var(--swarm-accent-ink);
+  font: 600 10px/1 var(--swarm-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.swarm-box.is-tight span {
+  top: 100%;
+  right: -1.5px;
+  left: auto;
+  transform: none;
+}

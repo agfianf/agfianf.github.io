@@ -131,8 +131,10 @@ extra_css:
   - stylesheets/extra.css
   - stylesheets/blog.css
   - stylesheets/404.css
+  - stylesheets/swarm.css
 
 extra_javascript:
+  - javascripts/swarm.js
   - javascripts/site.js
 
 # Adds loading="lazy" and decoding="async" to images in page content

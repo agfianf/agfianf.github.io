@@ -18,6 +18,8 @@ Around that core I build the MLOps that keeps it repeatable (experiment tracking
 
 ## What I work with
 
+<div class="ag-swarm" markdown>
+
 | Area | Tools |
 |:--|:--|
 | **Computer vision** | `PyTorch`, `PyTorch Lightning`, `Ultralytics`, `OpenCV`, `PaddleOCR`, `ONNX`, `TensorRT`, `Triton Inference Server` |
@@ -26,6 +28,8 @@ Around that core I build the MLOps that keeps it repeatable (experiment tracking
 | **DevOps and cloud** | `Docker`, `Kubernetes`, `GitHub Actions`, `GitLab CI`, `Terraform`, `Ansible`, `Prometheus`, `Grafana`, `AWS`, `GCP`, `Azure` |
 | **Geospatial** | `PostGIS`, `GeoPandas`, `Shapely`, `Sentinel-2` |
 | **Edge hardware** | `NVIDIA Jetson`, `Raspberry Pi` |
+
+</div>
 
 ## Things I've built in the open
 
