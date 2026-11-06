@@ -1763,6 +1763,234 @@
     })();
   }
 
+  /* ------------------------------------------------------------------ swarm */
+
+  // A nod to Joel Califa's Swarm and Dhvanil Patel's Swarm Rebuild, written from scratch. The contact card's pieces start out scattered and tilted; when the card scrolls in, four multiplayer cursors pick them up one at a time and drag them back into the layout, snapping to a guide. Once the card is whole, "cv" labels the italic phrase the way an annotator draws a bounding box, and the cursors leave. They never react to the reader's mouse.
+  const SWARM = [['cv', 'var(--accent)'], ['mlops', 'var(--swarm-teal)'], ['llm', 'var(--leaf)'], ['devops', 'var(--swarm-clay)']];
+  const ARROW = '<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2 2 15.5 8 9.6 9.6 7 15.5Z"/></svg>';
+  const DETECTION = 'prod_ready 0.98';
+  const easeInOut = (p) => (p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2);
+
+  function initSwarm() {
+    const card = document.querySelector('.contact-card');
+    const phrase = card && card.querySelector('h2 em');
+    if (!card || !phrase || !('IntersectionObserver' in window)) return;
+    const pieces = [...card.querySelectorAll(':scope > .eyebrow, :scope > h2, :scope > .contact-copy, :scope > .cta > .btn')];
+
+    const layer = el('div', 'swarm');
+    layer.setAttribute('aria-hidden', 'true');
+    const box = el('div', 'swarm-box');
+    const tag = el('span');
+    box.append(tag);
+    layer.append(box);
+    card.append(layer);
+
+    // Everything is in the card's own coordinates
+    let W = 0, H = 0, mark = { x: 0, y: 0, w: 0, h: 0 };
+    function rel(node) {
+      const c = card.getBoundingClientRect(), r = node.getBoundingClientRect();
+      return { x: r.left - c.left - card.clientLeft, y: r.top - c.top - card.clientTop, w: r.width, h: r.height };
+    }
+    function measureMark() {
+      W = card.clientWidth;
+      H = card.clientHeight;
+      // When the phrase wraps (phones), box the whole heading instead of a ragged two-line union
+      const span = document.createRange();
+      span.selectNodeContents(phrase.getClientRects().length > 1 ? phrase.parentNode : phrase);
+      const c = card.getBoundingClientRect(), t = span.getBoundingClientRect();
+      mark = { x: t.left - c.left - card.clientLeft - 6, y: t.top - c.top - card.clientTop - 2, w: t.width + 12, h: t.height + 6 };
+      // The label sits beside the box, or under its right end when there is no room to the side
+      box.classList.toggle('is-tight', mark.x + mark.w + 130 > W);
+    }
+    function drawBox(w, h, label) {
+      box.style.transform = `translate(${mark.x}px, ${mark.y}px)`;
+      box.style.width = `${w}px`;
+      box.style.height = `${h}px`;
+      tag.textContent = label;
+    }
+    const finishBox = () => {
+      measureMark();
+      box.classList.add('is-on', 'is-done');
+      drawBox(mark.w, mark.h, DETECTION);
+    };
+
+    // Reduced motion: nothing is scattered and nothing moves; the card simply carries its label
+    if (motionQuery.matches) {
+      new ResizeObserver(finishBox).observe(card);
+      return;
+    }
+
+    // Scatter the pieces now, while the card is still far below the fold. Each one shifts and tilts around the point its cursor will grab, so the grab point stays under the cursor tip the whole way home. Only transforms change, so the layout (and every link) stays where it is.
+    const jobs = pieces.map((node) => {
+      const w = node.offsetWidth, h = node.offsetHeight, room = card.clientWidth;
+      // The eyebrow and the copy are full-width blocks; their text is what reads as the piece, so it sets the tilt
+      const text = document.createRange();
+      text.selectNodeContents(node);
+      const tw = Math.min(w, text.getBoundingClientRect().width) || w;
+      const g = { x: Math.min(28, tw * 0.3), y: h / 2 };
+      // Anywhere across the card, but never past its edges
+      const left = node.getBoundingClientRect().left - card.getBoundingClientRect().left;
+      const lo = Math.min(0, 12 - left), hi = Math.max(0, room - 12 - left - w);
+      const d = { x: lo + (hi - lo) * Math.random(), y: (Math.random() - 0.5) * 70, r: (Math.random() < 0.5 ? -1 : 1) * clamp(1400 / tw, 2, 8) * (0.5 + Math.random() * 0.5) };
+      node.style.transition = 'none';
+      node.style.transformOrigin = `${g.x}px ${g.y}px`;
+      return { node, g, d, home: null };
+    });
+    const pose = (job, k) => (job.node.style.transform = `translate(${job.d.x * k}px, ${job.d.y * k}px) rotate(${job.d.r * k}deg)`);
+    const settle = (job) => {
+      job.node.classList.remove('is-picked');
+      job.node.style.transform = job.node.style.transition = job.node.style.transformOrigin = '';
+    };
+    jobs.forEach((job) => pose(job, 1));
+
+    const bots = SWARM.map(([name, color], i) => {
+      const node = el('span', 'swarm-cursor');
+      node.style.setProperty('--c', color);
+      node.innerHTML = ARROW;
+      node.append(el('b', '', name));
+      const guide = el('i', 'swarm-guide');
+      guide.style.setProperty('--c', color);
+      layer.append(guide, node);
+      return { node, guide, color, i, x: 0, y: 0, tween: null, gone: false };
+    });
+    const cv = bots[0];
+    const place = (b) => (b.node.style.transform = `translate3d(${b.x - 2}px, ${b.y - 2}px, 0)`);
+
+    // Cursors move like hands do: eased, on a slight curve, and starting no earlier than `at`
+    function go(b, to, at, dur, then, step) {
+      const from = { x: b.x, y: b.y }, dx = to.x - from.x, dy = to.y - from.y, dist = Math.hypot(dx, dy) || 1;
+      const arc = step ? 0 : Math.min(40, dist * 0.15) * (b.i % 2 ? 1 : -1);
+      b.tween = { from, to, at, dur, then, step, nx: -dy / dist * arc, ny: dx / dist * arc };
+    }
+
+    let raf = 0, next = 0, placed = 0, t0 = 0, built = false;
+
+    // Each cursor takes the next piece in reading order: fly to it, press, carry it home, release, repeat
+    function work(b, now) {
+      const job = jobs[next];
+      if (!job) return b === cv ? (cv.waiting = true) : leave(b, now);
+      const k = next++;
+      const grab = { x: job.home.x + job.g.x + job.d.x, y: job.home.y + job.g.y + job.d.y };
+      const at = Math.max(now, t0 + 150 + k * 360);
+      go(b, grab, at, clamp(Math.hypot(grab.x - b.x, grab.y - b.y) * 1.3, 380, 900), (t) => {
+        b.node.classList.add('is-down');
+        job.node.classList.add('is-picked');
+        job.node.style.setProperty('--pick', b.color);
+        b.guide.style.transform = `translateX(${job.home.x}px)`;
+        const home = { x: job.home.x + job.g.x, y: job.home.y + job.g.y };
+        go(b, home, t + 140, 760, (t2) => {
+          b.node.classList.remove('is-down');
+          b.guide.classList.remove('is-on');
+          settle(job);
+          placed++;
+          work(b, t2 + 160);
+        }, (e) => {
+          pose(job, 1 - e);
+          b.guide.classList.toggle('is-on', e > 0.4);
+        });
+      });
+    }
+
+    // The card is whole: cv boxes the phrase, then heads out too
+    function label(now) {
+      measureMark();
+      go(cv, { x: mark.x, y: mark.y }, now, 650, (t) => {
+        cv.node.classList.add('is-down');
+        box.classList.add('is-on');
+        go(cv, { x: mark.x + mark.w, y: mark.y + mark.h }, t + 140, 1000, (t2) => {
+          cv.node.classList.remove('is-down');
+          finishBox();
+          leave(cv, t2 + 300);
+        }, (e) => {
+          const w = Math.max(6, mark.w * e), h = Math.max(6, mark.h * e);
+          drawBox(w, h, `${Math.round(w)} × ${Math.round(h)}`);
+        });
+      });
+    }
+
+    function leave(b, now) {
+      go(b, { x: b.x < W / 2 ? -70 : W + 70, y: b.y + 30 }, now, 700, () => {
+        b.gone = true;
+        b.node.remove();
+        b.guide.remove();
+      });
+      setTimeout(() => b.node.classList.add('is-gone'), Math.max(0, now - performance.now()) + 150);
+    }
+
+    function frame(now) {
+      raf = requestAnimationFrame(frame);
+      for (const b of bots) {
+        const tw = b.tween;
+        if (!tw) continue;
+        const p = clamp((now - tw.at) / tw.dur, 0, 1), e = easeInOut(p), bend = Math.sin(Math.PI * p);
+        b.x = tw.from.x + (tw.to.x - tw.from.x) * e + tw.nx * bend;
+        b.y = tw.from.y + (tw.to.y - tw.from.y) * e + tw.ny * bend;
+        if (tw.step) tw.step(e);
+        if (p === 1) {
+          b.tween = null;
+          if (tw.then) tw.then(now);
+        }
+      }
+      bots.forEach(place);
+      if (cv.waiting && placed === jobs.length) {
+        cv.waiting = false;
+        label(now);
+      }
+      if (bots.every((b) => b.gone)) {
+        cancelAnimationFrame(raf);
+        built = true;
+      }
+    }
+
+    // A resize mid-build would move every home under the cursors, so the card simply snaps together
+    function snap() {
+      cancelAnimationFrame(raf);
+      jobs.forEach(settle);
+      bots.forEach((b) => {
+        b.node.remove();
+        b.guide.remove();
+      });
+      built = true;
+      finishBox();
+    }
+
+    function start() {
+      t0 = performance.now();
+      measureMark();
+      jobs.forEach((job) => {
+        job.node.style.transform = 'none';
+        job.home = rel(job.node);
+        pose(job, 1);
+      });
+      // The cursors come in from the card's four corners
+      bots.forEach((b) => {
+        b.x = b.i % 2 ? W + 50 : -50;
+        b.y = b.i > 1 ? H + 40 : -40;
+        place(b);
+        work(b, t0);
+      });
+      requestAnimationFrame(() => layer.classList.add('is-on'));
+      raf = requestAnimationFrame(frame);
+    }
+
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      io.disconnect();
+      start();
+    }, { threshold: 0.35 });
+    io.observe(card);
+
+    let width = card.clientWidth;
+    new ResizeObserver(() => {
+      if (built) return finishBox();
+      if (card.clientWidth === width) return;
+      width = card.clientWidth;
+      if (t0) snap();
+    }).observe(card);
+    // The italic face can arrive late and change the phrase's width without resizing the card
+    if (document.fonts) document.fonts.ready.then(() => built && finishBox());
+  }
+
   /* ------------------------------------------------------------------ start */
 
   initTheme();
@@ -1770,4 +1998,5 @@
   initRotator();
   initField();
   initNotes();
+  initSwarm();
 })();
